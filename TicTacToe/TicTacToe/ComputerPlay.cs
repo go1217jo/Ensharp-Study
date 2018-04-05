@@ -25,8 +25,8 @@ namespace TicTacToe
 
         string[] whiteBall = {"    ■■■■■    ",
                               "  ■          ■  ",
-                              "■              ■",
-                              "■              ■",
+                              "■  ■■        ■",
+                              "■  ■■        ■",
                               "■              ■",
                               "■              ■",
                               "  ■          ■  ",
@@ -34,7 +34,7 @@ namespace TicTacToe
 
         public void PrintGameScreen()
         {
-            ConsoleUI.GotoLine(3);
+            ConsoleUI.GotoLine(2);
             if (turn == 0)
                 Console.WriteLine("\t\tComputer turn\n");
             else
@@ -86,8 +86,7 @@ namespace TicTacToe
             int difficult;
             map = new int[9] { -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             ChoicePlayer(scores);  // 저장된 닉네임 혹은 닉네임을 새로 생성하여 닉네임을 반환한다.
-            while (true)
-            {
+            while (true) {
                 Console.WriteLine("난이도 선택");
                 Console.WriteLine("1. 쉬움, 2. 보통, 3. 어려움");
                 Console.Write("Input > ");
@@ -124,6 +123,7 @@ namespace TicTacToe
                     break;
             }
         }
+
         void ChoicePlayer(ScoreList scores)
         {
             int choice;
@@ -201,9 +201,8 @@ namespace TicTacToe
 
             DecideTurn();  // 사용자와 컴퓨터 턴을 결정한다.
 
-            while (true)
-            {
-                PrintGameScreen();
+            while (true) {
+                PrintGameScreen();  // 게임 화면 출력
 
                 // 컴퓨터가 랜덤으로 아직 놓이지 않은 자리에 놓는다
                 if (turn == 0) {  // 컴퓨터 차례이면
@@ -223,6 +222,7 @@ namespace TicTacToe
                         {
                             Console.Clear();
                             Console.WriteLine("\n\t\t\tAlert : 1 ~ 9번 중 선택하세요");
+                            PrintGameScreen();
                             continue;
                         }
                         else {
@@ -258,7 +258,7 @@ namespace TicTacToe
                     }
                     if(iter == map.Length) {
                         ConsoleUI.GotoLine(4);
-                        ConsoleUI.DynamicPrint('ㅠ');
+                        ConsoleUI.DynamicPrint('#');
                         Console.WriteLine("  무승부입니다.");
                         return 0;
                     }
@@ -267,13 +267,11 @@ namespace TicTacToe
             return win;
         }
         
-        public int NormalGame()
-        {
+        public int NormalGame() {
             return -1;
         }
 
-        public int DifficultGame()
-        {
+        public int DifficultGame() {
             return -1;
         }
     }

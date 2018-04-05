@@ -13,11 +13,9 @@ namespace TicTacToe
         {
             Console.SetWindowSize(145, 35);
             FirstScreen First = new FirstScreen();
-            while (true)
-            {
+            while (true) {
                 First.PrintScreen();
-                if (Console.ReadKey().KeyChar != 0)
-                {
+                if (Console.ReadKey().KeyChar != 0) {
                     Console.Clear();
                     break;
                 }

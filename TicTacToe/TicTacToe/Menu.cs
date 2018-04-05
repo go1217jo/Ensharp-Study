@@ -11,7 +11,7 @@ namespace TicTacToe
         int choiceNumber;
         ScoreList players = new ScoreList();
 
-        public void PrintMenu()
+        public void PrintMenu()  // 메뉴 선택 UI
         {
             ConsoleUI.GotoLine(6);
             Console.WriteLine("\t\t\t\t\t\t\t=========== Menu ===========\n");
@@ -25,7 +25,7 @@ namespace TicTacToe
 
         public Menu()
         {
-            MenuChoice();
+            MenuChoice();  // 메뉴 선택 창을 출력한다
         }
 
         public void MenuChoice()
@@ -36,7 +36,7 @@ namespace TicTacToe
                 // 현재 입력된 키를 읽고 맞는지 체크한다.
                 char _input = Console.ReadKey().KeyChar;
                 if (_input < '0' || _input > '3') {
-                    Console.Clear();
+                    Console.Clear();    
                     Console.WriteLine("\n\t\t\tAlert : 1 ~ 3번 중 선택하세요");
                     continue;
                 }
@@ -50,11 +50,9 @@ namespace TicTacToe
                     case 1:
                         new ComputerPlay(players);
                         break;
-                    //break;
                     case 2:
-                        Console.WriteLine("call User vs User");
-                        return;
-                    //break;
+                        new UserPlay(players);
+                        break;
                     case 3:
                         players.RankPrint();
                         break;

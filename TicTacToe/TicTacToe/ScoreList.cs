@@ -72,6 +72,7 @@ namespace TicTacToe
             }
             return yes;
         }
+
         public void Push(string nickname)  // 신규 플레이어를 추가한다.
         {
             scores.Add(new Score(nickname, 0));  // 맨 뒤에 추가, 초기 점수는 0
@@ -129,16 +130,14 @@ namespace TicTacToe
             Console.Clear();
             ConsoleUI.GotoLine(4);
             Console.WriteLine("\t\t\t\t\t===============================================================");
-            for (int i=0;i<scores.Count; i++)
-            {
+            for (int i=0;i<scores.Count; i++) {
                 temp = (Score)scores[i]; 
                 Console.Write("\t\t\t\t\t {0} ",i+1);
                 temp.PrintScore();
             }
             Console.WriteLine("\t\t\t\t\t===============================================================");
             Console.WriteLine("\t\t\t\t\t\t\t\tPress Any Key...");
-            while (true)
-            {
+            while (true) {
                 if (Console.ReadKey().KeyChar != 0)
                 {
                     Console.Clear();

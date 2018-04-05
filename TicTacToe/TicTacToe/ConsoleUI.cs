@@ -9,8 +9,7 @@ namespace TicTacToe
 {
     class ConsoleUI
     {
-        public static void GotoLine(int n)  // 여러 줄 개행
-        {
+        public static void GotoLine(int n) { // 여러 줄 개행
             for (int i = 0; i < n; i++)
                 Console.WriteLine();
         }

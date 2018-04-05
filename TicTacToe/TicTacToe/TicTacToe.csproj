@@ -49,6 +49,7 @@
     <Compile Include="MainScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScoreList.cs" />
+    <Compile Include="UserPlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
