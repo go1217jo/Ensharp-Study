@@ -88,15 +88,15 @@ namespace TicTacToe
             ChoicePlayer(scores);  // 저장된 닉네임 혹은 닉네임을 새로 생성하여 닉네임을 반환한다.
             while (true) {
                 Console.WriteLine("난이도 선택");
-                Console.WriteLine("1. 쉬움, 2. 보통, 3. 어려움");
+                Console.WriteLine("1. 쉬움, 2. 보통");
                 Console.Write("Input > ");
                 
                 // 현재 입력된 키를 읽고 맞는지 체크한다.
                 char _input = Console.ReadKey().KeyChar;
-                if (_input < '1' || _input > '3')
+                if (_input < '1' || _input > '2')
                 {
                     Console.Clear();
-                    Console.WriteLine("\n\t\t\tAlert : 1 ~ 3번 중 선택하세요");
+                    Console.WriteLine("\n\t\t\tAlert : 1 ~ 2번 중 선택하세요");
                     continue;
                 }
                 else
@@ -117,9 +117,6 @@ namespace TicTacToe
                     break;
                 case 2:
                     win = NormalGame();
-                    break;
-                case 3:
-                    win = DifficultGame();
                     break;
             }
         }
@@ -268,11 +265,140 @@ namespace TicTacToe
         }
         
         public int NormalGame() {
-            return -1;
+            int choice;
+            Random rand = new Random();
+
+            DecideTurn();  // 사용자와 컴퓨터 턴을 결정한다.
+
+            while (true)
+            {
+                PrintGameScreen();  // 게임 화면 출력
+
+                // 컴퓨터가 랜덤으로 아직 놓이지 않은 자리에 놓는다
+                if (turn == 0)
+                {  // 컴퓨터 차례이면
+                    while (true)
+                    {
+                        choice = PositionDecision();
+                        if (map[choice - 1] == -1)
+                            break;
+                    }
+                    map[choice - 1] = 0;
+                    turn = 1;
+                }
+                else
+                {  // 사용자 차례이면
+                    while (true)
+                    {
+                        // 현재 입력된 키를 읽고 맞는지 체크한다.
+                        char _input = Console.ReadKey().KeyChar;
+                        if (_input < '1' || _input > '9')
+                        {
+                            Console.Clear();
+                            Console.WriteLine("\n\t\t\tAlert : 1 ~ 9번 중 선택하세요");
+                            PrintGameScreen();
+                            continue;
+                        }
+                        else
+                        {
+
+                            choice = int.Parse(_input + "");
+                            if (map[choice - 1] != -1)
+                                continue;
+                            map[choice - 1] = 1;
+                            Console.WriteLine();
+                            break;
+                        }
+                    }
+                    turn = 0;
+                }
+                Console.Clear();
+                win = CheckGame();
+                if (win != -1)
+                {
+                    ConsoleUI.GotoLine(4);
+                    ConsoleUI.DynamicPrint('#');
+                    if (win == 0)
+                    {
+                        Console.WriteLine("  컴퓨터가 이겼습니다.");
+                    }
+                    else
+                        Console.WriteLine("  {0}가 이겼습니다.", nickname);
+                    break;
+                }
+                else
+                {
+                    int iter;
+                    for (iter = 0; iter < map.Length; iter++)
+                    {
+                        if (map[iter] == -1)
+                        {
+                            break;
+                        }
+                    }
+                    if (iter == map.Length)
+                    {
+                        ConsoleUI.GotoLine(4);
+                        ConsoleUI.DynamicPrint('#');
+                        Console.WriteLine("  무승부입니다.");
+                        return 0;
+                    }
+                }
+            }
+            return win;
         }
 
-        public int DifficultGame() {
-            return -1;
+        public int PositionDecision() {  // 놓을 위치를 결정한다
+            int continuous = 0;
+            if (map[4] == -1)
+                return 5;
+            // 방어
+            for(int i=0;i<7; i+=3) {
+                for(int j=i; j<i+3; j++) {
+                    if (map[j] == 1) {
+                        continuous++;
+                        if(continuous == 2) {
+                            if(j == i+1) {
+                                if (map[i + 2] == -1)
+                                    return i + 2 + 1;  // 인덱스 위치에서 1 증가한 값 반환
+                            }
+                            if (j == i + 2) {
+                                if (map[i] == -1)
+                                    return i + 1;  // 인덱스 위치에서 1 증가한 값 반환
+                            }
+                        }
+                    }
+                    else
+                        continuous = 0;
+                }
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = i; j < i + 7; j+=3)
+                {
+                    if (map[j] == 1)
+                    {
+                        continuous++;
+                        if (continuous == 2)
+                        {
+                            if (j == i + 3)
+                            {
+                                if (map[i + 6] == -1)
+                                    return i + 6 + 1;  // 인덱스 위치에서 1 증가한 값 반환
+                            }
+                            if (j == i + 6)
+                            {
+                                if (map[i] == -1)
+                                    return i + 1;  // 인덱스 위치에서 1 증가한 값 반환
+                            }
+                        }
+                    }
+                    else
+                        continuous = 0;
+                }
+            }
+            return new Random().Next(1, 10);
         }
     }
 }
