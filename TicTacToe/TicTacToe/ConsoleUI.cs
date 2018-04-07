@@ -13,7 +13,7 @@ namespace TicTacToe
             for (int i = 0; i < n; i++)
                 Console.WriteLine();
         }
-        public static void DynamicPrint(char ch) {
+        public static void DynamicPrint(char ch) {  // 로딩 UI
             for(int i=0;i < 20;i++) {
                 Console.Write(ch+"");
                 Thread.Sleep(30);

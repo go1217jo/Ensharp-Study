@@ -11,7 +11,7 @@ namespace TicTacToe
     {
         private string nickname;  // 유저 닉네임
         private int score;  // 게임 이긴 횟수
-        private int times;  // 게임 플레이 횟수
+        public int times;  // 게임 플레이 횟수
        
         public Score(string nickname, int score)  // 초기화
         {
@@ -25,10 +25,18 @@ namespace TicTacToe
             if (times != 0)
             {
                 float rate = (float)score / times;  // 승률 계산
-                Console.WriteLine("Nickname : {0}    Win times : {1}    Winning Rate : {2}%", nickname, score, rate*100);
+                Console.Write("Nickname : {0}", nickname);
+                for (int k = 0; k < 8 - nickname.Length; k++) {  // 닉네임 출력 부분 일정하게 하기
+                    Console.Write(" ");
+                }
+                Console.WriteLine("Win times : {0}     Winning Rate : {1}%", score, rate * 100);
             }
-            else
-                Console.WriteLine("Nickname : {0}    Win times : {1}", nickname, score);
+            else {
+                Console.Write("Nickname : {0}", nickname);
+                for (int k = 0; k < 8 - nickname.Length; k++)  // 닉네임 출력 부분 일정하게 하기
+                    Console.Write(" ");
+                Console.WriteLine("Win times : {0}", score);
+            }
         }
 
         public void AlertScore(bool win)  // 이기면 게임 수와 승 수를 변경한다.
@@ -88,7 +96,7 @@ namespace TicTacToe
             }
         }
 
-        public void MergeSort(int left, int right)  // 승 수를 기준으로 내림차순 정렬한다.
+        public void MergeSort(int left, int right)  // 승 수를 기준으로 내림차순 정렬한다.(합병정렬 사용)
         {
             int middle = (left + right) / 2;
             Score temp1, temp2;
@@ -105,9 +113,22 @@ namespace TicTacToe
             {
                 temp1 = (Score)scores[l];
                 temp2 = (Score)scores[r];
-                if (temp1.GetScore() > temp2.GetScore()) {
-                    tempArr[idx++] = temp1;
-                    l++;
+                if (temp1.GetScore() >= temp2.GetScore()) {  // 이긴 횟수로 순위를 정한다
+                    if (temp1.GetScore() == temp2.GetScore())
+                    {
+                        if (temp1.GetScore() / temp1.times > temp2.GetScore() / temp2.times) {  // 이긴 횟수가 같다면 승률로 순위를 정한다
+                            tempArr[idx++] = temp1;
+                            l++;
+                        }
+                        else {
+                            tempArr[idx++] = temp2;
+                            r++;
+                        }
+                    }
+                    else {
+                        tempArr[idx++] = temp1;
+                        l++;
+                    }
                 }
                 else {
                     tempArr[idx++] = temp2;
@@ -119,8 +140,8 @@ namespace TicTacToe
             while (r <= right)
                 tempArr[idx++] = (Score)scores[r++];
 
-            for (idx = left; idx <= right; idx++)  // 정렬된 부분을 원래 배열 부분으로 바꾸어준다.
-                scores[idx] = tempArr[idx];
+            for (idx = 0; idx < right-left + 1; idx++) // 정렬된 부분을 원래 배열 부분으로 바꾸어준다.
+                scores[idx+left] = tempArr[idx];
         }
         
         public void RankPrint()  // 플레이어들 성적 출력

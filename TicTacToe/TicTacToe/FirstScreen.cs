@@ -8,7 +8,6 @@ namespace TicTacToe
 {
     class FirstScreen
     {
-        
         public void PrintScreen()  // 초기화면 출력
         {
             ConsoleUI.GotoLine(5);

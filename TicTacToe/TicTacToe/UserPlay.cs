@@ -49,6 +49,7 @@ namespace TicTacToe
                     {
                         Console.Clear();
                         Console.WriteLine("\n\t\t\tAlert : 1 ~ 9번 중 선택하세요");
+                        PrintGameScreen();
                         continue;
                     }
                     else
@@ -70,7 +71,7 @@ namespace TicTacToe
                     Console.Clear();
                     ConsoleUI.GotoLine(4);
                     ConsoleUI.DynamicPrint('#');
-                    Console.WriteLine("  "+nickname[win] + "  가 이겼습니다.");
+                    Console.WriteLine("  "+nickname[win] + "가 이겼습니다.");
                     scores.Update(nickname[win], true);
                     if (win == 0)
                         scores.Update(nickname[1], false);
@@ -92,6 +93,8 @@ namespace TicTacToe
                         ConsoleUI.GotoLine(4);
                         ConsoleUI.DynamicPrint('#');
                         Console.WriteLine("  무승부입니다.");
+                        for (int k = 0; k < 2; k++)  // 무승부이므로 둘 다 승이 아님
+                            scores.Update(nickname[k], false); 
                         break;
                     }
                 }
@@ -104,10 +107,13 @@ namespace TicTacToe
             {
                 while (true)
                 {
-                    Console.WriteLine("Player {0} 설정", i+1);
-                    Console.WriteLine("1. 새로운 player 생성");
-                    Console.WriteLine("2. 기존 player 이어하기");
-                    Console.Write("Input > ");
+                    ConsoleUI.GotoLine(3);
+                    Console.WriteLine("\t\t\t\t\t\t\t\t<Player {0} 설정>", i+1);
+                    Console.WriteLine("\t\t\t\t\t\t\t==============================");
+                    Console.WriteLine("\t\t\t\t\t\t\t    1. 새로운 player 생성\n");
+                    Console.WriteLine("\t\t\t\t\t\t\t    2. 기존 player 이어하기");
+                    Console.WriteLine("\t\t\t\t\t\t\t==============================");
+                    Console.Write("\t\t\t\t\t\t\tInput > ");
 
                     // 현재 입력된 키를 읽고 맞는지 체크한다.
                     char _input = Console.ReadKey().KeyChar;
@@ -123,51 +129,83 @@ namespace TicTacToe
                         Console.WriteLine();
                         break;
                     }
+                    
                 }
 
                 if (choice == 1)
                 {
-                    while (true) {
-                        Console.WriteLine("새 플레이어 명을 정해주세요.");
-                        Console.Write("Nickname : ");
+                    bool repeat = true;
+                    
+                    Console.WriteLine("\n\t\t\t\t\t\t\t<새 플레이어 명을 정해주세요.>");
+                    while (repeat)  // 공백 문자가 포함되지 않은 닉네임이 입력될 때까지 반복
+                    {
+                        Console.Write("\t\t\t\t\t\t\tNickname : ");
                         this.nickname[i] = Console.ReadLine();
-                        if (i != 1)
-                            break;
+                        if (this.nickname[i].Length > 8)  // 닉네임 길이가 8자가 넘어간다면
+                        {
+                            this.nickname[i] = this.nickname[i].Substring(0, 8);  // 닉네임이 너무 길면 문자열을 자름
+                            Console.WriteLine("\n\t\t\t\t\t\t\t닉네임이 너무 길어 자동으로 잘립니다.");
+                        }
+                        if (this.nickname[i].Length == 0) { // 공백 문자가 입력되면 다시 입력 받음
+                            Console.WriteLine("\n\t\t\t\t\t\t\t공백 문자가 포함될 수 없습니다.");
+                            continue;
+                        }
                         else {
-                            if (this.nickname[1].Equals(this.nickname[0]))
-                                Console.WriteLine("플레이어의 이름이 중복됩니다. 다시 입력해주세요.");
-                            else break;
+                            for (int j = 0; j < this.nickname[i].Length; j++) // 공백 문자가 입력되면 임의로 닉네임을 생성
+                            {
+                                if (this.nickname[i][j] == '\n' || this.nickname[i][j] == '\t' || this.nickname[i][j] == ' ') { // 공백 문자가 포함된다면
+                                    Console.WriteLine("\n\t\t\t\t\t\t\t공백 문자가 포함될 수 없습니다.");
+                                    break;
+                                }
+                                if (j + 1 == this.nickname[i].Length)  // 공백 문자 없음 확인
+                                    repeat = false;
+                            }
+                        }
+                        if (scores.IsThere(this.nickname[i])) {
+                            Console.WriteLine("\n\t\t\t\t\t\t\t해당 닉네임이 존재합니다. 다시 입력해주세요.");
+                            repeat = true;
+                            continue;
+                        }
+
+                        if (i == 1 && this.nickname[1].Equals(this.nickname[0])) {
+                            Console.WriteLine("\n\t\t\t\t\t\t\t플레이어의 이름이 중복됩니다. 다시 입력해주세요.");
+                            repeat = true;
+                            continue;
                         }
                     }
-                    if (scores.IsThere(this.nickname[i]))
-                    {
-                        Console.WriteLine("해당 닉네임이 존재하여 이어서 시작합니다.");
-                    }
-                    else
-                    {
-                        scores.Push(this.nickname[i]);  // 새로운 닉네임을 등록한다
-                    }
+                    scores.Push(nickname[i]);
                 }
                 else
                 {
-                    Console.WriteLine("불러올 플레이어 명을 입력하세요");
-                    Console.Write("Nickname : ");
-                    this.nickname[i] = Console.ReadLine();
+                    while (true)
+                    {
+                        Console.WriteLine("\n\t\t\t\t\t\t\t불러올 플레이어 명을 입력하세요");
+                        Console.Write("\t\t\t\t\t\t\tNickname : ");
+                        this.nickname[i] = Console.ReadLine();
+
+                        if (i==1 && this.nickname[1].Equals(this.nickname[0]))
+                            Console.WriteLine("\n\t\t\t\t\t\t\t플레이어의 이름이 중복됩니다. 다시 입력해주세요.");
+                        else
+                            break;
+                    }
                     if (!scores.IsThere(this.nickname[i]))  // 닉네임이 존재하는지 검사한다
                     {
-                        Console.WriteLine("닉네임 검색 결과 존재하지 않으므로 새로 생성합니다.");
+                        Console.WriteLine("\n\t\t\t\t\t\t\t닉네임 검색 결과 존재하지 않으므로 새로 생성합니다.");
                         scores.Push(this.nickname[i]);  // 새로운 닉네임을 등록한다
                     }
                 }
+                Thread.Sleep(400);
+                if(i==0)
+                    Console.Clear();
             }
         }
         public void DecideTurn()
         {
-            Console.WriteLine("선공후공은 50% 확률로 정해집니다...");
+            Console.WriteLine("\n\t\t\t\t\t\t\t선공후공은 50% 확률로 정해집니다...");
             Thread.Sleep(500);
             Random rand = new Random();
             turn = rand.Next(0, 2);
-            Console.Write(nickname[turn] + "님이 선공입니다.");
+            Console.Write("\n\t\t\t\t\t\t\t" + nickname[turn] + "님이 선공입니다.");
             Thread.Sleep(1000);
             Console.Clear();
         }
@@ -200,18 +238,18 @@ namespace TicTacToe
         public void PrintGameScreen()  // 게임 화면을 출력한다
         {
             ConsoleUI.GotoLine(3);
-            Console.WriteLine(nickname[turn] + " turn");
+            Console.WriteLine("\t\t\t\t\t\t\t" + nickname[turn] + " turn");
 
             for (int k = 0; k < 9; k += 3)  // 격자를 생성하고 map에 맞게 돌을 출력한다
             {
                 if (k == 0)
-                    Console.WriteLine("  --------------------------------------------------------------");
+                    Console.WriteLine("\t\t\t\t\t  --------------------------------------------------------------");
                 for (int i = 0; i < 8; i++)
                 {
                     for (int j = k; j < k + 3; j++)
                     {
                         if (j == k)
-                            Console.Write(" | ");
+                            Console.Write("\t\t\t\t\t | ");
                         if (map[j] == -1)
                             Console.Write("                  ");
                         else if (map[j] == 0)
@@ -222,8 +260,9 @@ namespace TicTacToe
                     }
                     Console.WriteLine();
                 }
-                Console.WriteLine("  --------------------------------------------------------------");
+                Console.WriteLine("\t\t\t\t\t  --------------------------------------------------------------");
             }
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t1 2 3\n\t\t\t\t\t\t\t\t\t4 5 6\n\t\t\t\t\t\t\t\t\t7 8 9");
         }
     }
 }

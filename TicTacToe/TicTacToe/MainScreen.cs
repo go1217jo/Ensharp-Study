@@ -11,7 +11,7 @@ namespace TicTacToe
     {
         static void Main(string[] args)
         {
-            Console.SetWindowSize(145, 35);
+            Console.SetWindowSize(145, 40);
             FirstScreen First = new FirstScreen();
             while (true) {
                 First.PrintScreen();
