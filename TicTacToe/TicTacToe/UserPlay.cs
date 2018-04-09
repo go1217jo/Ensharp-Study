@@ -7,33 +7,11 @@ using System.Threading.Tasks;
 
 namespace TicTacToe
 {
-    class UserPlay {
-        int[] map;
-        string[] nickname = new string[2];  // player1,2의 닉네임을 저장한다
-        int win;   // 0이면 사용자1, 1이면 사용자2 승리, -1이면 무승부
-        int turn;  // 0이면 사용자1, 1이면 사용자2
-
-        // 8 x 18 image
-        string[] blackBall = {"    ■■■■■    ",
-                              "  ■■■■■■■  ",
-                              "■■    ■■■■■",
-                              "■■    ■■■■■",
-                              "■■■■■■■■■",
-                              "■■■■■■■■■",
-                              "  ■■■■■■■  ",
-                              "    ■■■■■    "};
-
-        string[] whiteBall = {"    ■■■■■    ",
-                              "  ■          ■  ",
-                              "■  ■■        ■",
-                              "■  ■■        ■",
-                              "■              ■",
-                              "■              ■",
-                              "  ■          ■  ",
-                              "    ■■■■■    "};
-
+    class UserPlay : Play
+    {
         public UserPlay(ScoreList scores) {
             int choice;
+            mode = 0;  // 사용자 모드로 설정
             map = new int[9]{ -1,-1,-1,-1,-1,-1,-1,-1,-1};
             ChoicePlayer(scores);
             DecideTurn();
@@ -100,7 +78,7 @@ namespace TicTacToe
                 }
             }
         }
-        void ChoicePlayer(ScoreList scores)
+        override public void ChoicePlayer(ScoreList scores)
         {
             int choice=0;
             for (int i = 0; i < 2; i++)
@@ -198,71 +176,6 @@ namespace TicTacToe
                 if(i==0)
                     Console.Clear();
             }
-        }
-        public void DecideTurn()
-        {
-            Console.WriteLine("\n\t\t\t\t\t\t\t선공후공은 50% 확률로 정해집니다...");
-            Thread.Sleep(500);
-            Random rand = new Random();
-            turn = rand.Next(0, 2);
-            Console.Write("\n\t\t\t\t\t\t\t" + nickname[turn] + "님이 선공입니다.");
-            Thread.Sleep(1000);
-            Console.Clear();
-        }
-
-        public int CheckGame()
-        {  // 게임 종료 여부와 승리 여부를 확인한다.
-            for (int stone = 0; stone < 2; stone++)
-            {
-                // 가로 검사
-                for (int i = 0; i < 3; i++)
-                {
-                    if (map[i * 3] == stone && map[i * 3 + 1] == stone && map[i * 3 + 2] == stone)
-                        return stone;
-                }
-                // 세로 검사
-                for (int i = 0; i < 3; i++)
-                {
-                    if (map[i] == stone && map[i + 3] == stone && map[i + 6] == stone)
-                        return stone;
-                }
-                // 대각선 검사
-                if (map[0] == stone && map[4] == stone && map[8] == stone)
-                    return stone;
-                if (map[2] == stone && map[4] == stone && map[6] == stone)
-                    return stone;
-            }
-            return -1;
-        }
-
-        public void PrintGameScreen()  // 게임 화면을 출력한다
-        {
-            ConsoleUI.GotoLine(3);
-            Console.WriteLine("\t\t\t\t\t\t\t" + nickname[turn] + " turn");
-
-            for (int k = 0; k < 9; k += 3)  // 격자를 생성하고 map에 맞게 돌을 출력한다
-            {
-                if (k == 0)
-                    Console.WriteLine("\t\t\t\t\t  --------------------------------------------------------------");
-                for (int i = 0; i < 8; i++)
-                {
-                    for (int j = k; j < k + 3; j++)
-                    {
-                        if (j == k)
-                            Console.Write("\t\t\t\t\t | ");
-                        if (map[j] == -1)
-                            Console.Write("                  ");
-                        else if (map[j] == 0)
-                            Console.Write(whiteBall[i]);
-                        else
-                            Console.Write(blackBall[i]);
-                        Console.Write(" | ");
-                    }
-                    Console.WriteLine();
-                }
-                Console.WriteLine("\t\t\t\t\t  --------------------------------------------------------------");
-            }
-            Console.WriteLine("\t\t\t\t\t\t\t\t\t1 2 3\n\t\t\t\t\t\t\t\t\t4 5 6\n\t\t\t\t\t\t\t\t\t7 8 9");
         }
     }
 }

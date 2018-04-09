@@ -29,13 +29,13 @@ namespace TicTacToe
                 for (int k = 0; k < 8 - nickname.Length; k++) {  // 닉네임 출력 부분 일정하게 하기
                     Console.Write(" ");
                 }
-                Console.WriteLine("Win times : {0}     Winning Rate : {1}%", score, rate * 100);
+                Console.WriteLine(" Win times : {0}     Winning Rate : {1}%", score, rate * 100);
             }
             else {
                 Console.Write("Nickname : {0}", nickname);
                 for (int k = 0; k < 8 - nickname.Length; k++)  // 닉네임 출력 부분 일정하게 하기
                     Console.Write(" ");
-                Console.WriteLine("Win times : {0}", score);
+                Console.WriteLine(" Win times : {0}", score);
             }
         }
 
@@ -72,7 +72,7 @@ namespace TicTacToe
             foreach (object obj in scores)
             {
                 temp = (Score)obj;
-                if(temp.GetNickName().Equals(nickname))
+                if(temp.GetNickName().Equals(nickname))  // 현재 닉네임과 같은 닉네임인가
                 {
                     yes = true;
                     break;
@@ -99,6 +99,7 @@ namespace TicTacToe
         public void MergeSort(int left, int right)  // 승 수를 기준으로 내림차순 정렬한다.(합병정렬 사용)
         {
             int middle = (left + right) / 2;
+            double result1, result2;
             Score temp1, temp2;
             int l = left, r = middle + 1, idx=0;
             Score[] tempArr = new Score[scores.Count];
@@ -116,7 +117,18 @@ namespace TicTacToe
                 if (temp1.GetScore() >= temp2.GetScore()) {  // 이긴 횟수로 순위를 정한다
                     if (temp1.GetScore() == temp2.GetScore())
                     {
-                        if (temp1.GetScore() / temp1.times > temp2.GetScore() / temp2.times) {  // 이긴 횟수가 같다면 승률로 순위를 정한다
+                        // 0으로 나누는 경우에 대해 예외처리를 한다. try catch로 대체 가능
+                        if (temp1.times != 0)
+                            result1 = temp1.GetScore() / temp1.times;
+                        else
+                            result1 = 0;
+
+                        if (temp2.times != 0)
+                            result2 = temp2.GetScore() / temp2.times;
+                        else
+                            result2 = 0;
+
+                        if (result1 > result2) {  // 이긴 횟수가 같다면 승률로 순위를 정한다
                             tempArr[idx++] = temp1;
                             l++;
                         }

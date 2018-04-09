@@ -11,16 +11,16 @@ namespace TicTacToe
     {
         static void Main(string[] args)
         {
-            Console.SetWindowSize(145, 40);
+            Console.SetWindowSize(145, 40);  // 콘솔 화면 크기 설정
             FirstScreen First = new FirstScreen();
             while (true) {
-                First.PrintScreen();
-                if (Console.ReadKey().KeyChar != 0) {
+                First.PrintScreen(); // 첫 화면 출력
+                if (Console.ReadKey().KeyChar != 0) {  // 아무키나 누를 때까지 반복
                     Console.Clear();
                     break;
                 }
             }
-            new Menu();
+            new Menu();  // 메뉴 선택
         }
     }
 }
