@@ -8,6 +8,7 @@ namespace LibraryManagement.Data
 {
     class Book
     {
+        // 이름, 출판사, 저자, 책번호, 대출여부
         private string name;
         private string company;
         private string writer;

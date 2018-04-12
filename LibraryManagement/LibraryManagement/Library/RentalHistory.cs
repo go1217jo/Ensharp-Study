@@ -37,6 +37,7 @@ namespace LibraryManagement.Library
             }
         }
 
+        // 대출 기한을 얻는다
         public string getDueDay() {
             return dueDate.ToString("yyyyMMdd");
         }

@@ -20,23 +20,27 @@ namespace LibraryManagement.Library
             bookKeepList = new Data.BookManagement();
         }
         
+        // 현재 모든 도서 목록을 출력
         public int PrintAllBookList() {
             return bookKeepList.PrintBookList();
         }
 
+        // 인덱스에 따라 도서 객체를 반환한다.
         public Data.Book ValueOf(int index)
         {
             return bookKeepList.ValueOf(index);
         }
 
+        // 매개변수로 빌릴 책 객체와 빌리는 회원 객체를 받고 대출 처리를 한다.
         public void Rental(Data.Book book, Data.Member rentalMember) {
-            if (book.Rental) {
+            if (book.Rental) {  // 책이 대출중이면
                 Console.WriteLine("\n   현재 선택하신 책은 대출 중입니다.");
                 inputProcessor.PressAnyKey();
                 Console.Clear();
             }
-            else
+            else  //  책이 보유 중 이면
             {
+                // 대출 도서로 추가하고 대출 상태로 변경
                 RentalHistory rentalBook = new RentalHistory(book);
                 rentalHistoryList.Add(rentalBook);
                 rentalMember.rentalBookList.Add(book);
@@ -47,6 +51,7 @@ namespace LibraryManagement.Library
             }
         }
 
+        // 책을 도서목록에 추가한다.
         public void InsertBook(Data.Book newBook)
         {
             if (bookKeepList.IsThereBook(newBook.Name, newBook.Writer)) {
@@ -67,6 +72,7 @@ namespace LibraryManagement.Library
             }
         }
 
+        // 책을 도서목록에서 삭제한다.
         public void DeleteBook(Data.Book deletedBook)
         {
             bookKeepList.Delete(deletedBook);
@@ -75,9 +81,12 @@ namespace LibraryManagement.Library
             Console.Clear();
         }
 
+        // 키워드에 따라 책을 검색한다.
         public ArrayList SearchBook()
         {
             string searchItem;
+            // 도서 검색화면을 출력하고 사용자로부터 입력받는다.
+            // 1 : 도서명 검색, 2 : 출판사 검색, 3 : 저자 검색
             switch(drawer.BookSearchScreen())
             {
                 case 1:
@@ -96,13 +105,16 @@ namespace LibraryManagement.Library
             return null;
         }
 
+        // 도서를 검색하고 수정한다.
         public bool SearchAndModifyBook()
         {
             string searchItem;
+            // 도서 검색화면을 출력하고 검색 형식을 입력받는다.
             int format = drawer.BookSearchScreen();
             ArrayList searchResult = null;
             int index;
 
+            // 1 : 도서명 검색, 2 : 출판사 검색, 3 : 저자 검색
             switch (format)
             {
                 case 1:
@@ -124,7 +136,8 @@ namespace LibraryManagement.Library
                     searchResult = new ArrayList();
                     break;
             }
-            
+
+            // 검색 결과가 없다면
             if (searchResult.Count == 0) {
                 Console.Clear();
                 Console.WriteLine("\n검색 결과가 없습니다.");
@@ -133,6 +146,7 @@ namespace LibraryManagement.Library
                 return false;
             }
 
+            // 검색결과가 있다면 검색된 도서목록을 출력한다.
             index = drawer.PrintBookList(searchResult) - 1;
             if (index != searchResult.Count) {
                 Console.Write("\n수정 사항 입력 > ");
@@ -141,9 +155,9 @@ namespace LibraryManagement.Library
             }
             else
                 return false;
-            
         }
 
+        // 책을 형식에 따라 수정한다.
         public void ModifyBook(Data.Book modifiedBook, int format, string content)
         {
             switch (format)
@@ -160,6 +174,7 @@ namespace LibraryManagement.Library
             }
         }
 
+        // 책을 반납한다.
         public void Return(Data.Book book, Data.Member rentalMember)
         {
             book.Rental = false;
@@ -180,6 +195,7 @@ namespace LibraryManagement.Library
             Console.Clear();
         }
 
+        // 책을 연장 시도한다.
         public void Extension(Data.Book book)
         {
             for (int i = 0; i < rentalHistoryList.Count; i++)

@@ -17,6 +17,7 @@ namespace LibraryManagement.Data
         UI.ScreenUI drawer;
         UI.KeyInput inputProcessor;
 
+        // 학번 검색하여 나온 회원을 수정한다.
         public void ModifyMember(Member member) {
             switch(drawer.MemberModifyScreen())
             {
@@ -40,6 +41,7 @@ namespace LibraryManagement.Data
             Console.Clear();
         }
 
+        // 회원들의 정보를 출력한다.
         public int PrintMemberList()
         {
             int choice = 1;
@@ -86,18 +88,21 @@ namespace LibraryManagement.Data
             inputProcessor = new UI.KeyInput();
         }
 
+        // 회원 추가
         public void Insert(object newObject)
         {
             Member newMember = (Member)newObject;
             members.Add(newMember);
         }
 
+        // 회원 삭제
         public void Delete(object deleteObject)
         {
             Member deleteMember = (Member)deleteObject;
             members.Remove(deleteMember);
         }
 
+        // 형식에 따라 content와 일치하는 회원을 찾는다
         public ArrayList SearchBy(int format, string content)
         {
             Member temp;
@@ -129,6 +134,7 @@ namespace LibraryManagement.Data
             return returnList;
         }
         
+        // 학번을 기본키로 회원이 존재하는지 확인
         public bool IsThereMember(string studentNo) {
             for (int i = 0; i < members.Count; i++)
             {
