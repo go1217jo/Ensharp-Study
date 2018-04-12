@@ -78,7 +78,8 @@ namespace LibraryManagement.Admin
                             break;
                         }
                         index = drawer.PrintBookList(searchResult) - 1;
-                        system.DeleteBook((Data.Book)searchResult[index]);
+                        if(index != searchResult.Count)
+                            system.DeleteBook((Data.Book)searchResult[index]);
                         break;
                     case 3:
                         if (system.SearchAndModifyBook())

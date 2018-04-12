@@ -77,6 +77,7 @@ namespace LibraryManagement.Library
             bookKeepList.Delete(deletedBook);
             Console.Write("\n책이 성공적으로 삭제되었습니다.");
             inputProcessor.PressAnyKey();
+            Console.Clear();
         }
 
         public ArrayList SearchBook()
@@ -138,9 +139,14 @@ namespace LibraryManagement.Library
             }
 
             index = drawer.PrintBookList(searchResult) - 1;
-            Console.Write("\n수정 사항 입력 > ");
-            ModifyBook((Data.Book)searchResult[index], format-1, inputProcessor.ReadAndCheckString(25, 18, 17, 1, false));
-            return true;
+            if (index != searchResult.Count) {
+                Console.Write("\n수정 사항 입력 > ");
+                ModifyBook((Data.Book)searchResult[index], format - 1, inputProcessor.ReadAndCheckString(25, 18, 17, 1, false));
+                return true;
+            }
+            else
+                return false;
+            
         }
 
         public void ModifyBook(Data.Book modifiedBook, int format, string content)
@@ -159,14 +165,22 @@ namespace LibraryManagement.Library
             }
         }
 
-        public void Return()
+        public void Return(Data.Book book, Data.Member rentalMember)
         {
-            
-        }
-
-        public void UserMyPage()
-        {
-
+            book.Rental = false;
+            for(int i=0;i<rentalHistoryList.Count; i++)
+            {
+                RentalHistory temp = (RentalHistory)rentalHistoryList[i];
+                // 빌린 도서 목록에서 제외
+                if (temp.GetBook().Equals(book)) {
+                    rentalHistoryList.Remove(temp);
+                    break;
+                }
+            }
+            rentalMember.rentalBookList.Remove(book);
+            Console.WriteLine("\n   반납되었습니다.");
+            inputProcessor.PressAnyKey();
+            Console.Clear();
         }
     }
 }

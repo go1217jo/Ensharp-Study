@@ -19,6 +19,11 @@ namespace LibraryManagement.Library
             extension = 0;
         }
 
+        public Data.Book GetBook()
+        {
+            return borrowedBook;
+        }
+
         // 책 대출 기간을 연장한다.
         public bool Extend() {
             // 연장 횟수가 이미 2번이므로 2번을 초과하여 연장할 수 없다.

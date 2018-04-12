@@ -37,7 +37,7 @@ namespace LibraryManagement.Member
             {
                 switch (drawer.UserMenuScreen())
                 {
-                    case 1:
+                    case 1:  // 도서 검색 후 대여
                         searchResult = system.SearchBook();
                         if (searchResult.Count == 0)
                         {
@@ -48,13 +48,16 @@ namespace LibraryManagement.Member
                             break;
                         }
                         index = drawer.PrintBookList(searchResult) - 1;
-                        system.Rental((Data.Book)searchResult[index], member);
+                        if (index != searchResult.Count)
+                            system.Rental((Data.Book)searchResult[index], member);
                         break;
-                    case 2:
+                    case 2:  // 전체 보기에서 선택하여 대여
                         system.Rental(system.ValueOf(system.PrintAllBookList()-1), member);
                         break;
-                    case 3:
-                        drawer.PrintBookList(member.rentalBookList);
+                    case 3:  // My page에서 반납
+                        index = drawer.PrintBookList(member.rentalBookList) - 1;
+                        if(drawer.YesOrNo("반납하시겠습니까?") == 1)
+                            system.Return((Data.Book)member.rentalBookList[index], member);
                         break;
                     case 4:
                         return;

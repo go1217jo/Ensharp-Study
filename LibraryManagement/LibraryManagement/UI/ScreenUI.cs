@@ -470,7 +470,6 @@ namespace LibraryManagement.UI
                         Console.WriteLine("     보유 중    ");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-
                 Console.SetCursorPosition(0, 3 + choice);
 
                 if (inputProcessor.ChoiceByKey())
@@ -480,6 +479,40 @@ namespace LibraryManagement.UI
                     Console.SetCursorPosition(Console.CursorLeft - 1, 4);
                 if (Console.CursorTop > 3 + ((bookList.Count == 0) ? 1 : bookList.Count))
                     Console.SetCursorPosition(Console.CursorLeft, 3 + ((bookList.Count==0) ? 1:bookList.Count));
+
+                // 커서 위치에 따른 메뉴 선택
+                choice = Console.CursorTop - 3;
+
+                Console.Clear();
+            }
+        }
+
+        // 예 아니오를 선택하게 하는 화면 출력, 두 번째 줄 알림 출력 뒤 호출
+        public int YesOrNo(string alert)
+        {
+            int choice = 1;
+            Console.SetWindowSize(42, 16);
+            while (true)
+            {
+                Console.WriteLine("\n   " + alert + "\n");
+                if (choice == 1)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\t   예");  // CursorTop : 4
+                Console.ForegroundColor = ConsoleColor.White;
+                if (choice == 2)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\t 아니오");  // CursorTop : 5
+                Console.ForegroundColor = ConsoleColor.White;
+                
+                Console.SetCursorPosition(0, 3 + choice);
+
+                if (inputProcessor.ChoiceByKey())
+                    return choice;
+
+                if (Console.CursorTop < 4)
+                    Console.SetCursorPosition(Console.CursorLeft, 4);
+                if (Console.CursorTop > 5)
+                    Console.SetCursorPosition(Console.CursorLeft, 5);
 
                 // 커서 위치에 따른 메뉴 선택
                 choice = Console.CursorTop - 3;
