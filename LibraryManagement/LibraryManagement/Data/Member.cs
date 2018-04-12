@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace LibraryManagement.Data
 {
@@ -13,6 +14,12 @@ namespace LibraryManagement.Data
         private string address;
         private string phoneNumber;
         private string password;
+        public ArrayList rentalBookList;
+
+        public Member()
+        {
+            rentalBookList = new ArrayList();
+        }
 
         public string Name
         {

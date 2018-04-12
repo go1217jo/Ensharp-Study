@@ -14,6 +14,16 @@ namespace LibraryManagement.Data
         private string bookNo;
         private bool rental;
 
+        public Book() { rental = false; }
+
+        public Book(string name, string company, string writer)
+        {
+            rental = false;
+            this.name = name;
+            this.company = company;
+            this.writer = writer;
+        }
+
         public string Name
         {
             get { return name; }

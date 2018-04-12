@@ -14,43 +14,53 @@ namespace LibraryManagement.Data
         };
 
         ArrayList members;
-        Hashtable nameTable;
-        Hashtable studentNoTable;
-        Hashtable addressTable;
-        Hashtable phoneNumberTable;
 
         public MemberManagement()
         {
             members = new ArrayList();
-            nameTable = new Hashtable();
-            studentNoTable = new Hashtable();
-            addressTable = new Hashtable();
-            phoneNumberTable = new Hashtable();
         }
 
         public void Insert(object newObject)
         {
             Member newMember = (Member)newObject;
             members.Add(newMember);
-            nameTable[newMember.Name] = newMember;
-            studentNoTable[newMember.StudentNo] = newMember;
-            addressTable[newMember.Address] = newMember;
-            phoneNumberTable[newMember.PhoneNumber] = newMember;
         }
 
         public void Delete(object deleteObject)
         {
             Member deleteMember = (Member)deleteObject;
-            nameTable.Remove(deleteMember.Name);
-            studentNoTable.Remove(deleteMember.StudentNo);
-            addressTable.Remove(deleteMember.Address);
-            phoneNumberTable.Remove(deleteMember.PhoneNumber);
             members.Remove(deleteMember);
         }
 
         public ArrayList SearchBy(int format, string content)
         {
-            return null;
+            Member temp;
+            ArrayList returnList = new ArrayList();
+
+            for (int i = 0; i < members.Count; i++)
+            {
+                temp = (Member)members[i];
+                switch (format)
+                {
+                    case (int)Format.NameFormat:
+                        if (temp.Name.Equals(content))
+                            returnList.Add(temp);
+                        break;
+                    case (int)Format.StudentNoFormat:
+                        if (temp.StudentNo.Equals(content))
+                            returnList.Add(temp);
+                        break;
+                    case (int)Format.AddressFormat:
+                        if (temp.Address.Equals(content))
+                            returnList.Add(temp);
+                        break;
+                    case (int)Format.PhoneNumberFormat:
+                        if (temp.PhoneNumber.Equals(content))
+                            returnList.Add(temp);
+                        break;
+                }
+            }
+            return returnList;
         }
 
         public void ModifyAs(int format, string content)
@@ -59,7 +69,13 @@ namespace LibraryManagement.Data
         }
 
         public bool IsThereMember(string studentNo) {
-            return studentNoTable.Contains(studentNo);
+            for (int i = 0; i < members.Count; i++)
+            {
+                Member member = (Member)members[i];
+                if (member.StudentNo.Equals(studentNo))
+                    return true;
+            }
+            return false;
         }
     }
 }

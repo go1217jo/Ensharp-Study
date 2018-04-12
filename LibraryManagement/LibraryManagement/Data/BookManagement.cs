@@ -84,8 +84,8 @@ namespace LibraryManagement.Data
             return books.Count;
         }
 
-        public void PrintBookList() {
-            drawer.PrintBookList(books);
+        public int PrintBookList() {
+            return drawer.PrintBookList(books);
         }
     }
 }

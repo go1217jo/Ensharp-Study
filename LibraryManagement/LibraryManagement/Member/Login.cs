@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Collections;
 
 namespace LibraryManagement.Member
 {
@@ -43,7 +44,7 @@ namespace LibraryManagement.Member
             if(information.ID.Equals("Admin")) {
                 if (information.Password.Equals("ensharp605!")) {
                     Console.Clear();
-                    Console.WriteLine("\n\n\n\t  관리자님 환영합니다.");
+                    Console.WriteLine("\n\n\n  관리자님 환영합니다.");
                     Thread.Sleep(500);
                     Console.Clear();
                     // 관리자 권한 화면을 호출
@@ -51,35 +52,52 @@ namespace LibraryManagement.Member
                     return true;
                 }
                 Console.Clear();
-                Console.WriteLine("\n\t비밀번호를 확인하세요.");
+                Console.WriteLine("\n   비밀번호를 확인하세요.");
                 inputProcessor.PressAnyKey();
                 return false;
             }
             Console.Clear();
-            Console.WriteLine("\n\t아이디 또는 비밀번호가 틀립니다.");
+            Console.WriteLine("\n   아이디 또는 비밀번호가 틀립니다.");
             inputProcessor.PressAnyKey();
             return false;
         }
 
         // 사용자로 로그인, 로그인 성공이면 true 반환
-        public bool LoginUser(Library.LibrarySystem system) {
+        public void LoginUser(Library.LibrarySystem system) {
             LoginInfo information = drawer.LoginScreen();
+
             if(manager.IsThereMember(information.ID)) {
                 // 학번으로 회원정보를 찾음
-                /*
-                Data.Member member = (Data.Member)manager.SearchBy((int)Data.MemberManagement.Format.StudentNoFormat, information.ID);
-                if (member.Password.Equals(information.Password)) {
-                    Console.WriteLine(member.Name + "님 환영합니다.");
-                    Thread.Sleep(500);
-                    Console.Clear();
-                    // 로그인된 멤버 정보를 파라미터로 전달하고 유저 메뉴를 호출한다
-                    new UserInterface(system, member);
-                    return true;
+                ArrayList searchResult = manager.SearchBy((int)Data.MemberManagement.Format.StudentNoFormat, information.ID);
+                if(searchResult.Count != 0)
+                {
+                    Data.Member memberInfo = (Data.Member)searchResult[0];
+                    if (memberInfo.Password.Equals(information.Password))
+                    {
+                        Console.Clear();
+                        Console.WriteLine("\n   "+memberInfo.Name + "님 환영합니다.");
+                        Thread.Sleep(500);
+                        Console.Clear();
+                        // 로그인된 멤버 정보를 파라미터로 전달하고 유저 메뉴를 호출한다
+
+                        new UserInterface(system, memberInfo);
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("\n아이디 또는 비밀번호가 틀립니다.");
+                        inputProcessor.PressAnyKey();
+                        Console.Clear();
+                    }
                 }
-                */
-                return false;
             }
-            return true;
+            else {
+                Console.Clear();
+                Console.WriteLine("\n아이디 또는 비밀번호가 틀립니다.");
+                inputProcessor.PressAnyKey();
+                Console.Clear();
+            }
+            
         }       
     }
 }

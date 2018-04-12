@@ -148,7 +148,7 @@ namespace LibraryManagement.UI
             string id, password;
             Console.SetWindowSize(42, 16);
             LibraryBanner();
-            Console.WriteLine("\n\t      ID > ");
+            Console.WriteLine("\n\tID(학번) > ");
             Console.WriteLine("\tPassword > ");
             Console.SetCursorPosition(19, 9);
             id = inputProcessor.ReadAndCheckString(8, 16, 19, 9, true);
@@ -192,7 +192,7 @@ namespace LibraryManagement.UI
             {
                 LibraryBanner();
                 Console.SetCursorPosition(0, 8);
-                Console.WriteLine("\t           <메뉴>");
+                Console.WriteLine("\t        <대출/반납>");
                 Console.WriteLine("\t ========================");
                 if (choice == 1)
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -204,7 +204,7 @@ namespace LibraryManagement.UI
                 Console.ForegroundColor = ConsoleColor.White;
                 if (choice == 3)
                     Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\t         My   Page");  // CursorTop : 12
+                Console.WriteLine("\t         대출 목록");  // CursorTop : 12
                 Console.ForegroundColor = ConsoleColor.White;
                 if (choice == 4)
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -297,7 +297,9 @@ namespace LibraryManagement.UI
         // 고정된 자리수의 문자열 출력
         public string PrintFixString(string toPrint, int charNumber)
         {
-            int presentLength = toPrint.Length;
+            // 바이트 수를 받아옴
+            int presentLength = Encoding.Default.GetBytes(toPrint).Length;
+
             // 뒤에 공백 붙이기
             for (int i = 0; i < charNumber - presentLength; i++)
                 toPrint = toPrint + " ";
@@ -382,11 +384,11 @@ namespace LibraryManagement.UI
             Console.WriteLine("\n       저자 > ");
 
             Console.SetCursorPosition(14, 11);
-            newBook.Name = inputProcessor.ReadAndCheckString(16, 25, 14, 11, false);
+            newBook.Name = inputProcessor.ReadAndCheckString(25, 25, 14, 11, false);
             Console.SetCursorPosition(14, 13);
-            newBook.Company = inputProcessor.ReadAndCheckString(8, 25, 14, 13, true);
+            newBook.Company = inputProcessor.ReadAndCheckString(15, 25, 14, 13, true);
             Console.SetCursorPosition(14, 15);
-            newBook.Writer = inputProcessor.ReadAndCheckString(15, 25, 14, 15, false);
+            newBook.Writer = inputProcessor.ReadAndCheckString(20, 25, 14, 15, false);
 
             Console.Clear();
             return newBook;
@@ -408,7 +410,7 @@ namespace LibraryManagement.UI
                     Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\t          도서명");  // CursorTop : 11
                 Console.ForegroundColor = ConsoleColor.White;
-                if (choice == 2)
+                if (choice == 2)    
                     Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\t           저자");  // CursorTop : 12
                 Console.ForegroundColor = ConsoleColor.White;
@@ -447,21 +449,21 @@ namespace LibraryManagement.UI
 
         public int PrintBookList(ArrayList bookList) {
             int choice = 1;
-            Console.SetWindowSize(85, 39);
+            Console.SetWindowSize(103, 39);
             while (true)
             {
-                Console.WriteLine("\n ===================================================================================");
-                Console.WriteLine("      도서번호          도서명          출판사          저자          대출 여부     ");
-                Console.WriteLine(" ===================================================================================");
+                Console.WriteLine("\n ====================================================================================================");
+                Console.WriteLine("      도서번호                도서명                출판사             저자             대출 여부     ");
+                Console.WriteLine(" ====================================================================================================");
                 for (int i = 0; i < bookList.Count; i++)
                 {
                     Data.Book book = (Data.Book)bookList[i];
                     if (choice - 1 == i)
                         Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("       {0}", PrintFixString(book.BookNo, 14));
-                    Console.Write(" {0}", PrintFixString(book.Name, 14));
-                    Console.Write(" {0}", PrintFixString(book.Company, 14));
-                    Console.Write(" {0}", PrintFixString(book.Writer, 14));
+                    Console.Write(" {0}", PrintFixString(book.Name, 25));
+                    Console.Write(" {0}", PrintFixString(book.Company, 15));
+                    Console.Write(" {0}", PrintFixString(book.Writer, 20));
                     if (book.Rental)
                         Console.WriteLine("     대출 중    ");
                     else

@@ -10,6 +10,7 @@ namespace LibraryManagement.Library
     class LibrarySystem
     {
         int authority;  // 0 : 관리자 권한, 1 : 사용자 권한
+        int bookNumber = 1;
         UI.ScreenUI drawer = new UI.ScreenUI();
         UI.KeyInput inputProcessor = new UI.KeyInput();
         ArrayList rentalHistoryList;
@@ -24,19 +25,31 @@ namespace LibraryManagement.Library
             this.authority = authority;
         }
 
-        public void PrintAllBookList() {
-            bookKeepList.PrintBookList();
+        public int PrintAllBookList() {
+            return bookKeepList.PrintBookList();
         }
 
-        public void Rental(Data.Book book) {
-            if (book.Rental)
-                Console.WriteLine("현재 선택하신 책은 대출 중입니다.");
-            else {
+        public Data.Book ValueOf(int index)
+        {
+            return bookKeepList.ValueOf(index);
+        }
+
+        public void Rental(Data.Book book, Data.Member rentalMember) {
+            if (book.Rental) {
+                Console.WriteLine("\n   현재 선택하신 책은 대출 중입니다.");
+                inputProcessor.PressAnyKey();
+                Console.Clear();
+            }
+            else
+            {
                 RentalHistory rentalBook = new RentalHistory(book);
                 rentalHistoryList.Add(rentalBook);
-                Console.WriteLine("반납 기한은 " + rentalBook.getDueDay() + "까지 입니다.");
+                rentalMember.rentalBookList.Add(book);
+                book.Rental = true;
+                Console.WriteLine("\n   대출되었습니다.\n   반납 기한은 " + rentalBook.getDueDay() + "까지 입니다.");
+                inputProcessor.PressAnyKey();
+                Console.Clear();
             }
-
         }
 
         public void InsertBook(Data.Book newBook)
@@ -49,14 +62,13 @@ namespace LibraryManagement.Library
             {
                 // 도서 번호를 만든다.
                 newBook.BookNo = "";
-                for (int i=0; i< 6 - (bookKeepList.Count()+"").Length; i++)
+                for (int i=0; i< 6 - (bookNumber + "").Length; i++)
                     newBook.BookNo += "0";
-                newBook.BookNo += (bookKeepList.Count() + "");
+                newBook.BookNo += (bookNumber + "");
+                bookNumber++;
 
                 // 책 리스트에 추가한다.
                 bookKeepList.Insert(newBook);
-                Console.Write("\n책이 성공적으로 등록되었습니다.");
-                inputProcessor.PressAnyKey();
             }
         }
 
@@ -74,15 +86,15 @@ namespace LibraryManagement.Library
             {
                 case 1:
                     Console.Write("\n    검색할 도서명 > ");
-                    searchItem = inputProcessor.ReadAndCheckString(10, 18, 20, 2, true);
+                    searchItem = inputProcessor.ReadAndCheckString(25, 18, 20, 1, false);
                     return bookKeepList.SearchBy((int)Data.BookManagement.Format.NameFormat, searchItem);
                 case 2:
                     Console.Write("\n    검색할 출판사 > ");
-                    searchItem = inputProcessor.ReadAndCheckString(10, 18, 20, 2, true);
+                    searchItem = inputProcessor.ReadAndCheckString(25, 18, 20, 1, false);
                     return bookKeepList.SearchBy((int)Data.BookManagement.Format.CompanyFormat, searchItem);
                 case 3:
                     Console.Write("\n      검색할 저자 > ");
-                    searchItem = inputProcessor.ReadAndCheckString(10, 18, 20, 2, true);
+                    searchItem = inputProcessor.ReadAndCheckString(25, 18, 20, 1, false);
                     return bookKeepList.SearchBy((int)Data.BookManagement.Format.WriterFormat, searchItem);
             }
             return null;
@@ -99,17 +111,17 @@ namespace LibraryManagement.Library
             {
                 case 1:
                     Console.Write("\n    검색할 도서명 > ");
-                    searchItem = inputProcessor.ReadAndCheckString(10, 18, 20, 2, true);
+                    searchItem = inputProcessor.ReadAndCheckString(30, 18, 20, 1, false);
                     searchResult = bookKeepList.SearchBy((int)Data.BookManagement.Format.NameFormat, searchItem);
                     break;
                 case 2:
                     Console.Write("\n    검색할 출판사 > ");
-                    searchItem = inputProcessor.ReadAndCheckString(10, 18, 20, 2, true);
+                    searchItem = inputProcessor.ReadAndCheckString(30, 18, 20, 1, false);
                     searchResult = bookKeepList.SearchBy((int)Data.BookManagement.Format.CompanyFormat, searchItem);
                     break;
                 case 3:
                     Console.Write("\n      검색할 저자 > ");
-                    searchItem = inputProcessor.ReadAndCheckString(10, 18, 20, 2, true);
+                    searchItem = inputProcessor.ReadAndCheckString(30, 18, 20, 1, false);
                     searchResult = bookKeepList.SearchBy((int)Data.BookManagement.Format.WriterFormat, searchItem);
                     break;
                 default:
@@ -127,7 +139,7 @@ namespace LibraryManagement.Library
 
             index = drawer.PrintBookList(searchResult) - 1;
             Console.Write("\n수정 사항 입력 > ");
-            ModifyBook((Data.Book)searchResult[index], format-1, inputProcessor.ReadAndCheckString(18, 18, 17, 1, false));
+            ModifyBook((Data.Book)searchResult[index], format-1, inputProcessor.ReadAndCheckString(25, 18, 17, 1, false));
             return true;
         }
 
