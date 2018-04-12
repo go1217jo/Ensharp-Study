@@ -17,9 +17,11 @@ namespace LibraryManagement.UI
 
         public int PressDirectionKey()
         {
+            ConsoleKeyInfo inputKey;
             while (true)
             {
-                switch (Console.ReadKey().Key)
+                inputKey = Console.ReadKey();
+                switch (inputKey.Key)
                 {
                     case ConsoleKey.LeftArrow:
                         return LEFT;
@@ -35,7 +37,10 @@ namespace LibraryManagement.UI
                         Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
                         break;
                     default:
-                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        if(Encoding.Default.GetBytes(inputKey.KeyChar+"").Length == 2)
+                            Console.SetCursorPosition(Console.CursorLeft - 2, Console.CursorTop);
+                        else
+                            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                         break;
                 }
             }
@@ -72,7 +77,7 @@ namespace LibraryManagement.UI
                     Console.SetCursorPosition(5, screenHeight - 2);
                     Console.WriteLine("잘못된 입력 : 글자 수 제한");
                     Console.SetCursorPosition(cursorLeft, cursorTop);
-                    Console.Write("                        ");
+                    Console.Write("                                ");
                     Console.SetCursorPosition(cursorLeft, cursorTop);
                     continue;
                 }
@@ -83,34 +88,43 @@ namespace LibraryManagement.UI
                     Console.SetCursorPosition(5, screenHeight - 2);
                     Console.WriteLine("잘못된 입력 : 입력되지 않음");
                     Console.SetCursorPosition(cursorLeft, cursorTop);
-                    Console.Write("                        ");
+                    Console.Write("                                ");
                     Console.SetCursorPosition(cursorLeft, cursorTop);
                     continue;
                 }
                 else
                 {
-                    // 공백 제한이 있다면 공백 체크를 한다.
-                    if (blankLimit)
-                    {
-                        bool possible = true;
-                        // 문자열 내에 공백이 포함되어 있는지 확인
-                        for (int i = 0; i < input.Length; i++)
-                        {
-                            if (input[i] == '\n' || input[i] == '\t' || input[i] == ' ')
-                            { // 공백 문자가 포함된다면
+                    bool possible = false;
+                    bool noBlank = true;
+
+                    // 공백문자만 입력된 경우
+                    for (int i = 0; i < input.Length; i++) {
+                        if (input[i] != '\n' && input[i] != '\t' && input[i] != ' ')  // 공백 문자가 아닌 문자가 있다면
+                            possible = true;
+                        else {
+                            // 공백 문자를 허용하지 않는다면
+                            if (blankLimit) {
                                 Console.SetCursorPosition(5, screenHeight - 2);
                                 Console.WriteLine("잘못된 입력 : 공백이 입력됨");
                                 Console.SetCursorPosition(cursorLeft, cursorTop);
-                                Console.Write("                        ");
+                                Console.Write("                                ");
                                 Console.SetCursorPosition(cursorLeft, cursorTop);
-                                possible = false;
+                                noBlank = false;
                                 break;
                             }
                         }
-                        // 문자열 중간에 공백문자가 포함되어 있으면 다시 입력 받음
-                        if (!possible)
-                            continue;
                     }
+                    // 공백 문자만 입력되었을 경우 다시 입력 받음
+                    if(!possible){
+                        Console.SetCursorPosition(5, screenHeight - 2);
+                        Console.WriteLine("잘못된 입력 : 공백만 입력됨");
+                        Console.SetCursorPosition(cursorLeft, cursorTop);
+                        Console.Write("                                ");
+                        Console.SetCursorPosition(cursorLeft, cursorTop);
+                        continue;
+                    }
+                    if (!noBlank)
+                        continue;
                 }
                 return input;
             }

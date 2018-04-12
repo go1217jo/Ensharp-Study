@@ -20,8 +20,6 @@ namespace LibraryManagement.Member
             drawer = new UI.ScreenUI();
             // 사용자 권한을 가진 도서관 시스템을 생성
             this.system = system;
-            // 시스템 권한을 사용자권한으로 변경
-            this.system.SetAuthority(1);
             // 입력에 대한 처리 객체
             inputProcessor = new UI.KeyInput();
             // 사용자 메인 플로우
@@ -54,10 +52,22 @@ namespace LibraryManagement.Member
                     case 2:  // 전체 보기에서 선택하여 대여
                         system.Rental(system.ValueOf(system.PrintAllBookList()-1), member);
                         break;
-                    case 3:  // My page에서 반납
+                    case 3:  // 대출 목록에서 반납 및 연장
                         index = drawer.PrintBookList(member.rentalBookList) - 1;
-                        if(drawer.YesOrNo("반납하시겠습니까?") == 1)
-                            system.Return((Data.Book)member.rentalBookList[index], member);
+                        if (member.rentalBookList.Count != 0)
+                        {
+                            if (drawer.YesOrNo("반납하시겠습니까?") == 1)
+                                system.Return((Data.Book)member.rentalBookList[index], member);
+                            else {
+                                if (drawer.YesOrNo("연장하시겠습니까?") == 1)
+                                    system.Extension((Data.Book)member.rentalBookList[index]);
+                            }
+                        }
+                        else {
+                            Console.WriteLine("\n   대출된 도서가 없습니다.");
+                            inputProcessor.PressAnyKey();
+                            Console.Clear();
+                        }
                         break;
                     case 4:
                         return;

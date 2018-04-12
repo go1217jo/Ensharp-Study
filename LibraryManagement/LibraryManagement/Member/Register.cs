@@ -20,7 +20,7 @@ namespace LibraryManagement.Member
         public void Registration(Data.MemberManagement memberList) {
             Data.Member newMember = drawer.RegistrationScreen();
             if (memberList.IsThereMember(newMember.StudentNo)) {
-                Console.WriteLine("이미 존재하는 회원입니다.");
+                Console.WriteLine("\n   이미 존재하는 회원입니다.");
                 Console.ReadKey();
                 Console.Clear();
             }

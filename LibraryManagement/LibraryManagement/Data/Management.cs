@@ -14,7 +14,5 @@ namespace LibraryManagement.Data
         void Delete(object deleteObject);
 
         ArrayList SearchBy(int format, string content);
-
-        void ModifyAs(int format, string content);
     }
 }

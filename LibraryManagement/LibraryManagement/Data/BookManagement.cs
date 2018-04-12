@@ -65,11 +65,6 @@ namespace LibraryManagement.Data
             return returnList;
         }
 
-        public void ModifyAs(int format, string content)
-        {
-
-        }
-
         public bool IsThereBook(string bookName, string writer)
         {
             for(int i=0;i<books.Count; i++) {

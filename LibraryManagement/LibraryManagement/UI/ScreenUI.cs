@@ -76,17 +76,8 @@ namespace LibraryManagement.UI
                     Console.SetCursorPosition(Console.CursorLeft, 12);
 
                 // 커서 위치에 따른 메뉴 선택
-                switch(Console.CursorTop) {
-                    case 10:
-                        choice = 1;
-                        break;
-                    case 11:
-                        choice = 2;
-                        break;
-                    case 12:
-                        choice = 3;
-                        break;
-                }
+                choice = Console.CursorTop - 9;
+                
                 Console.Clear();
             }
         }
@@ -127,18 +118,8 @@ namespace LibraryManagement.UI
                     Console.SetCursorPosition(Console.CursorLeft, 12);
 
                 // 커서 위치에 따른 메뉴 선택
-                switch (Console.CursorTop)
-                {
-                    case 10:
-                        choice = 1;
-                        break;
-                    case 11:
-                        choice = 2;
-                        break;
-                    case 12:
-                        choice = 3;
-                        break;
-                }
+                choice = Console.CursorTop - 9;
+                
                 Console.Clear();
             }
         }
@@ -170,7 +151,7 @@ namespace LibraryManagement.UI
             Console.WriteLine("\n   전화번호 > ");
             Console.WriteLine("\n   비밀번호 > ");
             Console.SetCursorPosition(14, 11);
-            newMember.Name = inputProcessor.ReadAndCheckString(10, 30, 14, 11, false);
+            newMember.Name = inputProcessor.ReadAndCheckString(10, 30, 14, 11, true);
             Console.SetCursorPosition(14, 13);
             newMember.StudentNo = inputProcessor.ReadAndCheckString(8, 30, 14, 13, true);
             Console.SetCursorPosition(14, 15);
@@ -223,21 +204,8 @@ namespace LibraryManagement.UI
                     Console.SetCursorPosition(Console.CursorLeft, 13);
 
                 // 커서 위치에 따른 메뉴 선택
-                switch (Console.CursorTop)
-                {
-                    case 10:
-                        choice = 1;
-                        break;
-                    case 11:
-                        choice = 2;
-                        break;
-                    case 12:
-                        choice = 3;
-                        break;
-                    case 13:
-                        choice = 4;
-                        break;
-                }
+                choice = Console.CursorTop - 9;
+                
                 Console.Clear();
             }
         }
@@ -278,18 +246,8 @@ namespace LibraryManagement.UI
                     Console.SetCursorPosition(Console.CursorLeft, 12);
 
                 // 커서 위치에 따른 메뉴 선택
-                switch (Console.CursorTop)
-                {
-                    case 10:
-                        choice = 1;
-                        break;
-                    case 11:
-                        choice = 2;
-                        break;
-                    case 12:
-                        choice = 3;
-                        break;
-                }
+                choice = Console.CursorTop - 9;
+
                 Console.Clear();
             }
         }
@@ -306,7 +264,7 @@ namespace LibraryManagement.UI
             return toPrint;
         }
 
-        // 관리자로 로그인했을 때 보이는 메뉴화면
+        // 관리자 서적 관리 메뉴 화면
         public int BookManagementScreen()
         {
             int choice = 1;
@@ -350,24 +308,58 @@ namespace LibraryManagement.UI
                     Console.SetCursorPosition(Console.CursorLeft, 14);
 
                 // 커서 위치에 따른 메뉴 선택
-                switch (Console.CursorTop)
-                {
-                    case 10:
-                        choice = 1;
-                        break;
-                    case 11:
-                        choice = 2;
-                        break;
-                    case 12:
-                        choice = 3;
-                        break;
-                    case 13:
-                        choice = 4;
-                        break;
-                    case 14:
-                        choice = 5;
-                        break;
-                }
+                choice = Console.CursorTop - 9;
+                
+                Console.Clear();
+            }
+        }
+
+        // 관리자 회원 관리 메뉴 화면
+        public int MemberManagementScreen()
+        {
+            int choice = 1;
+            Console.SetWindowSize(42, 18);
+            while (true)
+            {
+                LibraryBanner();
+                Console.SetCursorPosition(0, 8);
+                Console.WriteLine("\t           <메뉴>");
+                Console.WriteLine("\t ========================");
+                if (choice == 1)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\t         회원 추가");  // CursorTop : 10
+                Console.ForegroundColor = ConsoleColor.White;
+                if (choice == 2)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\t         회원 수정");  // CursorTop : 11
+                Console.ForegroundColor = ConsoleColor.White;
+                if (choice == 3)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\t         회원 삭제");  // CursorTop : 12
+                Console.ForegroundColor = ConsoleColor.White;
+                if (choice == 4)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\t         회원 목록");  // CursorTop : 13
+                Console.ForegroundColor = ConsoleColor.White;
+                if (choice == 5)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\t         돌아 가기");  // CursorTop : 14
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\t ========================");
+
+                Console.SetCursorPosition(0, 9 + choice);
+
+                if (inputProcessor.ChoiceByKey())
+                    return choice;
+
+                if (Console.CursorTop < 10)
+                    Console.SetCursorPosition(Console.CursorLeft - 1, 10);
+                if (Console.CursorTop > 14)
+                    Console.SetCursorPosition(Console.CursorLeft, 14);
+
+                // 커서 위치에 따른 메뉴 선택
+                choice = Console.CursorTop - 9;
+                
                 Console.Clear();
             }
         }
@@ -431,18 +423,54 @@ namespace LibraryManagement.UI
                     Console.SetCursorPosition(Console.CursorLeft, 13);
 
                 // 커서 위치에 따른 메뉴 선택
-                switch (Console.CursorTop)
-                {
-                    case 11:
-                        choice = 1;
-                        break;
-                    case 12:
-                        choice = 2;
-                        break;
-                    case 13:
-                        choice = 3;
-                        break;
-                }
+                choice = Console.CursorTop - 10;
+                
+                Console.Clear();
+            }
+        }
+
+        public int MemberModifyScreen()
+        {
+            int choice = 1;
+            Console.SetWindowSize(42, 18);
+            while (true)
+            {
+                LibraryBanner();
+                Console.SetCursorPosition(0, 8);
+                Console.WriteLine("\n\t    수정할 항목 선택");
+                Console.WriteLine("\t ========================");
+
+                if (choice == 1)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\t           이름");  // CursorTop : 11
+                Console.ForegroundColor = ConsoleColor.White;
+                if (choice == 2)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\t           주소");  // CursorTop : 12
+                Console.ForegroundColor = ConsoleColor.White;
+                if (choice == 3)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\t       핸드폰 번호");  // CursorTop : 13
+                Console.ForegroundColor = ConsoleColor.White;
+                if (choice == 4)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\t        비밀번호");  // CursorTop : 14
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\t ========================");
+
+                Console.SetCursorPosition(0, 10 + choice);
+
+                if (inputProcessor.ChoiceByKey())
+                    return choice;
+
+                if (Console.CursorTop < 11)
+                    Console.SetCursorPosition(Console.CursorLeft - 1, 11);
+                if (Console.CursorTop > 14)
+                    Console.SetCursorPosition(Console.CursorLeft, 14);
+
+                // 커서 위치에 따른 메뉴 선택
+                choice = Console.CursorTop - 10;
+
                 Console.Clear();
             }
         }

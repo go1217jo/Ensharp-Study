@@ -18,10 +18,7 @@ namespace LibraryManagement.Admin
         {
             
             drawer = new UI.ScreenUI();
-            this.system = system;
-            // 시스템 권한을 관리자 권한으로 변경
-            this.system.SetAuthority(0);
-
+            this.system = system;        
             this.membermanager = membermanager;
             inputProcessor = new UI.KeyInput();
 
@@ -51,7 +48,45 @@ namespace LibraryManagement.Admin
         // 사용자 목록을 관리한다.
         public void MemberManagement()
         {
-
+            ArrayList searchResult;
+            while (true)
+            {
+                switch (drawer.MemberManagementScreen())
+                {
+                    case 1:
+                        new Member.Register(membermanager);
+                        break;
+                    case 2:
+                        Console.Write("\n   검색할 학번 > ");
+                        searchResult = membermanager.SearchBy((int)Data.MemberManagement.Format.StudentNoFormat, inputProcessor.ReadAndCheckString(8, 18, 17, 2, true));
+                        Console.Clear();
+                        membermanager.ModifyMember((Data.Member)searchResult[0]);
+                        break;
+                    case 3:
+                        Console.Write("\n   검색할 학번 > ");
+                        searchResult = membermanager.SearchBy((int)Data.MemberManagement.Format.StudentNoFormat, inputProcessor.ReadAndCheckString(8, 18, 17, 2, true));
+                        Console.Clear();
+                        if (searchResult.Count != 0)
+                        {
+                            membermanager.Delete(searchResult[0]);
+                            Console.WriteLine("\n   삭제되었습니다.");
+                            inputProcessor.PressAnyKey();
+                            Console.Clear();
+                        }
+                        else {
+                            Console.WriteLine("\n   삭제 실패하였습니다.");
+                            inputProcessor.PressAnyKey();
+                            Console.Clear();
+                        }
+                        Console.Clear();
+                        break;
+                    case 4:
+                        membermanager.PrintMemberList();
+                        break;
+                    case 5:
+                        return;
+                }
+            }
         }
 
         // 서적을 관리한다.

@@ -9,7 +9,6 @@ namespace LibraryManagement.Library
 {
     class LibrarySystem
     {
-        int authority;  // 0 : 관리자 권한, 1 : 사용자 권한
         int bookNumber = 1;
         UI.ScreenUI drawer = new UI.ScreenUI();
         UI.KeyInput inputProcessor = new UI.KeyInput();
@@ -20,11 +19,7 @@ namespace LibraryManagement.Library
             rentalHistoryList = new ArrayList();
             bookKeepList = new Data.BookManagement();
         }
-
-        public void SetAuthority(int authority) {
-            this.authority = authority;
-        }
-
+        
         public int PrintAllBookList() {
             return bookKeepList.PrintBookList();
         }
@@ -177,8 +172,29 @@ namespace LibraryManagement.Library
                     break;
                 }
             }
+            
             rentalMember.rentalBookList.Remove(book);
             Console.WriteLine("\n   반납되었습니다.");
+
+            inputProcessor.PressAnyKey();
+            Console.Clear();
+        }
+
+        public void Extension(Data.Book book)
+        {
+            for (int i = 0; i < rentalHistoryList.Count; i++)
+            {
+                RentalHistory temp = (RentalHistory)rentalHistoryList[i];
+                // 빌린 도서 목록에서 제외
+                if (temp.GetBook().Equals(book))
+                {
+                    if (temp.Extend())
+                        Console.WriteLine("\n   연장되었습니다.");
+                    else
+                        Console.WriteLine("\n   연장 실패하였습니다.");
+                    break;
+                }
+            }
             inputProcessor.PressAnyKey();
             Console.Clear();
         }
