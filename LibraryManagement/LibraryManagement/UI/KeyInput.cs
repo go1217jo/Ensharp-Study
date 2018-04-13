@@ -166,7 +166,9 @@ namespace LibraryManagement.UI
                         Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                         Console.Write(" ");
                         Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-                        if (cursorLeft >= Console.CursorLeft)
+                        if(input.Length > 0)
+                            input = input.Remove(input.Length - 1);
+                        if (cursorLeft > Console.CursorLeft)
                             Console.SetCursorPosition(cursorLeft, Console.CursorTop);
                     }
                 }

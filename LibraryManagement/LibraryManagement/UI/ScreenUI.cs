@@ -151,6 +151,9 @@ namespace LibraryManagement.UI
 
         public Data.Member RegistrationScreen() {
             Data.Member newMember = new Data.Member();
+            string inputString = "";
+            ConsoleKeyInfo inputKey;
+
             Console.SetWindowSize(42, 30);
             Console.Clear();
             LibraryBanner();
@@ -165,11 +168,48 @@ namespace LibraryManagement.UI
             Console.SetCursorPosition(14, 11);
             newMember.Name = inputProcessor.ReadAndCheckString(10, 30, 14, 11, true);
             Console.SetCursorPosition(14, 13);
-            newMember.StudentNo = inputProcessor.ReadAndCheckString(8, 30, 14, 13, true);
+            newMember.StudentNo = inputProcessor.ReadAndCheckString(8, 30, 14, 13, true);            
             Console.SetCursorPosition(14, 15);
             newMember.Address = inputProcessor.ReadAndCheckString(15, 30, 14, 15, false);
             Console.SetCursorPosition(14, 17);
-            newMember.PhoneNumber = inputProcessor.ReadAndCheckString(18, 30, 14, 17, true);
+            // 전화번호 형식 지정
+            Console.Write("___-____-____");
+            Console.SetCursorPosition(14, 17);
+            while(inputString.Length < 13)
+            {
+                inputKey = Console.ReadKey();
+                if (inputKey.KeyChar >= '0' && inputKey.KeyChar <= '9') {
+                    inputString += inputKey.KeyChar;
+                    if(inputString.Length == 3 || inputString.Length == 8)
+                    {
+                        Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                        inputString += '-';
+                    }
+                }
+                else
+                {
+                    // 특수키가 아닌 경우
+                    if (inputKey.KeyChar >= 33 && inputKey.KeyChar <= 126)
+                    {
+                        // 잘못 입력된 문자의 바이트 수만큼 앞으로 이동
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        Console.Write(" ");
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                    }
+                    else  {
+                        if (ConsoleKey.Backspace == inputKey.Key) {
+                            Console.SetCursorPosition(Console.CursorLeft+1, Console.CursorTop);
+                            if (Console.CursorLeft < 14)
+                                Console.SetCursorPosition(14, Console.CursorTop);
+                        }
+                        else
+                        {
+                            Console.SetCursorPosition(Console.CursorLeft - Encoding.Default.GetBytes(inputKey.KeyChar + "").Length, Console.CursorTop);
+                        }
+                        
+                    }
+                }
+            }
             Console.SetCursorPosition(14, 19);
             newMember.Password = inputProcessor.ReadAndCheckString(10, 30, 14, 19, true);
             Console.Clear();
