@@ -143,6 +143,86 @@ namespace LibraryManagement.UI
             }
         }
 
+
+        // password 입력 받을 시 사용하기 위해 오버로딩
+        public string ReadAndCheckString(int letterLimit, int screenHeight, int cursorLeft, int cursorTop)
+        {
+            string input = "";
+            ConsoleKeyInfo passwordKey;
+
+            while (true)
+            {
+                // password 입력받음 * 표시
+                while (true) {
+                    passwordKey = Console.ReadKey(true);
+                    if (passwordKey.Key == ConsoleKey.Enter)
+                        break;
+                    if (passwordKey.KeyChar >= 33 && passwordKey.KeyChar <= 126)
+                    {
+                        Console.Write("*");
+                        input += passwordKey.KeyChar;
+                    }
+                    if(passwordKey.Key == ConsoleKey.Backspace) {
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        Console.Write(" ");
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        if (cursorLeft >= Console.CursorLeft)
+                            Console.SetCursorPosition(cursorLeft, Console.CursorTop);
+                    }
+                }
+
+                // 입력된 문자열 길이가 제한 수를 넘어간다면
+                if (input.Length > letterLimit)
+                {
+                    // 입력되면서 화면에 표시되었던 문자열을 지우고 커서를 다시 위치시킨다.
+                    Console.SetCursorPosition(5, screenHeight - 2);
+                    Console.WriteLine("잘못된 입력 : 글자 수 제한");
+                    Console.SetCursorPosition(cursorLeft, cursorTop);
+                    Console.Write("                                ");
+                    Console.SetCursorPosition(cursorLeft, cursorTop);
+                    continue;
+                }
+
+                // 입력되지 않은 경우 다시 입력
+                if (input.Length == 0)
+                {
+                    // 입력되면서 화면에 표시되었던 문자열을 지우고 커서를 다시 위치시킨다.
+                    Console.SetCursorPosition(5, screenHeight - 2);
+                    Console.WriteLine("잘못된 입력 : 입력되지 않음");
+                    Console.SetCursorPosition(cursorLeft, cursorTop);
+                    Console.Write("                                ");
+                    Console.SetCursorPosition(cursorLeft, cursorTop);
+                    continue;
+                }
+                else
+                {
+                    bool possible = true;
+
+                    // 공백문자만 입력된 경우
+                    for (int i = 0; i < input.Length; i++)
+                    {
+                        // 공백 문자가 있다면 
+                        if (input[i] == '\n' && input[i] == '\t' && input[i] == ' ')
+                        { 
+                            // 입력되면서 화면에 표시되었던 문자열을 지우고 커서를 다시 위치시킨다.
+                            Console.SetCursorPosition(5, screenHeight - 2);
+                            Console.WriteLine("잘못된 입력 : 공백이 입력됨");
+                            Console.SetCursorPosition(cursorLeft, cursorTop);
+                            Console.Write("                                ");
+                            Console.SetCursorPosition(cursorLeft, cursorTop);
+                            possible = false;
+                            break;
+                        }
+                    }
+                    // 공백 문자가 있다면 다시 진행
+                    if (!possible)
+                        continue;
+                }
+                // 입력된 문자열을 반환한다.
+                return input;
+            }
+        }
+
         // 엔터 누르면 다른 화면으로 이동하게 하는 함수
         public void PressAnyKey()
         {

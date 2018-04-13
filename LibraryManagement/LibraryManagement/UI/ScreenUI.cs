@@ -144,7 +144,7 @@ namespace LibraryManagement.UI
             Console.SetCursorPosition(19, 9);
             id = inputProcessor.ReadAndCheckString(8, 16, 19, 9, true);
             Console.SetCursorPosition(19, 10);
-            password = inputProcessor.ReadAndCheckString(12, 16, 19, 10, true);
+            password = inputProcessor.ReadAndCheckString(18, 16, 19, 10);
             
             return new Member.LoginInfo(id, password);
         }
