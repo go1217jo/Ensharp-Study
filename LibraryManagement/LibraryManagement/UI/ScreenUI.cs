@@ -30,6 +30,8 @@ namespace LibraryManagement.UI
                     Console.WriteLine(" ||------------------------------------||");
             }
             Console.WriteLine(" ========================================\n");
+
+            // 책장 배너 가운데로 커서를 위치시킨 뒤 다음 출력 위치로 커서를 이동시킨다.
             Console.SetCursorPosition(15, 3);
             Console.Write(" 도 서 관 리 ");
             Console.SetCursorPosition(0, 8);
@@ -65,11 +67,14 @@ namespace LibraryManagement.UI
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\t ========================");
 
+                // 첫 행에 커서를 위치시킨다.
                 Console.SetCursorPosition(0, 9 + choice);
 
+                // 엔터를 치면 선택된 행의 인덱스를 반환한다
                 if (inputProcessor.ChoiceByKey())
                     return choice;
 
+                // 커서의 위아래 위치를 제한한다.
                 if (Console.CursorTop < 10)
                     Console.SetCursorPosition(Console.CursorLeft - 1, 10);
                 if (Console.CursorTop > 12)
@@ -107,11 +112,14 @@ namespace LibraryManagement.UI
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\t ========================");
 
+                // 첫 행의 위치로 이동
                 Console.SetCursorPosition(0, 9 + choice);
 
+                // 엔터를 치면 선택된 행의 인덱스가 반환된다.
                 if (inputProcessor.ChoiceByKey())
                     return choice;
 
+                // 커서의 위아래 위치를 제한한다
                 if (Console.CursorTop < 10)
                     Console.SetCursorPosition(Console.CursorLeft - 1, 10);
                 if (Console.CursorTop > 12)
@@ -131,6 +139,8 @@ namespace LibraryManagement.UI
             LibraryBanner();
             Console.WriteLine("\n\tID(학번) > ");
             Console.WriteLine("\tPassword > ");
+
+            // 각각 항목들에 대해 문자열을 입력받는다.
             Console.SetCursorPosition(19, 9);
             id = inputProcessor.ReadAndCheckString(8, 16, 19, 9, true);
             Console.SetCursorPosition(19, 10);
@@ -150,6 +160,8 @@ namespace LibraryManagement.UI
             Console.WriteLine("\n       주소 > ");
             Console.WriteLine("\n   전화번호 > ");
             Console.WriteLine("\n   비밀번호 > ");
+
+            // 각각 항목들에 대해 문자열을 입력받는다.
             Console.SetCursorPosition(14, 11);
             newMember.Name = inputProcessor.ReadAndCheckString(10, 30, 14, 11, true);
             Console.SetCursorPosition(14, 13);
@@ -193,11 +205,14 @@ namespace LibraryManagement.UI
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\t ========================");
 
+                // 첫 행으로 커서를 옮긴다
                 Console.SetCursorPosition(0, 9 + choice);
 
+                // 엔터를 치면 선택된 인덱스를 반환한다.
                 if (inputProcessor.ChoiceByKey())
                     return choice;
 
+                // 커서의 위아래 이동 구간을 제한한다.
                 if (Console.CursorTop < 10)
                     Console.SetCursorPosition(Console.CursorLeft - 1, 10);
                 if (Console.CursorTop > 13)
@@ -235,11 +250,14 @@ namespace LibraryManagement.UI
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\t ========================");
 
+                // 첫 행으로 커서를 옮긴다
                 Console.SetCursorPosition(0, 9 + choice);
 
+                // 엔터를 치면 선택된 인덱스를 반환한다.
                 if (inputProcessor.ChoiceByKey())
                     return choice;
 
+                // 커서의 위아래 이동 구간을 제한한다.
                 if (Console.CursorTop < 10)
                     Console.SetCursorPosition(Console.CursorLeft - 1, 10);
                 if (Console.CursorTop > 12)
@@ -297,11 +315,14 @@ namespace LibraryManagement.UI
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\t ========================");
 
+                // 첫 행으로 커서를 옮긴다
                 Console.SetCursorPosition(0, 9 + choice);
 
+                // 엔터를 치면 선택된 인덱스를 반환한다.
                 if (inputProcessor.ChoiceByKey())
                     return choice;
 
+                // 커서의 위아래 이동 구간을 제한한다.
                 if (Console.CursorTop < 10)
                     Console.SetCursorPosition(Console.CursorLeft - 1, 10);
                 if (Console.CursorTop > 14)
@@ -347,11 +368,14 @@ namespace LibraryManagement.UI
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\t ========================");
 
+                // 첫 행으로 커서를 옮긴다
                 Console.SetCursorPosition(0, 9 + choice);
 
+                // 엔터를 치면 선택된 인덱스를 반환한다.
                 if (inputProcessor.ChoiceByKey())
                     return choice;
 
+                // 커서의 위아래 이동 구간을 제한한다.
                 if (Console.CursorTop < 10)
                     Console.SetCursorPosition(Console.CursorLeft - 1, 10);
                 if (Console.CursorTop > 14)
@@ -364,6 +388,7 @@ namespace LibraryManagement.UI
             }
         }
 
+        // 도서 추가화면 출력
         public Data.Book AddBookScreen()
         {
             Data.Book newBook = new Data.Book();
@@ -375,6 +400,7 @@ namespace LibraryManagement.UI
             Console.WriteLine("\n     출판사 > ");
             Console.WriteLine("\n       저자 > ");
 
+            // 각각 항목들에 대해 문자열을 입력받는다.
             Console.SetCursorPosition(14, 11);
             newBook.Name = inputProcessor.ReadAndCheckString(25, 25, 14, 11, false);
             Console.SetCursorPosition(14, 13);
@@ -412,11 +438,14 @@ namespace LibraryManagement.UI
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\t ========================");
 
+                // 첫 행으로 커서를 옮긴다
                 Console.SetCursorPosition(0, 10 + choice);
 
+                // 엔터를 치면 선택된 인덱스를 반환한다.
                 if (inputProcessor.ChoiceByKey())
                     return choice;
 
+                // 커서의 위아래 이동 구간을 제한한다.
                 if (Console.CursorTop < 11)
                     Console.SetCursorPosition(Console.CursorLeft - 1, 11);
                 if (Console.CursorTop > 13)
@@ -458,11 +487,14 @@ namespace LibraryManagement.UI
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\t ========================");
 
+                // 첫 행으로 커서를 옮긴다
                 Console.SetCursorPosition(0, 10 + choice);
 
+                // 엔터를 치면 선택된 인덱스를 반환한다.
                 if (inputProcessor.ChoiceByKey())
                     return choice;
 
+                // 커서의 위아래 이동 구간을 제한한다.
                 if (Console.CursorTop < 11)
                     Console.SetCursorPosition(Console.CursorLeft - 1, 11);
                 if (Console.CursorTop > 14)
@@ -486,8 +518,10 @@ namespace LibraryManagement.UI
                 for (int i = 0; i < bookList.Count; i++)
                 {
                     Data.Book book = (Data.Book)bookList[i];
+                    // 선택된 행이면 빨간색으로 표시
                     if (choice - 1 == i)
                         Console.ForegroundColor = ConsoleColor.Red;
+                    // 행 내용을 글자 간격에 맞춰 출력
                     Console.Write("       {0}", PrintFixString(book.BookNo, 14));
                     Console.Write(" {0}", PrintFixString(book.Name, 25));
                     Console.Write(" {0}", PrintFixString(book.Company, 15));
@@ -498,11 +532,14 @@ namespace LibraryManagement.UI
                         Console.WriteLine("     보유 중    ");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
+                // 첫 행으로 커서를 옮긴다
                 Console.SetCursorPosition(0, 3 + choice);
 
+                // 엔터를 치면 선택된 인덱스를 반환한다.
                 if (inputProcessor.ChoiceByKey())
                     return choice;
 
+                // 커서의 위아래 이동 구간을 제한한다.
                 if (Console.CursorTop < 4)
                     Console.SetCursorPosition(Console.CursorLeft - 1, 4);
                 if (Console.CursorTop > 3 + ((bookList.Count == 0) ? 1 : bookList.Count))

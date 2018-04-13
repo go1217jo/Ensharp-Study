@@ -12,10 +12,14 @@ namespace LibraryManagement.Library
         DateTime dueDate;
         int extension;
 
+        // 빌린 책 객체를 입력받아 대출정보를 만든다.
         public RentalHistory(Data.Book borrowed) {
+            // 현재 시간이 빌린 시간
             borrowDate = new DateTime(int.Parse(DateTime.Now.ToString("yyyy")), int.Parse(DateTime.Now.ToString("MM")), int.Parse(DateTime.Now.ToString("dd")));
+            // 반납 기한은 빌린 시간에서 7일 뒤로 설정
             dueDate = borrowDate.AddDays(7);
             borrowedBook = borrowed;
+            // 연장 횟수 초기화
             extension = 0;
         }
 
@@ -31,6 +35,7 @@ namespace LibraryManagement.Library
                 return false;
             else
             {
+                // 연장 가능하면 7일 연장한다.
                 dueDate = dueDate.AddDays(7);
                 extension++;
                 return true;

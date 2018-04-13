@@ -174,20 +174,20 @@ namespace LibraryManagement.Library
             }
         }
 
-        // 책을 반납한다.
+        // 반납할 도서 객체와 반납 회원 객체를 받아 책을 반납처리한다.
         public void Return(Data.Book book, Data.Member rentalMember)
         {
             book.Rental = false;
             for(int i=0;i<rentalHistoryList.Count; i++)
             {
                 RentalHistory temp = (RentalHistory)rentalHistoryList[i];
-                // 빌린 도서 목록에서 제외
+                // 빌린 도서 목록에서 제외함으로 인해 반납처리됨
                 if (temp.GetBook().Equals(book)) {
                     rentalHistoryList.Remove(temp);
                     break;
                 }
             }
-            
+            // 회원의 대출 도서 목록에서도 제외
             rentalMember.rentalBookList.Remove(book);
             Console.WriteLine("\n   반납되었습니다.");
 
@@ -201,11 +201,13 @@ namespace LibraryManagement.Library
             for (int i = 0; i < rentalHistoryList.Count; i++)
             {
                 RentalHistory temp = (RentalHistory)rentalHistoryList[i];
-                // 빌린 도서 목록에서 제외
+                // 연장하려는 도서객체와 일치하면 연장을 시도한다.
                 if (temp.GetBook().Equals(book))
                 {
-                    if (temp.Extend())
+                    if (temp.Extend()) {
                         Console.WriteLine("\n   연장되었습니다.");
+                        Console.WriteLine("\n   반납 기한은 " + temp.getDueDay() + "입니다.");
+                    }
                     else
                         Console.WriteLine("\n   연장 실패하였습니다.");
                     break;
