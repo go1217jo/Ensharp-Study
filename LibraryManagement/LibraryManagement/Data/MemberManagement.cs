@@ -59,7 +59,7 @@ namespace LibraryManagement.Data
                         Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("      {0}", drawer.PrintFixString(member.Name, 14));
                     Console.Write("   {0}", drawer.PrintFixString(member.StudentNo, 14));
-                    Console.Write(" {0}", drawer.PrintFixString(member.Address, 31));
+                    Console.Write("    {0}", drawer.PrintFixString(member.Address, 31));
                     Console.Write(" {0}", drawer.PrintFixString(member.PhoneNumber, 20));
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine();
