@@ -70,7 +70,13 @@ namespace LibraryManagement.Admin
                         searchResult = membermanager.SearchBy((int)Data.MemberManagement.Format.StudentNoFormat, inputProcessor.ReadAndCheckString(8, 18, 17, 2, true));
                         Console.Clear();
                         // 검색된 회원의 정보를 수정한다.
-                        membermanager.ModifyMember((Data.Member)searchResult[0]);
+                        if (searchResult.Count != 0)
+                            membermanager.ModifyMember((Data.Member)searchResult[0]);
+                        else {
+                            Console.WriteLine("검색 결과가 없습니다.");
+                            inputProcessor.PressAnyKey();
+                            Console.Clear();
+                        }
                         break;
                     case 3:
                         // 학번으로 회원을 먼저 검색한다.

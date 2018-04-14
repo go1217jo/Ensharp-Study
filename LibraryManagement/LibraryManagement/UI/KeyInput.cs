@@ -252,8 +252,14 @@ namespace LibraryManagement.UI
                             Console.SetCursorPosition(cursorLeft, Console.CursorTop);
                     }
                     // 한글과 다른 특수문자의 입력에 대비하여 바이트 수를 계산하여 커서를 옮긴다
-                    else
-                        Console.SetCursorPosition(Console.CursorLeft - Encoding.Default.GetBytes(inputKey.KeyChar + "").Length, Console.CursorTop);
+                    else {
+                        int bufferLength = Encoding.Default.GetBytes(inputKey.KeyChar + "").Length;
+                        if (Console.CursorLeft - bufferLength < cursorLeft)
+                            Console.SetCursorPosition(cursorLeft, Console.CursorTop);
+                        else
+                            Console.SetCursorPosition(Console.CursorLeft - bufferLength, Console.CursorTop);
+                    }
+
                 }
             }
 
@@ -294,7 +300,7 @@ namespace LibraryManagement.UI
                     }
                     // 한글과 다른 특수문자의 입력에 대비하여 바이트 수를 계산하여 커서를 옮긴다
                     else
-                        Console.SetCursorPosition(Console.CursorLeft - Encoding.Default.GetBytes(inputKey.KeyChar + "").Length, Console.CursorTop);
+                        Console.SetCursorPosition(cursorLeft + inputString.Length, Console.CursorTop);
                 }
             }
 
@@ -327,6 +333,8 @@ namespace LibraryManagement.UI
                 districts[city[i]] = districtSets[i];
             
             string inputString = "";
+
+            Console.Write("서울특별시");
 
             // 시 선택
             while(areaChoice == 0)
@@ -381,7 +389,7 @@ namespace LibraryManagement.UI
             // 시 선택 저장
             string[] chosenCity = (string[])districts[city[choiceIndex]];
             choiceIndex = 0;
-
+            Console.Write(chosenCity[0]);
 
             // 도 선택
             while(areaChoice == 1) {
@@ -470,7 +478,7 @@ namespace LibraryManagement.UI
                         }
                         // 한글과 다른 특수문자의 입력에 대비하여 바이트 수를 계산하여 커서를 옮긴다
                         else
-                            Console.SetCursorPosition(Console.CursorLeft - Encoding.Default.GetBytes(inputKey.KeyChar + "").Length, Console.CursorTop);
+                            Console.SetCursorPosition(cursorLeft + inputString.Length, Console.CursorTop);
                     }
                 }
             }

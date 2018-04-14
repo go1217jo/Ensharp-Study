@@ -15,8 +15,18 @@ namespace LibraryManagement.Data
         private string address;
         private string phoneNumber;
         private string password;
+        UI.ScreenUI drawer = new UI.ScreenUI();
+
         // 대출한 도서 목록
         public ArrayList rentalBookList;
+
+        public void PrintInformation()
+        {
+            Console.Write("       {0}", drawer.PrintFixString(name, 13));
+            Console.Write("   {0}", drawer.PrintFixString(studentNo, 16));
+            Console.Write("    {0}", drawer.PrintFixString(address, 27));
+            Console.Write(" {0}", drawer.PrintFixString(phoneNumber, 20));
+        }
 
         public Member()
         {

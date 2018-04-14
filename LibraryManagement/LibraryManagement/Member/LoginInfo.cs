@@ -12,21 +12,23 @@ namespace LibraryManagement.Member
         string id;
         string password;
 
-        public LoginInfo(string id, string password) {
-            this.id = id;
-            this.password = password;
-        }
-
         public string ID
         {
             get { return id; }
-            set { }
+            set { id = value; }
         }
 
         public string Password
         {
             get { return password; }
-            set { }
+            set { password = value; }
         }
+
+        public LoginInfo(string id, string password) {
+            this.id = id;
+            this.password = password;
+        }
+
+        
     }
 }

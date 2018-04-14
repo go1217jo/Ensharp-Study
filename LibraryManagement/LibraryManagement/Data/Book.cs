@@ -14,8 +14,22 @@ namespace LibraryManagement.Data
         private string writer;
         private string bookNo;
         private bool rental;
+        public UI.ScreenUI drawer;
 
         public Book() { rental = false; }
+
+        // 행 내용을 글자 간격에 맞춰 출력
+        public void PrintInformation() {
+            drawer = new UI.ScreenUI();
+            Console.Write("       {0}", drawer.PrintFixString(BookNo, 14));
+            Console.Write(" {0}", drawer.PrintFixString(Name, 25));
+            Console.Write(" {0}", drawer.PrintFixString(Company, 15));
+            Console.Write(" {0}", drawer.PrintFixString(Writer, 20));
+            if (Rental)
+                Console.WriteLine("     대출 중    ");
+            else
+                Console.WriteLine("     보유 중    ");
+        }
 
         public Book(string name, string company, string writer)
         {

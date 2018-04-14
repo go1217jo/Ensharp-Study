@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace LibraryManagement.Data
 {
-    interface Management
+    interface IManagement
     {
         void Insert(object newObject);
 

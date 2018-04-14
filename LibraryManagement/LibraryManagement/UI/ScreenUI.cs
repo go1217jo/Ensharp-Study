@@ -537,6 +537,43 @@ namespace LibraryManagement.UI
             }
         }
 
+        // 회원들의 정보를 출력한다.
+        public int PrintMemberList(ArrayList members)
+        {
+            int choice = 1;
+            Console.SetWindowSize(96, 39);
+            Data.Member member;
+            while (true)
+            {
+                Console.WriteLine("\n =============================================================================================");
+                Console.WriteLine("      이   름           학   번                  주소                  핸드폰 번호");
+                Console.WriteLine(" =============================================================================================");
+                for (int i = 0; i < members.Count; i++)
+                {
+                    member = (Data.Member)members[i];
+                    if (choice - 1 == i)
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    member.PrintInformation();
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine();
+                }
+                Console.SetCursorPosition(0, 3 + choice);
+
+                if (inputProcessor.ChoiceByKey())
+                    return choice;
+
+                if (Console.CursorTop < 4)
+                    Console.SetCursorPosition(Console.CursorLeft - 1, 4);
+                if (Console.CursorTop > 3 + ((members.Count == 0) ? 1 : members.Count))
+                    Console.SetCursorPosition(Console.CursorLeft, 3 + ((members.Count == 0) ? 1 : members.Count));
+
+                // 커서 위치에 따른 메뉴 선택
+                choice = Console.CursorTop - 3;
+
+                Console.Clear();
+            }
+        }
+
         public int PrintBookList(ArrayList bookList) {
             int choice = 1;
             Console.SetWindowSize(103, 39);
@@ -551,15 +588,7 @@ namespace LibraryManagement.UI
                     // 선택된 행이면 빨간색으로 표시
                     if (choice - 1 == i)
                         Console.ForegroundColor = ConsoleColor.Red;
-                    // 행 내용을 글자 간격에 맞춰 출력
-                    Console.Write("       {0}", PrintFixString(book.BookNo, 14));
-                    Console.Write(" {0}", PrintFixString(book.Name, 25));
-                    Console.Write(" {0}", PrintFixString(book.Company, 15));
-                    Console.Write(" {0}", PrintFixString(book.Writer, 20));
-                    if (book.Rental)
-                        Console.WriteLine("     대출 중    ");
-                    else
-                        Console.WriteLine("     보유 중    ");
+                    book.PrintInformation();
                     Console.ForegroundColor = ConsoleColor.White;
                 }
                 // 첫 행으로 커서를 옮긴다

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Data
 {
-    class BookManagement : Management
+    class BookManagement : IManagement
     {
         public enum Format {
             NameFormat, CompanyFormat, WriterFormat, BookNoFormat
