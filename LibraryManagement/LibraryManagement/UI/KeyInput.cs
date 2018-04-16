@@ -346,7 +346,7 @@ namespace LibraryManagement.UI
         public string AddressFormatInput(int cursorLeft)
         {
             int areaChoice = 0, choiceIndex = 0;
-            string[] city = { "서울특별시", "인천광역시", "대전광역시", "대구광역시", "울산광역시", "부산광역시", "광주광역시" };
+            string[] city = { "서울특별시", "인천광역시", "대전광역시", "대구광역시", "울산광역시", "부산광역시", "광주광역시", "경기도", "강원도"};
             string[] seoul = { "강서구", "양천구", "구로구", "마포구", "영등포구", "은평구", "서대문구", "종로구", "중구", "용산구", "동작구", "관악구", "도봉구", "강북구", "성북구", "동대문구", "성동구", "서초구", "노원구", "중랑구", "광진구", "강남구", "송파구", "강동구" };
             string[] incheon = { "중구", "동구", "남구", "연수구", "남동구", "부평구", "계양구", "서구", "강화군", "옹진군" };
             string[] daegeon = { "유성구", "서구", "중구", "대덕구", "동구" };
@@ -354,7 +354,9 @@ namespace LibraryManagement.UI
             string[] ulsan = { "남구", "동구", "북구", "중구" };
             string[] busan = { "중구", "서구", "동구", "영도구", "부산진구", "동래구", "남구", "북구", "해운대구", "사하구", "금정구", "강서구", "연제구", "수영구", "사상구", "기장군" };
             string[] gwangju = { "광산구", "남구", "동구", "북구", "서구" };
-            string[][] districtSets = { seoul, incheon, daegeon, daegoo, ulsan, busan, gwangju };
+            string[] gyunggi = { "수원시", "고양시", "성남시", "부천시", "안양시", "광명시", "평택시", "안산시", "과천시", "오산시", "시흥시", "군포시", "의왕시", "하남시", "용인시", "이천시", "안성시", "김포시", "화성시", "광주시", "의정부시", "동두천시", "구리시", "남양주시", "파주시", "양주시", "포천시", "여주시", "연천군", "가평군", "양평군"};
+            string[] gangwon = { "원주시", "춘천시", "강릉시", "동해시", "속초시", "삼척시", "태백시" };
+            string[][] districtSets = { seoul, incheon, daegeon, daegoo, ulsan, busan, gwangju, gyunggi, gangwon };
             Hashtable districts = new Hashtable();
             // 지역 해시테이블 초기화
             for(int i=0;i<city.Length;i++)
@@ -484,7 +486,7 @@ namespace LibraryManagement.UI
         {
             ConsoleKeyInfo inputKey;
 
-            string inputString = "";
+            string inputString = "01";
             while (inputString.Length < 13)
             {
                 inputKey = Console.ReadKey();

@@ -203,9 +203,9 @@ namespace LibraryManagement.UI
             Console.SetCursorPosition(14, 17);
             // 전화번호 형식 지정
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.Write("___-____-____");
+            Console.Write("01_-____-____");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.SetCursorPosition(14, 17);
+            Console.SetCursorPosition(16, 17);
             newMember.PhoneNumber = inputProcessor.PhoneNumberFormatInput(14);
             if (newMember.PhoneNumber == null)
                 return null;
