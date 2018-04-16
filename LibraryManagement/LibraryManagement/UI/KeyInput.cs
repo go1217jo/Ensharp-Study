@@ -19,6 +19,7 @@ namespace LibraryManagement.UI
         public const int RIGHT = 6;
         public const int DOWN = 5;
         public const int ENTER = 0;
+        public const int ESC = -1;
 
         // 방향키 이외의 입력들에 대해 예외처리를 하며 방향키가 들어오면 설정해놓은 상수를 반환한다.
         public int PressDirectionKey()
@@ -29,6 +30,8 @@ namespace LibraryManagement.UI
                 inputKey = Console.ReadKey();
                 switch (inputKey.Key)
                 {
+                    case ConsoleKey.Escape:
+                        return ESC;
                     case ConsoleKey.LeftArrow:
                         return LEFT;
                     case ConsoleKey.RightArrow:
@@ -160,6 +163,8 @@ namespace LibraryManagement.UI
                 // password 입력받음 * 표시
                 while (true) {
                     passwordKey = Console.ReadKey(true);
+                    if (passwordKey.Key == ConsoleKey.Escape)
+                        return null;
                     if (passwordKey.Key == ConsoleKey.Enter)
                         break;
                     if (passwordKey.KeyChar >= 33 && passwordKey.KeyChar <= 126)
@@ -239,6 +244,9 @@ namespace LibraryManagement.UI
 
             while (inputString.Length < 3) {
                 inputKey = Console.ReadKey();
+                // ESC가 입력되면 탈출함
+                if (inputKey.Key == ConsoleKey.Escape)
+                    return null;
                 // 한글이면
                 if (Encoding.Default.GetBytes(inputKey.KeyChar + "").Length == 2) {
                     // 정규표현식을 이용해 자음만 들어오는 것을 방지
@@ -276,7 +284,10 @@ namespace LibraryManagement.UI
 
             // 이름을 전부 입력한 뒤 들어오는 키 입력에 대한 예외처리
             inputKey = Console.ReadKey();
-            if(inputKey.Key != ConsoleKey.Enter)
+            // ESC가 입력되면 탈출함
+            if (inputKey.Key == ConsoleKey.Escape)
+                return null;
+            if (inputKey.Key != ConsoleKey.Enter)
                 Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
             else
                 Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
@@ -294,6 +305,9 @@ namespace LibraryManagement.UI
             while (inputString.Length < 8)
             {
                 inputKey = Console.ReadKey();
+                // ESC가 입력되면 탈출함
+                if (inputKey.Key == ConsoleKey.Escape)
+                    return null;
                 if (inputKey.KeyChar >= '0' && inputKey.KeyChar <= '9')
                     inputString += inputKey.KeyChar;
                 else
@@ -317,6 +331,9 @@ namespace LibraryManagement.UI
 
             // 이름을 전부 입력한 뒤 들어오는 키 입력에 대한 예외처리
             inputKey = Console.ReadKey();
+            // ESC가 입력되면 탈출함
+            if (inputKey.Key == ConsoleKey.Escape)
+                return null;
             if (inputKey.Key != ConsoleKey.Enter)
                 Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
             else
@@ -351,6 +368,9 @@ namespace LibraryManagement.UI
             while(areaChoice == 0)
             {
                 switch (PressDirectionKey()) {
+                    case ESC:
+                        // ESC가 입력되면 탈출함
+                        return null;
                     case UP:
                         // 윗 지역 선택
                         choiceIndex--;
@@ -410,6 +430,8 @@ namespace LibraryManagement.UI
             while(areaChoice == 1) {
                 switch (PressDirectionKey())
                 {
+                    case ESC:
+                        return null;
                     case UP:
                         // 윗 지역 선택
                         choiceIndex--;
@@ -466,6 +488,9 @@ namespace LibraryManagement.UI
             while (inputString.Length < 13)
             {
                 inputKey = Console.ReadKey();
+                // ESC가 입력되면 탈출함
+                if (inputKey.Key == ConsoleKey.Escape)
+                    return null;
                 // 숫자면 문자열에 추가한다
                 if (inputKey.KeyChar >= '0' && inputKey.KeyChar <= '9')
                 {

@@ -161,6 +161,9 @@ namespace LibraryManagement.UI
             Console.WriteLine("\n   전화번호 > ");
             Console.WriteLine("\n   비밀번호 > ");
 
+            Console.SetCursorPosition(3, 28);
+            Console.Write("ESC : 돌아가기");
+
             // 각각 항목들에 대해 문자열을 입력받는다.
 
             // 이름 입력 위치로 이동
@@ -171,6 +174,8 @@ namespace LibraryManagement.UI
             Console.SetCursorPosition(14, 11);
             Console.ForegroundColor = ConsoleColor.White;
             newMember.Name = inputProcessor.NameFormatInput(14);
+            if (newMember.Name == null)
+                return null;
 
             // 학번 입력 위치로 이동
             Console.SetCursorPosition(14, 13);
@@ -180,7 +185,9 @@ namespace LibraryManagement.UI
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(14, 13);
             newMember.StudentNo = inputProcessor.StudentNoFormatInput(14);
-            
+            if (newMember.StudentNo == null)
+                return null;
+
             // 주소 입력 위치로 이동
             Console.SetCursorPosition(14, 15);
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -189,6 +196,8 @@ namespace LibraryManagement.UI
             Console.SetCursorPosition(14, 15);
             // 키보드로 주소 선택
             newMember.Address = inputProcessor.AddressFormatInput(14);
+            if (newMember.Address == null)
+                return null;
 
             // 전화번호 입력 위치로 이동
             Console.SetCursorPosition(14, 17);
@@ -198,9 +207,14 @@ namespace LibraryManagement.UI
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(14, 17);
             newMember.PhoneNumber = inputProcessor.PhoneNumberFormatInput(14);
+            if (newMember.PhoneNumber == null)
+                return null;
 
             Console.SetCursorPosition(14, 19);
             newMember.Password = inputProcessor.ReadAndCheckString(10, 30, 14, 19);
+            if (newMember.Password == null)
+                return null;
+
             Console.Clear();
             return newMember;
         }

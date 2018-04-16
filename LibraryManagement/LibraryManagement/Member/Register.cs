@@ -23,6 +23,11 @@ namespace LibraryManagement.Member
         // 입력된 정보를 가지고 회원을 등록, 학번이 같은 회원정보가 있으면 등록하지 않음
         public void Registration(Data.MemberManagement memberList) {
             Data.Member newMember = drawer.RegistrationScreen();
+            if (newMember == null)
+            {
+                Console.Clear();
+                return;
+            }
             if (memberList.IsThereMember(newMember.StudentNo)) {
                 Console.WriteLine("\n   이미 존재하는 회원입니다.");
                 Console.ReadKey();
