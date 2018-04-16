@@ -5,9 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace LibraryManagement.UI
 {
+    /// <summary>
+    ///  여러 입력들에 대해 입력과 동시에 예외처리나 UI처리를 진행한다.
+    /// </summary>
     class KeyInput
     {
         public const int LEFT = 4;
@@ -87,9 +91,9 @@ namespace LibraryManagement.UI
                     // 입력되면서 화면에 표시되었던 문자열을 지우고 커서를 다시 위치시킨다.
                     Console.SetCursorPosition(5, screenHeight - 2);
                     Console.WriteLine("잘못된 입력 : 글자 수 제한");
-                    Console.SetCursorPosition(cursorLeft, cursorTop);
+                    Console.SetCursorPosition(cursorLeft, cursorTop-1);
                     Console.Write("                                ");
-                    Console.SetCursorPosition(cursorLeft, cursorTop);
+                    Console.SetCursorPosition(cursorLeft, cursorTop-1);
                     continue;
                 }
 
@@ -99,9 +103,9 @@ namespace LibraryManagement.UI
                     // 입력되면서 화면에 표시되었던 문자열을 지우고 커서를 다시 위치시킨다.
                     Console.SetCursorPosition(5, screenHeight - 2);
                     Console.WriteLine("잘못된 입력 : 입력되지 않음");
-                    Console.SetCursorPosition(cursorLeft, cursorTop);
+                    Console.SetCursorPosition(cursorLeft, cursorTop-1);
                     Console.Write("                                ");
-                    Console.SetCursorPosition(cursorLeft, cursorTop);
+                    Console.SetCursorPosition(cursorLeft, cursorTop-1);
                     continue;
                 }
                 else
@@ -119,9 +123,9 @@ namespace LibraryManagement.UI
                                 // 입력되면서 화면에 표시되었던 문자열을 지우고 커서를 다시 위치시킨다.
                                 Console.SetCursorPosition(5, screenHeight - 2);
                                 Console.WriteLine("잘못된 입력 : 공백이 입력됨");
-                                Console.SetCursorPosition(cursorLeft, cursorTop);
+                                Console.SetCursorPosition(cursorLeft, cursorTop-1);
                                 Console.Write("                                ");
-                                Console.SetCursorPosition(cursorLeft, cursorTop);
+                                Console.SetCursorPosition(cursorLeft, cursorTop-1);
                                 noBlank = false;
                                 break;
                             }
@@ -132,9 +136,9 @@ namespace LibraryManagement.UI
                         // 입력되면서 화면에 표시되었던 문자열을 지우고 커서를 다시 위치시킨다.
                         Console.SetCursorPosition(5, screenHeight - 2);
                         Console.WriteLine("잘못된 입력 : 공백만 입력됨");
-                        Console.SetCursorPosition(cursorLeft, cursorTop);
+                        Console.SetCursorPosition(cursorLeft, cursorTop-1);
                         Console.Write("                                ");
-                        Console.SetCursorPosition(cursorLeft, cursorTop);
+                        Console.SetCursorPosition(cursorLeft, cursorTop-1);
                         continue;
                     }
                     if (!noBlank)
@@ -231,11 +235,19 @@ namespace LibraryManagement.UI
         {
             ConsoleKeyInfo inputKey;
             string inputString = "";
+            string pattern = @"^[가-힣]*$";
 
             while (inputString.Length < 3) {
                 inputKey = Console.ReadKey();
+                // 한글이면
                 if (Encoding.Default.GetBytes(inputKey.KeyChar + "").Length == 2) {
-                    inputString += inputKey.KeyChar;
+                    // 정규표현식을 이용해 자음만 들어오는 것을 방지
+                    if (Regex.IsMatch(inputKey.KeyChar + "", pattern))
+                        inputString += inputKey.KeyChar;
+                    // 자음이나 모음만 들어왔을 경우
+                    else
+                        Console.SetCursorPosition(Console.CursorLeft - 2, Console.CursorTop);
+                    // 성이 입력된 뒤 띄어쓰기
                     if (inputString.Length == 1)
                         Console.Write(" ");
                 }
@@ -251,7 +263,7 @@ namespace LibraryManagement.UI
                         if (cursorLeft > Console.CursorLeft)
                             Console.SetCursorPosition(cursorLeft, Console.CursorTop);
                     }
-                    // 한글과 다른 특수문자의 입력에 대비하여 바이트 수를 계산하여 커서를 옮긴다
+                    // 한글과 같은 2바이트 문자와 다른 특수문자의 입력에 대비하여 바이트 수를 계산하여 커서를 옮긴다
                     else {
                         int bufferLength = Encoding.Default.GetBytes(inputKey.KeyChar + "").Length;
                         if (Console.CursorLeft - bufferLength < cursorLeft)
@@ -259,7 +271,6 @@ namespace LibraryManagement.UI
                         else
                             Console.SetCursorPosition(Console.CursorLeft - bufferLength, Console.CursorTop);
                     }
-
                 }
             }
 
@@ -380,6 +391,10 @@ namespace LibraryManagement.UI
                         cursorLeft += Encoding.Default.GetBytes(inputString).Length;
                         Console.SetCursorPosition(cursorLeft, Console.CursorTop);
                         break;
+                    case LEFT:
+                    case RIGHT:
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        break;
                     default:
                         Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
                         break;
@@ -429,6 +444,10 @@ namespace LibraryManagement.UI
                         // 현재 선택된 도시 선택
                         inputString += chosenCity[choiceIndex];
                         areaChoice = 2;
+                        break;
+                    case LEFT:
+                    case RIGHT:
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                         break;
                     default:
                         Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);

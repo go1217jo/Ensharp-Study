@@ -7,8 +7,12 @@ using System.Threading;
 
 namespace LibraryManagement.Member
 {
+    /// <summary>
+    ///  회원 등록에 대한 클래스
+    /// </summary>
     class Register
     {
+        
         UI.ScreenUI drawer;
 
         public Register(Data.MemberManagement memberList) {

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Library
 {
+    /// <summary>
+    ///  대출 반납에 대한 정보를 담는 데이터 클래스
+    /// </summary>
     class RentalHistory {
         Data.Book borrowedBook;
         DateTime borrowDate;

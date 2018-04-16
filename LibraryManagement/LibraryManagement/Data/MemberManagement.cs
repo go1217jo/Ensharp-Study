@@ -7,6 +7,9 @@ using System.Collections;
 
 namespace LibraryManagement.Data
 {
+    /// <summary>
+    ///  관리자가 사용자들을 관리할 수 있게 하는 클래스
+    /// </summary>
     class MemberManagement : IManagement
     {
         public enum Format {

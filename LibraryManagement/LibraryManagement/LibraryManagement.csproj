@@ -51,7 +51,7 @@
     <Compile Include="UI\ScreenUI.cs" />
     <Compile Include="Data\Book.cs" />
     <Compile Include="Data\BookManagement.cs" />
-    <Compile Include="Data\Management.cs" />
+    <Compile Include="Data\IManagement.cs" />
     <Compile Include="Data\Member.cs" />
     <Compile Include="Data\MemberManagement.cs" />
     <Compile Include="Member\Login.cs" />

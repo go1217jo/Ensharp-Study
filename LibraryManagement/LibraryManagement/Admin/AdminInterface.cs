@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Admin
 {
+    /// <summary>
+    ///  관리자로 로그인시 사용할 수 있는 클래스
+    /// </summary>
     class AdminInterface
     {
         UI.ScreenUI drawer;
@@ -86,9 +89,14 @@ namespace LibraryManagement.Admin
                         // 검색된 회원이 있다면
                         if (searchResult.Count != 0)
                         {
-                            // 검색된 회원 삭제
-                            membermanager.Delete(searchResult[0]);
-                            Console.WriteLine("\n   삭제되었습니다.");
+                            if (drawer.YesOrNo("해당 회원을 삭제하시겠습니까?") == 1)  {
+                                // 검색된 회원 삭제
+                                membermanager.Delete(searchResult[0]);
+                                Console.WriteLine("\n   삭제되었습니다.");
+                            }
+                            else
+                                Console.WriteLine("\n   삭제 실패하였습니다.");
+                            
                             inputProcessor.PressAnyKey();
                             Console.Clear();
                         }

@@ -7,6 +7,9 @@ using System.Collections;
 
 namespace LibraryManagement.Data
 {
+    /// <summary>
+    ///  사용자 정보를 담는 데이터 클래스
+    /// </summary>
     class Member
     {
         // 이름, 학번, 주소, 전화번호, 비밀번호

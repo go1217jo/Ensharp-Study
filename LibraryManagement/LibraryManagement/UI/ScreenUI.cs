@@ -7,6 +7,9 @@ using System.Collections;
 
 namespace LibraryManagement.UI
 {
+    /// <summary>
+    ///  화면 UI와 양식들을 출력하는 클래스
+    /// </summary>
     class ScreenUI
     {
         KeyInput inputProcessor;
@@ -47,9 +50,9 @@ namespace LibraryManagement.UI
         public int FirstMenuScreen() {
             int choice = 1;
             Console.SetWindowSize(42, 16);
+            LibraryBanner();
             while (true)
             {
-                LibraryBanner();
                 Console.SetCursorPosition(0, 8);
                 Console.WriteLine("\t        <모드 설정>");
                 Console.WriteLine("\t ========================");
@@ -82,8 +85,6 @@ namespace LibraryManagement.UI
 
                 // 커서 위치에 따른 메뉴 선택
                 choice = Console.CursorTop - 9;
-                
-                Console.Clear();
             }
         }
 
@@ -92,9 +93,9 @@ namespace LibraryManagement.UI
         {
             int choice = 1;
             Console.SetWindowSize(42, 16);
+            LibraryBanner();
             while (true)
             {
-                LibraryBanner();
                 Console.SetCursorPosition(0, 8);
                 Console.WriteLine("\t          <사용자>");
                 Console.WriteLine("\t ========================");
@@ -127,8 +128,6 @@ namespace LibraryManagement.UI
 
                 // 커서 위치에 따른 메뉴 선택
                 choice = Console.CursorTop - 9;
-                
-                Console.Clear();
             }
         }
 
@@ -211,9 +210,9 @@ namespace LibraryManagement.UI
         {
             int choice = 1;
             Console.SetWindowSize(42, 16);
+            LibraryBanner();
             while (true)
             {
-                LibraryBanner();
                 Console.SetCursorPosition(0, 8);
                 Console.WriteLine("\t        <대출/반납>");
                 Console.WriteLine("\t ========================");
@@ -250,8 +249,6 @@ namespace LibraryManagement.UI
 
                 // 커서 위치에 따른 메뉴 선택
                 choice = Console.CursorTop - 9;
-                
-                Console.Clear();
             }
         }
 
@@ -260,9 +257,9 @@ namespace LibraryManagement.UI
         {
             int choice = 1;
             Console.SetWindowSize(42, 16);
+            LibraryBanner();
             while (true)
             {
-                LibraryBanner();
                 Console.SetCursorPosition(0, 8);
                 Console.WriteLine("\t           <메뉴>");
                 Console.WriteLine("\t ========================");
@@ -295,8 +292,6 @@ namespace LibraryManagement.UI
 
                 // 커서 위치에 따른 메뉴 선택
                 choice = Console.CursorTop - 9;
-
-                Console.Clear();
             }
         }
 
@@ -317,9 +312,9 @@ namespace LibraryManagement.UI
         {
             int choice = 1;
             Console.SetWindowSize(42, 18);
+            LibraryBanner();
             while (true)
             {
-                LibraryBanner();
                 Console.SetCursorPosition(0, 8);
                 Console.WriteLine("\t           <메뉴>");
                 Console.WriteLine("\t ========================");
@@ -360,8 +355,6 @@ namespace LibraryManagement.UI
 
                 // 커서 위치에 따른 메뉴 선택
                 choice = Console.CursorTop - 9;
-                
-                Console.Clear();
             }
         }
 
@@ -370,9 +363,9 @@ namespace LibraryManagement.UI
         {
             int choice = 1;
             Console.SetWindowSize(42, 18);
+            LibraryBanner();
             while (true)
             {
-                LibraryBanner();
                 Console.SetCursorPosition(0, 8);
                 Console.WriteLine("\t           <메뉴>");
                 Console.WriteLine("\t ========================");
@@ -413,8 +406,6 @@ namespace LibraryManagement.UI
 
                 // 커서 위치에 따른 메뉴 선택
                 choice = Console.CursorTop - 9;
-                
-                Console.Clear();
             }
         }
 
@@ -446,9 +437,9 @@ namespace LibraryManagement.UI
         {
             int choice = 1;
             Console.SetWindowSize(42, 18);
+            LibraryBanner();
             while (true)
             {
-                LibraryBanner();
                 Console.SetCursorPosition(0, 8);
                 Console.WriteLine("\t        <도서 검색>");
                 Console.WriteLine("\t    아래 항목으로 검색");
@@ -483,8 +474,6 @@ namespace LibraryManagement.UI
 
                 // 커서 위치에 따른 메뉴 선택
                 choice = Console.CursorTop - 10;
-                
-                Console.Clear();
             }
         }
 
@@ -492,9 +481,9 @@ namespace LibraryManagement.UI
         {
             int choice = 1;
             Console.SetWindowSize(42, 18);
+            LibraryBanner();
             while (true)
             {
-                LibraryBanner();
                 Console.SetCursorPosition(0, 8);
                 Console.WriteLine("\n\t    수정할 항목 선택");
                 Console.WriteLine("\t ========================");
@@ -532,8 +521,6 @@ namespace LibraryManagement.UI
 
                 // 커서 위치에 따른 메뉴 선택
                 choice = Console.CursorTop - 10;
-
-                Console.Clear();
             }
         }
 
@@ -543,11 +530,12 @@ namespace LibraryManagement.UI
             int choice = 1;
             Console.SetWindowSize(96, 39);
             Data.Member member;
+            Console.WriteLine("\n =============================================================================================");
+            Console.WriteLine("      이   름           학   번                  주소                  핸드폰 번호");
+            Console.WriteLine(" =============================================================================================");
             while (true)
             {
-                Console.WriteLine("\n =============================================================================================");
-                Console.WriteLine("      이   름           학   번                  주소                  핸드폰 번호");
-                Console.WriteLine(" =============================================================================================");
+                Console.SetCursorPosition(0, 4);
                 for (int i = 0; i < members.Count; i++)
                 {
                     member = (Data.Member)members[i];
@@ -567,21 +555,21 @@ namespace LibraryManagement.UI
                 if (Console.CursorTop > 3 + ((members.Count == 0) ? 1 : members.Count))
                     Console.SetCursorPosition(Console.CursorLeft, 3 + ((members.Count == 0) ? 1 : members.Count));
 
-                // 커서 위치에 따른 메뉴 선택
+                // 커서 위치에 따른 메뉴 선택  
                 choice = Console.CursorTop - 3;
-
-                Console.Clear();
             }
         }
 
         public int PrintBookList(ArrayList bookList) {
             int choice = 1;
             Console.SetWindowSize(103, 39);
+            Console.WriteLine("\n ====================================================================================================");
+            Console.WriteLine("      도서번호                도서명                출판사             저자             대출 여부     ");
+            Console.WriteLine(" ====================================================================================================");
             while (true)
             {
-                Console.WriteLine("\n ====================================================================================================");
-                Console.WriteLine("      도서번호                도서명                출판사             저자             대출 여부     ");
-                Console.WriteLine(" ====================================================================================================");
+                Console.SetCursorPosition(0, 4);
+                
                 for (int i = 0; i < bookList.Count; i++)
                 {
                     Data.Book book = (Data.Book)bookList[i];
@@ -606,8 +594,6 @@ namespace LibraryManagement.UI
 
                 // 커서 위치에 따른 메뉴 선택
                 choice = Console.CursorTop - 3;
-
-                Console.Clear();
             }
         }
 
@@ -616,9 +602,10 @@ namespace LibraryManagement.UI
         {
             int choice = 1;
             Console.SetWindowSize(42, 16);
+            Console.WriteLine("\n   " + alert + "\n");
             while (true)
             {
-                Console.WriteLine("\n   " + alert + "\n");
+                Console.SetCursorPosition(0, 3);
                 if (choice == 1)
                     Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\t   예");  // CursorTop : 4
@@ -641,7 +628,6 @@ namespace LibraryManagement.UI
                 // 커서 위치에 따른 메뉴 선택
                 choice = Console.CursorTop - 3;
 
-                Console.Clear();
             }
         }
     }

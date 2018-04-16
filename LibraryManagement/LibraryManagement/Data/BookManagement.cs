@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Data
 {
+    /// <summary>
+    ///  관리자가 도서관리하는 클래스
+    /// </summary>
     class BookManagement : IManagement
     {
         public enum Format {

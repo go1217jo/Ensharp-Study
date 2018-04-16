@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Data
 {
+    /// <summary>
+    ///  도서 정보를 담는 데이터 클래스
+    /// </summary>
     class Book
     {
         // 이름, 출판사, 저자, 책번호, 대출여부

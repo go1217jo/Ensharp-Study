@@ -7,6 +7,9 @@ using System.Collections;
 
 namespace LibraryManagement.Member
 {
+    /// <summary>
+    ///  사용자로 로그인했을 때 사용할 수 있는 인터페이스 클래스
+    /// </summary>
     class UserInterface
     {
         Data.Member member;

@@ -7,6 +7,9 @@ using System.Collections;
 
 namespace LibraryManagement.Library
 {
+    /// <summary>
+    ///  도서에 대한 추가, 삭제, 보기, 대여, 반납과 같은 서비스를 제공하는 클래스
+    /// </summary>
     class LibrarySystem
     {
         int bookNumber = 1;
@@ -75,8 +78,14 @@ namespace LibraryManagement.Library
         // 책을 도서목록에서 삭제한다.
         public void DeleteBook(Data.Book deletedBook)
         {
-            bookKeepList.Delete(deletedBook);
-            Console.Write("\n책이 성공적으로 삭제되었습니다.");
+            if (drawer.YesOrNo("해당 도서를 삭제하시겠습니까?") == 1)
+            {
+                // 도서 삭제
+                bookKeepList.Delete(deletedBook);
+                Console.Write("\n\t책이 성공적으로 삭제되었습니다.");
+            }
+            else
+                Console.Write("\n\t삭제 실패하였습니다.");
             inputProcessor.PressAnyKey();
             Console.Clear();
         }

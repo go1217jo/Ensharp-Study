@@ -8,6 +8,9 @@ using System.Collections;
 
 namespace LibraryManagement.Member
 {
+    /// <summary>
+    ///  관리자와 사용자 로그인을 서비스하는 클래스
+    /// </summary>
     class Login
     {
         Data.MemberManagement manager;
