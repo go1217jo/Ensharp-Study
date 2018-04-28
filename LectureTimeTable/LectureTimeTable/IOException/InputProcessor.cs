@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace LectureTimeTable.IOException
 {
     class InputProcessor
     {
-        public const int LEFT = 4;
-        public const int UP = 8;
-        public const int RIGHT = 6;
-        public const int DOWN = 5;
-        public const int ENTER = 0;
-        public const int ESC = -1;
-
+        
         // 방향키 이외의 입력들에 대해 예외처리를 하며 방향키가 들어오면 설정해놓은 상수를 반환한다.
         public int PressDirectionKey()
         {
@@ -25,17 +20,17 @@ namespace LectureTimeTable.IOException
                 switch (inputKey.Key)
                 {
                     case ConsoleKey.Escape:
-                        return ESC;
+                        return ConstNumber.ESC;
                     case ConsoleKey.LeftArrow:
-                        return LEFT;
+                        return ConstNumber.LEFT;
                     case ConsoleKey.RightArrow:
-                        return RIGHT;
+                        return ConstNumber.RIGHT;
                     case ConsoleKey.UpArrow:
-                        return UP;
+                        return ConstNumber.UP;
                     case ConsoleKey.DownArrow:
-                        return DOWN;
+                        return ConstNumber.DOWN;
                     case ConsoleKey.Enter:
-                        return ENTER;
+                        return ConstNumber.ENTER;
                     case ConsoleKey.Backspace:
                         Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
                         Console.Write(" ");
@@ -51,13 +46,13 @@ namespace LectureTimeTable.IOException
         {
             switch (PressDirectionKey())
             {
-                case InputProcessor.UP:
+                case ConstNumber.UP:
                     Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1);
                     return false;
-                case InputProcessor.DOWN:
+                case ConstNumber.DOWN:
                     Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop + 1);
                     return false;
-                case InputProcessor.ENTER:
+                case ConstNumber.ENTER:
                     Console.Clear();
                     return true;
                 default:
@@ -65,28 +60,81 @@ namespace LectureTimeTable.IOException
                     return false;
             }
         }
-        
+
+        // 한글 자음, 모음만 입력되는 현상 제한
+        public bool IsPerfectHangleChar(char checkChar)
+        {
+            string pattern = @"^[가-힣]*$";
+            // 정규표현식을 이용해 자음만 들어오는 것을 방지
+            if (Regex.IsMatch(checkChar + "", pattern))
+                return true;
+            else
+                return false;
+        }
+
         // 문자열을 읽어오면서 동시에 문자열이 조건을 충족하는지 확인하여 반환한다.
         // letterLimit : 최대 글자 수, screenHeight : 출력화면 높이
         // cursorLeft : 입력받기 시작하는 위치(x좌표), cursorTop : 입력받기 시작하는 위치(y좌표)
-        // blankLimit : 공백 허용을 하면 false, 제한을 두려면 true
-        public string ReadAndCheckString(int letterLimit, int screenHeight, int cursorLeft, int cursorTop, bool blankLimit)
+        // format : 포맷에 따라 문자 입력에 제한을 둠
+        public string ReadAndCheckString(int letterLimit, int screenHeight, CursorPoint cursor, int format)
         {
-            string input;
+            string input = "";
+            ConsoleKeyInfo inputKey;
+
+            // 이전 출력된 글자 지우기
+            for (int iter = 0; iter < letterLimit; iter++)
+                Console.Write(" ");
+            Console.SetCursorPosition(cursor.CursorLeft, cursor.CursorTop);
+
             while (true)
             {
-                input = Console.ReadLine();
-
-                // 입력된 문자열 길이가 제한 수를 넘어간다면
-                if (input.Length > letterLimit)
+                // 문자열을 입력받으며 각각의 문자에 대해 검사함
+                while (true)
                 {
-                    // 입력되면서 화면에 표시되었던 문자열을 지우고 커서를 다시 위치시킨다.
-                    Console.SetCursorPosition(5, screenHeight - 2);
-                    Console.WriteLine("잘못된 입력 : 글자 수 제한");
-                    Console.SetCursorPosition(cursorLeft, cursorTop - 1);
-                    Console.Write("                                ");
-                    Console.SetCursorPosition(cursorLeft, cursorTop);
-                    continue;
+                    inputKey = Console.ReadKey(true);
+                    if (inputKey.Key == ConsoleKey.Escape)
+                        return null;
+                    else if (inputKey.Key == ConsoleKey.Enter)
+                        break;
+                    else if (inputKey.Key == ConsoleKey.Backspace)
+                    {
+                        int bytes;
+                        if (input.Length != 0)
+                        {
+                            bytes = Encoding.Default.GetBytes(input.Last() + "").Length;
+
+                            Console.SetCursorPosition(Console.CursorLeft - bytes, Console.CursorTop);
+                            if (bytes == 2)
+                                Console.Write("  ");
+                            else
+                                Console.Write(" ");
+                            Console.SetCursorPosition(Console.CursorLeft - bytes, Console.CursorTop);
+                            if (input.Length > 0)
+                                input = input.Remove(input.Length - 1);
+                            if (cursor.CursorLeft > Console.CursorLeft)
+                                Console.SetCursorPosition(cursor.CursorLeft, Console.CursorTop);
+                        }
+                    }
+                    else {
+                        // 글자 수가 제한 수를 넘지 않았다면
+                        if (input.Length < letterLimit) {
+                            // 포맷 제한에 따라 문자를 입력받는다
+                            if (format == ConstNumber.GENERAL_LIMIT) {
+                                if (inputKey.KeyChar >= 33 && inputKey.KeyChar <= 126 || IsPerfectHangleChar(inputKey.KeyChar))
+                                {
+                                    Console.Write(inputKey.KeyChar);
+                                    input += inputKey.KeyChar;
+                                }
+                            }
+                            else if(format == ConstNumber.NUMBER_LIMIT) {
+                                if (inputKey.KeyChar >= '0' && inputKey.KeyChar <= '9')
+                                {
+                                    Console.Write(inputKey.KeyChar);
+                                    input += inputKey.KeyChar;
+                                }
+                            }
+                        }
+                    }
                 }
 
                 // 입력되지 않은 경우 다시 입력
@@ -95,51 +143,12 @@ namespace LectureTimeTable.IOException
                     // 입력되면서 화면에 표시되었던 문자열을 지우고 커서를 다시 위치시킨다.
                     Console.SetCursorPosition(5, screenHeight - 2);
                     Console.WriteLine("잘못된 입력 : 입력되지 않음");
-                    Console.SetCursorPosition(cursorLeft, cursorTop - 1);
-                    Console.Write("                                ");
-                    Console.SetCursorPosition(cursorLeft, cursorTop - 1);
+                    Console.SetCursorPosition(cursor.CursorLeft, cursor.CursorTop);
+                    Console.Write("                 ");
+                    Console.SetCursorPosition(cursor.CursorLeft, cursor.CursorTop);
                     continue;
                 }
-                else
-                {
-                    bool possible = false;
-                    bool noBlank = true;
 
-                    // 공백문자만 입력된 경우
-                    for (int i = 0; i < input.Length; i++)
-                    {
-                        if (input[i] != '\n' && input[i] != '\t' && input[i] != ' ')  // 공백 문자가 아닌 문자가 있다면
-                            possible = true;
-                        else
-                        {
-                            // 공백 문자를 허용하지 않는다면
-                            if (blankLimit)
-                            {
-                                // 입력되면서 화면에 표시되었던 문자열을 지우고 커서를 다시 위치시킨다.
-                                Console.SetCursorPosition(5, screenHeight - 2);
-                                Console.WriteLine("잘못된 입력 : 공백이 입력됨");
-                                Console.SetCursorPosition(cursorLeft, cursorTop - 1);
-                                Console.Write("                                ");
-                                Console.SetCursorPosition(cursorLeft, cursorTop - 1);
-                                noBlank = false;
-                                break;
-                            }
-                        }
-                    }
-                    // 공백 문자만 입력되었을 경우 다시 입력 받음
-                    if (!possible)
-                    {
-                        // 입력되면서 화면에 표시되었던 문자열을 지우고 커서를 다시 위치시킨다.
-                        Console.SetCursorPosition(5, screenHeight - 2);
-                        Console.WriteLine("잘못된 입력 : 공백만 입력됨");
-                        Console.SetCursorPosition(cursorLeft, cursorTop - 1);
-                        Console.Write("                                ");
-                        Console.SetCursorPosition(cursorLeft, cursorTop - 1);
-                        continue;
-                    }
-                    if (!noBlank)
-                        continue;
-                }
                 // 입력된 문자열을 반환한다.
                 return input;
             }

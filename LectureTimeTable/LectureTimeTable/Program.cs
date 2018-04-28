@@ -12,7 +12,6 @@ namespace LectureTimeTable
     {
         static void Main(string[] args)
         {
-            int choice = 0;
             StudentManagement.Student student;
 
             // 학생 목록
@@ -27,6 +26,11 @@ namespace LectureTimeTable
             while (true) {
                 // 학생 로그인
                 student = outputProcessor.LoginScreen();
+                // ESC가 입력되면 종료
+                if (student == null) {
+                    Console.Clear();
+                    return;
+                }
                 if (student.CheckLoginSuccess(students)) {
                     new LectureManagement.MainLectureManagement(student);
                 }

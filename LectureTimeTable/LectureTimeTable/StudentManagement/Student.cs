@@ -22,7 +22,9 @@ namespace LectureTimeTable.StudentManagement
         public string StudentNo
         {
             set {
-                if (value.Length == 8)
+                if (value == null)
+                    studentNo = null;
+                else if (value.Length == 8)
                     studentNo = value;
                 else
                     Console.WriteLine("Error : 올바르지 않은 학번");
@@ -34,7 +36,9 @@ namespace LectureTimeTable.StudentManagement
         public string Password
         {
             set {
-                if (value.Length <= 12)
+                if (value == null)
+                    password = null;
+                else if (value.Length <= 12)
                     password = value;
                 else
                     Console.WriteLine("Erro : 올바르지 않은 비밀번호");

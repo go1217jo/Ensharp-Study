@@ -52,6 +52,7 @@
     <Compile Include="HandleExcel\ExcelHandler.cs" />
     <Compile Include="IOException\InputProcessor.cs" />
     <Compile Include="IOException\OutputProcessor.cs" />
+    <Compile Include="IOException\CursorPoint.cs" />
     <Compile Include="LectureManagement\MainLectureManagement.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

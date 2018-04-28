@@ -100,5 +100,22 @@ namespace LectureTimeTable
             return screenHeight;
         }
 
+        public static int PrintLectureListHeader()
+        {
+            int screenHeight = 35;
+            Console.Clear();
+            Console.SetWindowSize(110, screenHeight);
+            Console.WriteLine(" ============================================================================================================");
+            Console.Write("  개설학과전공 >                 ");
+            Console.Write("  교과목명 >                                         ");
+            Console.WriteLine("         [조회] ");
+            Console.Write("      학수번호 >              ");
+            Console.Write("         학년 >  ");
+            Console.Write("        교수명 >                                           ");
+            Console.WriteLine("\n ============================================================================================================");
+
+            return screenHeight;
+        }
+
     }
 }

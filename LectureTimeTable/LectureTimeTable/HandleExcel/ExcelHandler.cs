@@ -60,10 +60,10 @@ namespace LectureTimeTable.HandleExcel
             ExcelApp.Quit();
         }
 
-        public void PrintPresentData(int index1, int index2)
+        public string ToStringPresentData(int index1, int index2)
         {
-            // 데이터 출력
-            Console.WriteLine(data.GetValue(index1, index2));
+            // 지정 인덱스의 데이터 반환
+            return (string)data.GetValue(index1, index2);
         }
     }
 }
