@@ -27,5 +27,19 @@ namespace LectureTimeTable
         // 포맷 제한 상수
         public const int GENERAL_LIMIT = 10;
         public const int NUMBER_LIMIT = 11;
+
+        // 필드 인덱스
+        public const int NO = 1;
+        public const int MAJOR = 2;
+        public const int SUBJECT_NO = 3;
+        public const int CLASS = 4;
+        public const int SUBJECT_NAME = 5;
+        public const int COMPLETION_DIVISION = 6;
+        public const int GRADE = 7;
+        public const int CREDIT = 8;
+        public const int TIME = 9;
+        public const int ROOM = 10;
+        public const int PROFESSOR_NAME = 11;
+        public const int LANGUAGE = 12;
     }
 }

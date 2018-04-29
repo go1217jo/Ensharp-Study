@@ -102,8 +102,8 @@ namespace LectureTimeTable.IOException
             
             // 커서 좌표 배열
             CursorPoint[] titlePosition = new CursorPoint[] {
-                new CursorPoint(17, 1), new CursorPoint(46, 1), new CursorPoint(17, 2), new CursorPoint(46, 2),
-                new CursorPoint(64, 2), new CursorPoint(95, 1)
+                new CursorPoint(17, 1), new CursorPoint(46, 1), new CursorPoint(95, 1), new CursorPoint(117, 1),
+                new CursorPoint(131, 1), new CursorPoint(169, 1)
             };
             // 전공 목록 생성
             List<string> majorItems = new List<string>(new string[] {"전체", "컴퓨터공학과", "정보보호학과", "디지털콘텐츠학과", "소프트웨어학과" });
@@ -171,13 +171,35 @@ namespace LectureTimeTable.IOException
             }
         }
 
+        // 고정된 자리수의 문자열 출력
+        public string PrintFixString(string toPrint, int limit)
+        {
+            if (toPrint == null)
+               toPrint = "";
+            // 바이트 수를 받아옴
+            int presentLength = Encoding.Default.GetBytes(toPrint).Length;
+
+            if ((limit - presentLength) % 2 == 1)
+               toPrint = " " + toPrint;
+            // 앞뒤 공백 붙이기
+            for (int i = 0; i < (limit - presentLength) / 2; i++)
+                toPrint = " " + toPrint + " ";
+            return toPrint;
+        }
+        
         public void LectureListScreen(HandleExcel.ExcelHandler LectureData, string[] conditions) {
-            Console.WriteLine("\n ------------------------------------------------------------------------------------------------------------");
-            for (int idx = 1; idx < 12; idx++)
-            {
-                Console.Write(LectureData.ToStringPresentData(1, idx));
+            int[] stringLimits = new int[] { 4, 18, 10, 6, 32, 10, 6, 6, 29, 12, 32, 8 };
+            Console.Write(" ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n ");
+            for(int idx = ConstNumber.NO; idx <= ConstNumber.LANGUAGE; idx++)
+                Console.Write(PrintFixString(LectureData.ToStringPresentData(1, idx), stringLimits[idx-1]));
+            Console.Write("\n ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+            for (int record = 2; record <= 167; record++) {
+                Console.Write(" ");
+                for (int idx = ConstNumber.NO; idx <= ConstNumber.LANGUAGE; idx++)
+                    Console.Write(PrintFixString(LectureData.ToStringPresentData(record, idx), stringLimits[idx - 1]));
+                Console.WriteLine();
             }
-            Console.Write("\n ------------------------------------------------------------------------------------------------------------\n  ");
             Console.ReadKey();
         }
 

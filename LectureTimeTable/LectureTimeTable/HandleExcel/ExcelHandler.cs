@@ -63,7 +63,13 @@ namespace LectureTimeTable.HandleExcel
         public string ToStringPresentData(int index1, int index2)
         {
             // 지정 인덱스의 데이터 반환
-            return (string)data.GetValue(index1, index2);
+            // 학점은 double형이므로 따로 처리하여 준다
+            if (index1 != 1 && ( index2 == ConstNumber.NO)) {
+                object obj = data.GetValue(index1, index2);
+                return (double)obj + "";
+            }    
+            else
+                return (string)data.GetValue(index1, index2);
         }
     }
 }
