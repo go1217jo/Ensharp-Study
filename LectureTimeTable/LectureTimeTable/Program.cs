@@ -36,7 +36,6 @@ namespace LectureTimeTable
                 }
                 else
                     outputProcessor.PressAnyKey("로그인에 실패하셨습니다.");
-                    
             }
 
             
