@@ -55,16 +55,20 @@ namespace LectureTimeTable.LectureManagement
                {
                   if (outputProcessor.YesOrNo("선택한 강의를 신청하시겠습니까?") == 1)
                   {
-                     if ((student.appliedCredit + presentCredit) <= ConstNumber.MAX_APPLIED)
+                     if (CheckLectureNo(searchedTuple[choice]))
                      {
-                        if (AddTimeTable(allLectureData, student.timeTable, searchedTuple[choice]))
-                           student.AddAppliedSubject(searchedTuple[choice], presentCredit);
+                        if ((student.appliedCredit + presentCredit) <= ConstNumber.MAX_APPLIED)
+                        {
+                           if (AddTimeTable(allLectureData, student.timeTable, searchedTuple[choice]))
+                              student.AddAppliedSubject(searchedTuple[choice], presentCredit);
+                           else
+                              outputProcessor.PressAnyKey("다른 강의와 시간이 겹칩니다.");
+                        }
                         else
-                           outputProcessor.PressAnyKey("다른 강의와 시간이 겹칩니다.");
-
+                           outputProcessor.PressAnyKey("최대 신청 가능 학점을 초과하였습니다.");
                      }
                      else
-                        outputProcessor.PressAnyKey("최대 신청 가능 학점을 초과하였습니다.");
+                        outputProcessor.PressAnyKey("이미 동일 과목이 신청되었습니다.");
                   }
                }
                else
@@ -116,19 +120,24 @@ namespace LectureTimeTable.LectureManagement
 
                   if (outputProcessor.YesOrNo("선택한 강의를 신청하시겠습니까?") == 1)
                   {
-                     if ((student.appliedCredit + presentCredit) <= ConstNumber.MAX_APPLIED)
+                     if (CheckLectureNo(student.containedSubjects[choice]))
                      {
-                        if (AddTimeTable(allLectureData, student.timeTable, student.containedSubjects[choice]))
+                        if ((student.appliedCredit + presentCredit) <= ConstNumber.MAX_APPLIED)
                         {
-                           student.AddAppliedSubject(student.containedSubjects[choice], presentCredit);
-                           // 관심과목에서 삭제
-                           student.DeleteContainedSubject(student.containedSubjects[choice], presentCredit);
+                           if (AddTimeTable(allLectureData, student.timeTable, student.containedSubjects[choice]))
+                           {
+                              student.AddAppliedSubject(student.containedSubjects[choice], presentCredit);
+                              // 관심과목에서 삭제
+                              student.DeleteContainedSubject(student.containedSubjects[choice], presentCredit);
+                           }
+                           else
+                              outputProcessor.PressAnyKey("다른 강의와 시간이 겹칩니다.");
                         }
                         else
-                           outputProcessor.PressAnyKey("다른 강의와 시간이 겹칩니다.");
+                           outputProcessor.PressAnyKey("최대 신청 가능 학점을 초과하였습니다.");
                      }
                      else
-                        outputProcessor.PressAnyKey("최대 신청 가능 학점을 초과하였습니다.");
+                        outputProcessor.PressAnyKey("이미 동일 과목이 신청되었습니다.");
                   }
                   if (student.containedSubjects.Count == 0)
                      return;
@@ -140,6 +149,18 @@ namespace LectureTimeTable.LectureManagement
                }
             }
          }
+      }
+
+      public bool CheckLectureNo(int record)
+      {
+         string addLectureNo = allLectureData.ReturnSubjectNo(record);
+
+         for(int i=0; i < student.appliedSubjects.Count; i++)
+         {
+            if (addLectureNo.Equals(allLectureData.ReturnSubjectNo(student.appliedSubjects[i])))
+               return false;
+         }
+         return true;
       }
 
       public int ConvertCharToIntAtDay(char day)
@@ -193,6 +214,7 @@ namespace LectureTimeTable.LectureManagement
                   }
             }            
          }
+         // 시간이 중복되는 신청이 아니라면
          if (!overlap)
          {
             for (int j = 0; j < day.Count; j++)

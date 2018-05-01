@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace LectureTimeTable.HandleExcel
@@ -14,6 +15,8 @@ namespace LectureTimeTable.HandleExcel
       Excel.Workbook workbook;
       // 작업하는 워크시트
       Excel.Worksheet worksheet;
+      // 선택 셀 범위
+      Excel.Range cellRange;
       // 현재 담고있는 데이터
       Array data;
 
@@ -51,7 +54,7 @@ namespace LectureTimeTable.HandleExcel
       public void SetDataRange(string from, string to)
       {
          // 범위 설정
-         Excel.Range cellRange = worksheet.get_Range(from, to) as Excel.Range;
+         cellRange = worksheet.get_Range(from, to) as Excel.Range;
          // 설정한 범위만큼 데이터 담기
          data = cellRange.Cells.Value2;
       }
@@ -61,6 +64,12 @@ namespace LectureTimeTable.HandleExcel
       {
          ExcelApp.Workbooks.Close();
          ExcelApp.Quit();
+
+         Marshal.ReleaseComObject(cellRange);
+         Marshal.ReleaseComObject(worksheet);
+         Marshal.ReleaseComObject(workbook);
+         Marshal.ReleaseComObject(ExcelApp);
+
       }
 
       public string ToStringPresentData(int index1, int index2)
@@ -89,6 +98,11 @@ namespace LectureTimeTable.HandleExcel
       public string ReturnSubject(int record)
       {
          return (string)data.GetValue(record, ConstNumber.SUBJECT_NAME);
+      }
+
+      public string ReturnSubjectNo(int record)
+      {
+         return (string)data.GetValue(record, ConstNumber.SUBJECT_NO);
       }
 
       public List<int> ReturnSearchResult(string[] conditions, List<int> appliedCredit, int dataCount)
