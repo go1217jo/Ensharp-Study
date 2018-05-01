@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace LectureTimeTable.StudentManagement
 {
+   /// <summary>
+   /// 학생 정보를 담고 있는 클래스, 해당 학생의 수강과목 리스트도 저장되어 있다.
+   /// </summary>
    class Student
    {
       private string studentNo;
@@ -39,12 +42,13 @@ namespace LectureTimeTable.StudentManagement
          for (int day = ConstNumber.MONDAY; day <= ConstNumber.FRIDAY; day++)
             timeTable.Add(new List<int>() {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 });
       }
-
+      // 수강 신청 과목 추가
       public void AddAppliedSubject(int record, int credit) {
          appliedSubjects.Add(record);
          appliedCredit += credit;
       }
 
+      // 관심과목 추가
       public void AddContainedSubject(int record, int credit) {
          containedSubjects.Add(record);
          containedCredit += credit;

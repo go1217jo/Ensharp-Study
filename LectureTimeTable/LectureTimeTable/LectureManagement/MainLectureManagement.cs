@@ -6,21 +6,32 @@ using System.Threading.Tasks;
 
 namespace LectureTimeTable.LectureManagement
 {
+   /// <summary>
+   ///  수강 신청 및 관심과목 담기 등의 수강 메뉴가 실행되는 클래스
+   /// </summary>
    class MainLectureManagement
    {
+      // 로그인된 학생 클래스
       StudentManagement.Student student;
+      // 모든 강의를 담고 있는 excelhandler
       HandleExcel.ExcelHandler allLectureData;
+      // 학생이 수강신청한 강의를 담고 있는 excelhandler
       HandleExcel.ExcelHandler studentLectureData;
       IOException.OutputProcessor outputProcessor = new IOException.OutputProcessor();
+      // 수강 관리 도구
       ManagementTool managementTool;
 
+      // 생성자
       public MainLectureManagement(StudentManagement.Student student) {
+         // 로그인된 학생의 계정
          this.student = student;
          Console.Clear();
          Console.WriteLine("\n Loading Excel Data");
+         // 모든 강의를 담고 있는 excelhandler
          allLectureData = new HandleExcel.ExcelHandler("LectureSchedule2018-1.xlsx", "강의시간표(schedule)");
          allLectureData.SetDataRange("A1", "L167");
          managementTool = new ManagementTool(allLectureData, student);
+         // 학생의 수강신청 엑셀을 생성 또는 로드한다.
          studentLectureData = new HandleExcel.ExcelHandler(student.StudentNo+".xlsx", "sheet1");
          studentLectureData.SetDataRange("A1", "F25");
          // 메뉴 루프 진입
@@ -64,6 +75,7 @@ namespace LectureTimeTable.LectureManagement
                case ConstNumber.MENULIST_2:
                   managementTool.InterestedSubjectLookup(ConstNumber.FAKE_CHOICE);
                   break;
+               // 돌아가기 
                case ConstNumber.MENULIST_3:
                   return;
             }

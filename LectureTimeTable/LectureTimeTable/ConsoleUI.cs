@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace LectureTimeTable
 {
+   // 데이터 처리 없이 콘솔UI만 출력하는 클래스
    class ConsoleUI
    {
+      // 로그인 화면
       public static int PrintLoginPage()
       {
          const int screenWidth = 50, screenHeight = 16;
@@ -27,6 +29,7 @@ namespace LectureTimeTable
          return screenHeight;
       }
 
+      // 엔샵 로고
       public static void PrintLogo()
       {
          Console.Clear();
@@ -39,6 +42,7 @@ namespace LectureTimeTable
          Console.WriteLine(" ========================================");
       }
 
+      // 메인메뉴 화면 출력
       public static int PrintMainMenu(int choice)
       {
          const int screenWidth = 42, screenHeight = 16;
@@ -67,6 +71,7 @@ namespace LectureTimeTable
          return screenHeight;
       }
 
+      // 수강신청-강의조회 화면
       public static int PrintSearchMenu(int choice)
       {
          const int screenWidth = 42, screenHeight = 17;
@@ -100,6 +105,7 @@ namespace LectureTimeTable
          return screenHeight;
       }
 
+      // 강의 리스트 출력 헤드 (검색 기능)
       public static int PrintLectureListHeader()
       {
          int screenHeight = 45;
@@ -117,6 +123,7 @@ namespace LectureTimeTable
          return screenHeight;
       }
 
+      // 관심과목 담기 메뉴 화면
       public static int PrintInterestedSubjectMenu(int choice)
       {
          int screenHeight = 15;
@@ -145,6 +152,7 @@ namespace LectureTimeTable
 
       }
 
+      // 시간표 출력 화면
       public static void PrintTimeTable()
       {
          int screenHeight = 35;

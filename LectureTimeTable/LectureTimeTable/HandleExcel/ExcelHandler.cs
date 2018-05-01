@@ -8,6 +8,9 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace LectureTimeTable.HandleExcel
 {
+   /// <summary>
+   ///  Excel에 대한 처리를 하는 클래스
+   /// </summary>
    class ExcelHandler
    {
       // Excel Application 객체
@@ -38,6 +41,7 @@ namespace LectureTimeTable.HandleExcel
          }
          else
          {
+            // 새로운 excel file을 생성
             workbook = ExcelApp.Workbooks.Add(Type.Missing);
             worksheet = workbook.ActiveSheet;
             worksheet.Name = sheetName;
@@ -72,6 +76,7 @@ namespace LectureTimeTable.HandleExcel
 
       }
 
+      // 현재 데이터를 문자열로 반환
       public string ToStringPresentData(int index1, int index2)
       {
          // 지정 인덱스의 데이터 반환
@@ -84,27 +89,32 @@ namespace LectureTimeTable.HandleExcel
                return (string)data.GetValue(index1, index2);
       }
 
+      // 해당 레코드의 학점 반환
       public int ReturnCredit(int record)
       {
          string obj = (string)data.GetValue(record, ConstNumber.CREDIT);
          return int.Parse(obj[0]+"");
       }
 
+      // 해당 레코드의 시간 문자열 반환
       public string ReturnTime(int record)
       {
          return (string)data.GetValue(record, ConstNumber.TIME);
       }
 
+      // 해당 레코드의 과목명 반환
       public string ReturnSubject(int record)
       {
          return (string)data.GetValue(record, ConstNumber.SUBJECT_NAME);
       }
 
+      // 해당 레코드의 학수번호 반환
       public string ReturnSubjectNo(int record)
       {
          return (string)data.GetValue(record, ConstNumber.SUBJECT_NO);
       }
 
+      // conditions 조건에 맞게 검색한 결과를 레코드 리스트 형태로 반환
       public List<int> ReturnSearchResult(string[] conditions, List<int> appliedCredit, int dataCount)
       {
          List<int> chosenTuple = new List<int>();
@@ -117,6 +127,7 @@ namespace LectureTimeTable.HandleExcel
                contained = false;
                continue;
             }
+            // 검색 조건을 만족하지 않는 튜플은 저장하지 않는다
             for (attribute = 0; attribute < 5; attribute++) {
                if (!conditions[attribute].Equals("전체")) {
                   switch(attribute)
@@ -152,6 +163,7 @@ namespace LectureTimeTable.HandleExcel
          return chosenTuple;
       }
 
+      // 엑셀로 시간표 저장
       public void SaveTimeTable(HandleExcel.ExcelHandler excelHandler, List<List<int>> timetable)
       {
          worksheet.Cells[1, 2 + ConstNumber.MONDAY] = "월요일";
@@ -166,6 +178,7 @@ namespace LectureTimeTable.HandleExcel
             worksheet.Cells[3+i*2, 1] = (9 + i) + ":30-" + (10 + i) + ":00";
          }
 
+         // 시간표 내용 저장
          for(int day=0;day<timetable.Count; day++)
          {
             for(int time=0; time<timetable[0].Count; time++)
