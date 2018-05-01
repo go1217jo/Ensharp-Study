@@ -49,5 +49,12 @@ namespace LectureTimeTable
       // 최대 수강 학점
       public const int MAX_INTERESTED = 24;
       public const int MAX_APPLIED = 21;
+
+      // 요일 상수
+      public const int MONDAY = 0;
+      public const int TUESDAY = 1;
+      public const int WENSDAY = 2;
+      public const int THURSDAY = 3;
+      public const int FRIDAY = 4;
    }
 }

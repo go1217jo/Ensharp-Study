@@ -54,6 +54,7 @@
     <Compile Include="IOException\OutputProcessor.cs" />
     <Compile Include="IOException\CursorPoint.cs" />
     <Compile Include="LectureManagement\MainLectureManagement.cs" />
+    <Compile Include="LectureManagement\ManagementTool.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StudentManagement\Student.cs" />

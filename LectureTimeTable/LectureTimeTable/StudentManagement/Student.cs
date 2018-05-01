@@ -12,22 +12,32 @@ namespace LectureTimeTable.StudentManagement
       private string password;
       public int appliedCredit = 0;
       public int containedCredit = 0;
+
       public List<int> appliedSubjects;
       public List<int> containedSubjects;
+
+      public List<List<int>> timeTable = new List<List<int>>();
 
       public Student() {
          appliedSubjects = new List<int>();
          containedSubjects = new List<int>();
+
+         // timetable 초기화
+         for (int day = ConstNumber.MONDAY; day <= ConstNumber.FRIDAY; day++)
+            timeTable.Add(new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
       }
 
       public Student(string studentNo, string password)
       {
          this.studentNo = studentNo;
          this.password = password;
-         
-         
+
          appliedSubjects = new List<int>();
          containedSubjects = new List<int>();
+
+         // timetable 초기화
+         for (int day = ConstNumber.MONDAY; day <= ConstNumber.FRIDAY; day++)
+            timeTable.Add(new List<int>() {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 });
       }
 
       public void AddAppliedSubject(int record, int credit) {

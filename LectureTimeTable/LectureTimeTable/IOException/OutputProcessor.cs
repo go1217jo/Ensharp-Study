@@ -187,9 +187,11 @@ namespace LectureTimeTable.IOException
                   break;
                case ConstNumber.MENULIST_2:
                   conditions[1] = inputProcessor.ReadAndCheckString(30, screenHeight, presentCursor, ConstNumber.GENERAL_LIMIT);
+                  if (conditions[1] == null) return null;
                   break;
                case ConstNumber.MENULIST_3:
                   conditions[2] = inputProcessor.ReadAndCheckString(6, screenHeight, presentCursor, ConstNumber.NUMBER_LIMIT);
+                  if (conditions[2] == null) return null;
                   break;
                case ConstNumber.MENULIST_4:
                   itemIndex = ComboBox(gradeItems, presentCursor, "   ");
@@ -198,6 +200,7 @@ namespace LectureTimeTable.IOException
                   break;
                case ConstNumber.MENULIST_5:
                   conditions[4] = inputProcessor.ReadAndCheckString(30, screenHeight, presentCursor, ConstNumber.GENERAL_LIMIT);
+                  if (conditions[4] == null) return null;
                   break;
                case ConstNumber.MENULIST_6:
                   return conditions;
@@ -248,6 +251,26 @@ namespace LectureTimeTable.IOException
          PrintLectureList(LectureData, searchedTuple);
 
          return searchedTuple;
+      }
+
+      public void TimeTableScreen(HandleExcel.ExcelHandler excelHandler, List<List<int>> timetable)
+      {
+         int cursorLeft = 14, cursorTop = 3;
+         ConsoleUI.PrintTimeTable();
+         for(int time = 0;time<timetable[0].Count;time++)
+         {
+            Console.SetCursorPosition(cursorLeft, cursorTop++);
+            for (int day = ConstNumber.MONDAY; day <= ConstNumber.FRIDAY; day++)
+            {
+               if (timetable[day][time] != 0)
+                  Console.Write(PrintFixString(excelHandler.ReturnSubject(timetable[day][time]), 32));
+               else
+                  Console.Write(PrintFixString("        ", 32));
+               Console.Write(" ");
+            }
+            Console.WriteLine();
+         }
+         Console.ReadKey();
       }
 
       public int LectureChoice(int max) {

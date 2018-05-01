@@ -11,6 +11,7 @@ namespace LectureTimeTable.HandleExcel
    {
       // Excel Application 객체
       Excel.Application ExcelApp;
+      Excel.Workbook workbook;
       // 작업하는 워크시트
       Excel.Worksheet worksheet;
       // 현재 담고있는 데이터
@@ -19,24 +20,26 @@ namespace LectureTimeTable.HandleExcel
       // Excel Load
       public ExcelHandler(string fileName, string sheetName)
       {
-         try
+         //  Excel Application 객체 생성
+         ExcelApp = new Excel.Application();
+
+         if (new System.IO.FileInfo(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + fileName).Exists)
          {
-            //  Excel Application 객체 생성
-            ExcelApp = new Excel.Application();
-
             // Workbook 객체 생성 및 파일 오픈
-            Excel.Workbook workbook = ExcelApp.Workbooks.Open(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\"+ fileName);
-
+            workbook = ExcelApp.Workbooks.Open(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + fileName);
             //sheets에 읽어온 엑셀값을 넣기
             Excel.Sheets sheets = workbook.Sheets;
 
             // 특정 sheet의 값 가져오기
             worksheet = sheets[sheetName] as Excel.Worksheet;
          }
-         catch (SystemException e)
+         else
          {
-            Console.WriteLine(e.Message);
-         }         
+            workbook = ExcelApp.Workbooks.Add(Type.Missing);
+            worksheet = workbook.ActiveSheet;
+            worksheet.Name = sheetName;
+            workbook.SaveAs(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + fileName);
+         }                
       }
 
       // 소멸자
@@ -76,6 +79,16 @@ namespace LectureTimeTable.HandleExcel
       {
          string obj = (string)data.GetValue(record, ConstNumber.CREDIT);
          return int.Parse(obj[0]+"");
+      }
+
+      public string ReturnTime(int record)
+      {
+         return (string)data.GetValue(record, ConstNumber.TIME);
+      }
+
+      public string ReturnSubject(int record)
+      {
+         return (string)data.GetValue(record, ConstNumber.SUBJECT_NAME);
       }
 
       public List<int> ReturnSearchResult(string[] conditions, List<int> appliedCredit, int dataCount)
@@ -123,6 +136,31 @@ namespace LectureTimeTable.HandleExcel
          }
 
          return chosenTuple;
+      }
+
+      public void SaveTimeTable(List<List<int>> timetable)
+      {
+         worksheet.Cells[1, 2 + ConstNumber.MONDAY] = "월요일";
+         worksheet.Cells[1, 2 + ConstNumber.TUESDAY] = "화요일";
+         worksheet.Cells[1, 2 + ConstNumber.WENSDAY] = "수요일";
+         worksheet.Cells[1, 2 + ConstNumber.THURSDAY] = "목요일";
+         worksheet.Cells[1, 2 + ConstNumber.FRIDAY] = "금요일";
+         
+         for (int i = 0; i < 12; i++)
+         {
+            worksheet.Cells[2+i*2, 1] = (9+i) + ":00-"+ (9+i) +":30";
+            worksheet.Cells[3+i*2, 1] = (9 + i) + ":30-" + (10 + i) + ":00";
+         }
+
+         for(int i=0;i<timetable.Count; i++)
+         {
+            for(int j=0; j<timetable[0].Count; j++)
+            {
+               worksheet.Cells[i + 2, j + 2] = ReturnSubject(timetable[i][j]);
+            }
+         }
+
+         workbook.Save();
       }
    }
 }

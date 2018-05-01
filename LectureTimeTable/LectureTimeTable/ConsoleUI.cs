@@ -147,7 +147,35 @@ namespace LectureTimeTable
 
       public static void PrintTimeTable()
       {
-         Console.WriteLine("월 화 수 목 금");
+         int screenHeight = 35;
+         Console.Clear();
+         Console.SetWindowSize(183, screenHeight);
+
+         Console.WriteLine("\n                             월               |               화               |               수               |               목               |               금               |");
+         Console.WriteLine("--------------=====================================================================================================================================================================");
+         Console.WriteLine(" 09:00-09:30 |");
+         Console.WriteLine(" 10:00-10:30 |");
+         Console.WriteLine(" 10:30-11:00 |");
+         Console.WriteLine(" 11:00-11:30 |");
+         Console.WriteLine(" 11:30-12:00 |");
+         Console.WriteLine(" 12:00-12:30 |");
+         Console.WriteLine(" 12:30-13:00 |");
+         Console.WriteLine(" 13:00-13:30 |");
+         Console.WriteLine(" 13:30-14:00 |");
+         Console.WriteLine(" 14:00-14:30 |");
+         Console.WriteLine(" 14:30-15:00 |");
+         Console.WriteLine(" 15:00-15:30 |");
+         Console.WriteLine(" 15:30-16:00 |");
+         Console.WriteLine(" 16:00-16:30 |");
+         Console.WriteLine(" 16:30-17:00 |");
+         Console.WriteLine(" 17:00-17:30 |");
+         Console.WriteLine(" 17:30-18:00 |");
+         Console.WriteLine(" 18:00-18:30 |");
+         Console.WriteLine(" 18:30-19:00 |");
+         Console.WriteLine(" 19:00-19:30 |");
+         Console.WriteLine(" 19:30-20:00 |");
+         Console.WriteLine(" 20:00-20:30 |");
+         Console.WriteLine(" 20:30-21:00 |");
       }
    }
 }
