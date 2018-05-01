@@ -90,7 +90,7 @@ namespace LectureTimeTable.LectureManagement
                   break;
                // 뒤로 가기
                case ConstNumber.MENULIST_4:
-                  studentLectureData.SaveTimeTable(student.timeTable);
+                  studentLectureData.SaveTimeTable(allLectureData, student.timeTable);
                   return;
             }
          }

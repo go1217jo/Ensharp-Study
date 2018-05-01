@@ -138,7 +138,7 @@ namespace LectureTimeTable.HandleExcel
          return chosenTuple;
       }
 
-      public void SaveTimeTable(List<List<int>> timetable)
+      public void SaveTimeTable(HandleExcel.ExcelHandler excelHandler, List<List<int>> timetable)
       {
          worksheet.Cells[1, 2 + ConstNumber.MONDAY] = "월요일";
          worksheet.Cells[1, 2 + ConstNumber.TUESDAY] = "화요일";
@@ -152,11 +152,12 @@ namespace LectureTimeTable.HandleExcel
             worksheet.Cells[3+i*2, 1] = (9 + i) + ":30-" + (10 + i) + ":00";
          }
 
-         for(int i=0;i<timetable.Count; i++)
+         for(int day=0;day<timetable.Count; day++)
          {
-            for(int j=0; j<timetable[0].Count; j++)
+            for(int time=0; time<timetable[0].Count; time++)
             {
-               worksheet.Cells[i + 2, j + 2] = ReturnSubject(timetable[i][j]);
+               if(timetable[day][time]!= 0)
+                  worksheet.Cells[time + 2, day + 2] = excelHandler.ReturnSubject(timetable[day][time]);
             }
          }
 
