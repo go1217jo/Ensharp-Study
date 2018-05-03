@@ -34,7 +34,7 @@ namespace LibraryManagementUsingDB.Member
       {
          string modification = null;
          string attribute = null;
-         string studentNo = "14010997";
+         string studentNo = outputProcessor.PrintMemberList(DB);
 
          switch (outputProcessor.MenuScreen(ConsoleUI.MEMBER_MODIFY))
          {

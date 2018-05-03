@@ -131,11 +131,11 @@ namespace LibraryManagementUsingDB.IOException
       }
 
       // 회원들의 정보를 출력한다.
-      public int PrintMemberList(Data.DBHandler DB)
+      public string PrintMemberList(Data.DBHandler DB)
       {
-         int choice = 1;
+         int choice = 0;
          List<Data.Student> students = null;
-         Console.SetWindowSize(70, 39);
+         Console.SetWindowSize(79, 39);
          Console.Clear();
          
          Console.WriteLine("\n ============================================================================");
@@ -147,24 +147,24 @@ namespace LibraryManagementUsingDB.IOException
             students = DB.GetAllMember();
             for (int i = 0; i < students.Count; i++)
             {
-               if (choice - 1 == i)
+               if (choice == i)
                   Console.ForegroundColor = ConsoleColor.Red;
                students[i].PrintInformation();
                Console.ForegroundColor = ConsoleColor.White;
                Console.WriteLine();
             }
-            Console.SetCursorPosition(0, 3 + choice);
+            Console.SetCursorPosition(0, 4 + choice);
 
             if (inputProcessor.ChoiceByKey())
-               return choice;
+               return students[choice].StudentNo;
 
             if (Console.CursorTop < 4)
-               Console.SetCursorPosition(Console.CursorLeft - 1, 4);
-            if (Console.CursorTop > 3 + ((students.Count == 0) ? 1 : students.Count))
-               Console.SetCursorPosition(Console.CursorLeft, 3 + ((students.Count == 0) ? 1 : students.Count));
+               Console.SetCursorPosition(Console.CursorLeft, 4);
+            if (Console.CursorTop > 4 + ((students.Count == 0) ? 1 : students.Count) - 1)
+               Console.SetCursorPosition(Console.CursorLeft, 4 + ((students.Count == 0) ? 1 : students.Count) - 1);
 
             // 커서 위치에 따른 메뉴 선택  
-            choice = Console.CursorTop - 3;
+            choice = Console.CursorTop - 4;
          }
       }
 
