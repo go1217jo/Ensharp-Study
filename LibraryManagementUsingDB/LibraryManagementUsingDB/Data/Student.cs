@@ -13,6 +13,7 @@ namespace LibraryManagementUsingDB.Data
       public string name;
       public string address;
       public string phoneNumber;
+      IOException.OutputProcessor output = new IOException.OutputProcessor();
 
       // 계정 상태
       public int status;
@@ -44,6 +45,14 @@ namespace LibraryManagementUsingDB.Data
                Console.WriteLine("Erro : 올바르지 않은 비밀번호");
          }
          get { return password; }
+      }
+
+      public void PrintInformation()
+      {
+         Console.Write("       {0}", output.PrintFixString(name, 13));
+         Console.Write("   {0}", output.PrintFixString(studentNo, 16));
+         Console.Write("    {0}", output.PrintFixString(address, 27));
+         Console.Write(" {0}", output.PrintFixString(phoneNumber, 20));
       }
    }
 }

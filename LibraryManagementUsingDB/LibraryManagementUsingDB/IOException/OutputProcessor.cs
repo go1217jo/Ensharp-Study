@@ -130,6 +130,83 @@ namespace LibraryManagementUsingDB.IOException
          }
       }
 
+      // 회원들의 정보를 출력한다.
+      public int PrintMemberList(Data.DBHandler DB)
+      {
+         int choice = 1;
+         List<Data.Student> students = null;
+         Console.SetWindowSize(96, 39);
+         Console.Clear();
+         
+         Console.WriteLine("\n =============================================================================================");
+         Console.WriteLine("      학   번           이   름                  주   소               핸드폰 번호");
+         Console.WriteLine(" =============================================================================================");
+         while (true)
+         {
+            Console.SetCursorPosition(0, 4);
+            students = DB.GetAllMember();
+            for (int i = 0; i < students.Count; i++)
+            {
+               if (choice - 1 == i)
+                  Console.ForegroundColor = ConsoleColor.Red;
+               students[i].PrintInformation();
+               Console.ForegroundColor = ConsoleColor.White;
+               Console.WriteLine();
+            }
+            Console.SetCursorPosition(0, 3 + choice);
+
+            if (inputProcessor.ChoiceByKey())
+               return choice;
+
+            if (Console.CursorTop < 4)
+               Console.SetCursorPosition(Console.CursorLeft - 1, 4);
+            if (Console.CursorTop > 3 + ((students.Count == 0) ? 1 : students.Count))
+               Console.SetCursorPosition(Console.CursorLeft, 3 + ((students.Count == 0) ? 1 : students.Count));
+
+            // 커서 위치에 따른 메뉴 선택  
+            choice = Console.CursorTop - 3;
+         }
+      }
+
+      /*
+      public int PrintBookList(ArrayList bookList)
+      {
+         int choice = 1;
+         Console.SetWindowSize(103, 39);
+         Console.WriteLine("\n ====================================================================================================");
+         Console.WriteLine("      도서번호                도서명                출판사             저자             대출 여부     ");
+         Console.WriteLine(" ====================================================================================================");
+         while (true)
+         {
+            Console.SetCursorPosition(0, 4);
+
+            for (int i = 0; i < bookList.Count; i++)
+            {
+               Data.Book book = (Data.Book)bookList[i];
+               // 선택된 행이면 빨간색으로 표시
+               if (choice - 1 == i)
+                  Console.ForegroundColor = ConsoleColor.Red;
+               book.PrintInformation();
+               Console.ForegroundColor = ConsoleColor.White;
+            }
+            // 첫 행으로 커서를 옮긴다
+            Console.SetCursorPosition(0, 3 + choice);
+
+            // 엔터를 치면 선택된 인덱스를 반환한다.
+            if (inputProcessor.ChoiceByKey())
+               return choice;
+
+            // 커서의 위아래 이동 구간을 제한한다.
+            if (Console.CursorTop < 4)
+               Console.SetCursorPosition(Console.CursorLeft - 1, 4);
+            if (Console.CursorTop > 3 + ((bookList.Count == 0) ? 1 : bookList.Count))
+               Console.SetCursorPosition(Console.CursorLeft, 3 + ((bookList.Count == 0) ? 1 : bookList.Count));
+
+            // 커서 위치에 따른 메뉴 선택
+            choice = Console.CursorTop - 3;
+         }
+      }
+      */
       // 예 아니오를 선택하게 하는 화면 출력, 두 번째 줄 알림 출력 뒤 호출
       // 예 : 1, 아니오 : 2
       public int YesOrNo(string alert)
@@ -175,7 +252,7 @@ namespace LibraryManagementUsingDB.IOException
          Console.SetCursorPosition(14, 11);
          // 이름 입력 형식 지정
          Console.ForegroundColor = ConsoleColor.DarkGray;
-         Console.Write("성 이름");
+         Console.Write("성이름");
          Console.SetCursorPosition(14, 11);
          Console.ForegroundColor = ConsoleColor.White;
          newStudent.name = inputProcessor.NameFormatInput(14);

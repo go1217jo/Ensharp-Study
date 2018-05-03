@@ -97,10 +97,6 @@ namespace LibraryManagementUsingDB.IOException
                else
                   // 자음이나 모음만 들어왔을 경우
                   Console.SetCursorPosition(Console.CursorLeft - 2, Console.CursorTop);
-
-               // 성이 입력된 뒤 띄어쓰기
-               if (inputString.Length == 1)
-                  Console.Write(" ");
             }
             else
             {
@@ -218,7 +214,6 @@ namespace LibraryManagementUsingDB.IOException
                }
             }
          }
-
          return inputString;
       }
 

@@ -34,7 +34,7 @@ namespace LibraryManagementUsingDB.Member
       {
          string modification = null;
          string attribute = null;
-         string studentNo = "14010994";
+         string studentNo = "14010997";
 
          switch (outputProcessor.MenuScreen(ConsoleUI.MEMBER_MODIFY))
          {
@@ -70,15 +70,20 @@ namespace LibraryManagementUsingDB.Member
          {
             switch (outputProcessor.MenuScreen(ConsoleUI.MEMBER_MENU))
             {
+               // 회원 추가
                case ConstNumber.MENULIST_1:
                   AddMember();
                   break;
+               // 회원 정보 수정
                case ConstNumber.MENULIST_2:
                   AlterMember();
                   break;
+               // 회원 삭제
                case ConstNumber.MENULIST_3:
                   break;
+               // 회원 목록(전체)
                case ConstNumber.MENULIST_4:
+                  outputProcessor.PrintMemberList(DB);
                   break;
                case ConstNumber.MENULIST_5:
                   return;

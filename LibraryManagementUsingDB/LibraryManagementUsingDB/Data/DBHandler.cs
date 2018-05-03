@@ -15,7 +15,7 @@ namespace LibraryManagementUsingDB.Data
 
       public DBHandler()
       {
-         String databaseConnect = "Server=localhost;Database=librarymanagement;Uid=root;Pwd=1q2w3e4r!;SslMode=none;";
+         String databaseConnect = "Server=localhost;Database=librarymanagement;Uid=root;Pwd=1q2w3e4r!;SslMode=none;Charset=utf8;";
          // connect MySQL
          connect = new MySqlConnection(databaseConnect);
          connect.Open();
@@ -32,6 +32,24 @@ namespace LibraryManagementUsingDB.Data
       ~DBHandler()
       {
          Close();
+      }
+
+      public List<Student> GetAllMember()
+      {
+         List<Student> students = new List<Student>();
+         string sqlQuery = "SELECT * FROM member;";
+         MySqlDataReader reader = SelectQuery(sqlQuery);
+         while(reader.Read())
+         {
+            Student student = new Student();
+            student.StudentNo = reader["studentno"].ToString();
+            student.name = reader["membername"].ToString();
+            student.address = reader["address"].ToString();
+            student.phoneNumber = reader["phonenumber"].ToString();
+            students.Add(student);
+         }
+         reader.Close();
+         return students;
       }
 
       public bool InsertBook(string bookno, string bookname, string company, string writer)
