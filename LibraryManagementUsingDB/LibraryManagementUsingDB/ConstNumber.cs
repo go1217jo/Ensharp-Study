@@ -32,5 +32,10 @@ namespace LibraryManagementUsingDB
       // 포맷 제한 상수
       public const int GENERAL_LIMIT = 10;
       public const int NUMBER_LIMIT = 11;
+
+      // 멤버 정보 검색 상수
+      public const int MEMBER_NAME = 0;
+      public const int MEMBER_ADDRESS = 1;
+      public const int MEMBER_PHONENUMBER = 2;
    }
 }

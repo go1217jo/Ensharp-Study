@@ -193,25 +193,22 @@ namespace LibraryManagementUsingDB.IOException
          if (newStudent.StudentNo == null)
             return null;
 
+         CursorPoint cursor = new CursorPoint(14, 15);
          // 주소 입력 위치로 이동
-         Console.SetCursorPosition(14, 15);
+         Console.SetCursorPosition(cursor.CursorLeft, cursor.CursorTop);
          Console.ForegroundColor = ConsoleColor.DarkGray;
          Console.Write("주소 선택");
          Console.ForegroundColor = ConsoleColor.White;
-         Console.SetCursorPosition(14, 15);
+         Console.SetCursorPosition(cursor.CursorLeft, cursor.CursorTop);
          // 키보드로 주소 선택
-         newStudent.address = inputProcessor.AddressFormatInput(14);
+         newStudent.address = inputProcessor.AddressFormatInput(cursor);
          if (newStudent.address == null)
             return null;
 
+         cursor = new CursorPoint(14, 17);
          // 전화번호 입력 위치로 이동
-         Console.SetCursorPosition(14, 17);
-         // 전화번호 형식 지정
-         Console.ForegroundColor = ConsoleColor.DarkGray;
-         Console.Write("01_-____-____");
-         Console.ForegroundColor = ConsoleColor.White;
-         Console.SetCursorPosition(16, 17);
-         newStudent.phoneNumber = inputProcessor.PhoneNumberFormatInput(14);
+         Console.SetCursorPosition(cursor.CursorLeft, cursor.CursorTop);
+         newStudent.phoneNumber = inputProcessor.PhoneNumberFormatInput(cursor);
          if (newStudent.phoneNumber == null)
             return null;
 
@@ -222,6 +219,28 @@ namespace LibraryManagementUsingDB.IOException
 
          Console.Clear();
          return newStudent;
+      }
+
+      public string AlterMemberInformation(string studentNo, int attribute)
+      {
+         string modification = null;
+         ConsoleUI.PrintEnsharpLogo();
+         Console.WriteLine("\n   수정 내용 입력");
+         Console.Write("   → ");
+         
+         switch(attribute)
+         {
+            case ConstNumber.MEMBER_NAME:
+               modification = inputProcessor.NameFormatInput(Console.CursorLeft);
+               break;
+            case ConstNumber.MEMBER_ADDRESS:
+               modification = inputProcessor.AddressFormatInput(new CursorPoint(Console.CursorLeft, Console.CursorTop));
+               break;
+            case ConstNumber.MEMBER_PHONENUMBER:
+               modification = inputProcessor.PhoneNumberFormatInput(new CursorPoint(Console.CursorLeft,Console.CursorTop));
+               break;
+         }
+         return modification;
       }
    }
 }

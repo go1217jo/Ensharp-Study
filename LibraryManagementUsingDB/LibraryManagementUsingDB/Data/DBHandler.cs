@@ -44,6 +44,16 @@ namespace LibraryManagementUsingDB.Data
             return true;
       }
 
+      public bool UpdateMemberInformation(string studentNo, string modification, string attribute)
+      {
+         string sqlQuery = "UPDATE member set " + attribute + " = '" + modification + "' WHERE studentno = '" + studentNo + "';";
+         
+         if (command.ExecuteNonQuery() != 1)
+            return false;
+         else
+            return true;
+      }
+
       public bool InsertMember(string memberName, string studentNo, string address, string phoneNumber, string password)
       {
          string sqlQuery = "INSERT INTO member values ('" + studentNo + "', '" + memberName + "', '" + address + "', '" + phoneNumber + "', '" + password + "');";

@@ -222,7 +222,7 @@ namespace LibraryManagementUsingDB.IOException
          return inputString;
       }
 
-      public string AddressFormatInput(int cursorLeft)
+      public string AddressFormatInput(CursorPoint cursor)
       {
          int choice = 0;
          string[] city = { "서울특별시", "인천광역시", "대전광역시", "대구광역시", "울산광역시", "부산광역시", "광주광역시", "경기도", "강원도" };
@@ -245,7 +245,7 @@ namespace LibraryManagementUsingDB.IOException
          string inputString = "";
 
          // 시 선택
-         choice = ComboBox(new List<string>(city), new CursorPoint(14, 15), "          ");
+         choice = ComboBox(new List<string>(city), cursor, "          ");
          if (choice == ConstNumber.ESC)
             return null;
 
@@ -255,7 +255,7 @@ namespace LibraryManagementUsingDB.IOException
          inputString += " ";
 
          // 도 선택
-         choice = ComboBox(new List<string>(chosenCity), new CursorPoint(14+inputString.Length*2 - 1, 15), "        ");
+         choice = ComboBox(new List<string>(chosenCity), new CursorPoint(cursor.CursorLeft+inputString.Length*2 - 1, cursor.CursorTop), "        ");
          if (choice == ConstNumber.ESC)
             return null;
 
@@ -266,11 +266,18 @@ namespace LibraryManagementUsingDB.IOException
       }
 
       // 전화번호 형식으로 입력받아 문자열을 반환하는 함수
-      public string PhoneNumberFormatInput(int cursorLeft)
+      public string PhoneNumberFormatInput(CursorPoint cursor)
       {
          ConsoleKeyInfo inputKey;
 
          string inputString = "01";
+                  
+         // 전화번호 형식 지정
+         Console.ForegroundColor = ConsoleColor.DarkGray;
+         Console.Write("01_-____-____");
+         Console.ForegroundColor = ConsoleColor.White;
+         Console.SetCursorPosition(cursor.CursorLeft+2, cursor.CursorTop);
+
          while (inputString.Length < 13)
          {
             inputKey = Console.ReadKey(true);
@@ -299,8 +306,8 @@ namespace LibraryManagementUsingDB.IOException
                   // 삭제한 문자 제거
                   if (inputString.Length > 0)
                      inputString = inputString.Remove(inputString.Length - 1);
-                  if (cursorLeft > Console.CursorLeft)
-                     Console.SetCursorPosition(cursorLeft, Console.CursorTop);
+                  if (cursor.CursorLeft > Console.CursorLeft)
+                     Console.SetCursorPosition(cursor.CursorLeft, Console.CursorTop);
                }
             }
          }
