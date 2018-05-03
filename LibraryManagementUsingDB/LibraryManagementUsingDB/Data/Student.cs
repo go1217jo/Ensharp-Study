@@ -49,10 +49,10 @@ namespace LibraryManagementUsingDB.Data
 
       public void PrintInformation()
       {
-         Console.Write("       {0}", output.PrintFixString(name, 13));
-         Console.Write("   {0}", output.PrintFixString(studentNo, 16));
-         Console.Write("    {0}", output.PrintFixString(address, 27));
-         Console.Write(" {0}", output.PrintFixString(phoneNumber, 20));
+         Console.Write(" {0}", output.PrintFixString(studentNo, 16));
+         Console.Write("{0}", output.PrintFixString(name, 16));
+         Console.Write("{0}", output.PrintFixString(address, 24));
+         Console.Write("{0}", output.PrintFixString(phoneNumber, 17));
       }
    }
 }

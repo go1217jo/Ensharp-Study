@@ -135,12 +135,12 @@ namespace LibraryManagementUsingDB.IOException
       {
          int choice = 1;
          List<Data.Student> students = null;
-         Console.SetWindowSize(96, 39);
+         Console.SetWindowSize(70, 39);
          Console.Clear();
          
-         Console.WriteLine("\n =============================================================================================");
-         Console.WriteLine("      학   번           이   름                  주   소               핸드폰 번호");
-         Console.WriteLine(" =============================================================================================");
+         Console.WriteLine("\n ============================================================================");
+         Console.WriteLine("     학   번         이   름              주   소           핸드폰 번호");
+         Console.WriteLine(" ============================================================================");
          while (true)
          {
             Console.SetCursorPosition(0, 4);

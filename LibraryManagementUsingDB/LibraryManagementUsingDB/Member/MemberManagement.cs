@@ -64,6 +64,20 @@ namespace LibraryManagementUsingDB.Member
             outputProcessor.PressAnyKey("회원 수정 실패 : 중복 학번");
       }
 
+      public void DeleteMember()
+      {
+         Console.Clear();
+         Console.WriteLine("\n   삭제할 멤버의 학번을 입력하세요.");
+         Console.Write("   → ");
+         string studentNo = outputProcessor.inputProcessor.InputStudentNoFormat(Console.CursorLeft);
+
+         if (outputProcessor.YesOrNo("해당 멤버를 정말 삭제하시겠습니까?") == 1)
+         {
+            if (!DB.DeleteMember(studentNo))
+               outputProcessor.PressAnyKey("삭제할 멤버가 존재하지 않습니다.");
+         }
+      }
+
       public void ManageMember()
       {
          while (true)
@@ -80,6 +94,7 @@ namespace LibraryManagementUsingDB.Member
                   break;
                // 회원 삭제
                case ConstNumber.MENULIST_3:
+                  DeleteMember();
                   break;
                // 회원 목록(전체)
                case ConstNumber.MENULIST_4:

@@ -102,14 +102,10 @@ namespace LibraryManagementUsingDB.Data
       {
          string sqlQuery = "SELECT studentno FROM MEMBER WHERE studentno = '" + studentNo + "';";
          MySqlDataReader reader = SelectQuery(sqlQuery);
-         if (IsThereOneValue(reader, "studentno")) {
-            reader.Close();
+         if (IsThereOneValue(reader, "studentno"))
             return true;
-         }
-         else {
-            reader.Close();
+         else 
             return false;
-         }
       }
 
       public MySqlDataReader SelectQuery(string query)
@@ -143,6 +139,24 @@ namespace LibraryManagementUsingDB.Data
             student.phoneNumber = reader["phonenumber"].ToString();
          }
          reader.Close();
+      }
+
+      public bool DeleteMember(string studentNo)
+      {
+         string sqlQuery1 = "DELETE FROM member WHERE studentno = '" + studentNo + "';";
+         string sqlQuery2 = "SELECT studentno FROM member WHERE studentno = '" + studentNo + "';";
+
+         // 삭제할 멤버가 존재한다면
+         if (IsThereOneValue(SelectQuery(sqlQuery2), "studentno"))
+         {
+            command = new MySqlCommand(sqlQuery1, connect);
+            if (command.ExecuteNonQuery() != 1)
+               return false;
+            else
+               return true;
+         }
+         else
+            return false;
       }
    }
 }
