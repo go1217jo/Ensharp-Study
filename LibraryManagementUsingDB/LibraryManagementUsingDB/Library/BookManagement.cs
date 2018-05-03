@@ -21,11 +21,12 @@ namespace LibraryManagementUsingDB.Library
          rentalManager = new RentalManagement(student);
       }
 
-      public BookManagement(IOException.OutputProcessor outputProcessor)
+      public BookManagement(Data.DBHandler DB, IOException.OutputProcessor outputProcessor)
       {
          this.student = null;
          rentalManager = null;
          this.outputProcessor = outputProcessor;
+         this.DB = DB;
       }
 
       public void UserRentalSystem()
@@ -54,6 +55,11 @@ namespace LibraryManagementUsingDB.Library
       public void ViewAllBook()
       {
 
+      }
+
+      internal void ManageBook()
+      {
+         throw new NotImplementedException();
       }
    }
 }

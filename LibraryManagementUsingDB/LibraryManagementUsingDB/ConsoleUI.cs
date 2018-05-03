@@ -44,7 +44,7 @@ namespace LibraryManagementUsingDB
          Console.ForegroundColor = ConsoleColor.Yellow;
          Console.Write(" ▲▲");
          Console.ForegroundColor = ConsoleColor.White;
-         Console.WriteLine("                 ||");
+         Console.WriteLine("                ||");
          Console.Write(" ||    Book    ");
          Console.ForegroundColor = ConsoleColor.Yellow;
          Console.Write("■■ ■■");
@@ -87,8 +87,8 @@ namespace LibraryManagementUsingDB
          const int screenWidth = 42, screenHeight = 18;
 
          Console.SetWindowSize(screenWidth, screenHeight);
-         Console.WriteLine();
-         Console.WriteLine("\t      ===============");
+
+         Console.WriteLine("\n\t      ===============");
 
          // 메뉴 문자열 출력
          for (int menu = 0; menu < text.Length; menu++)
@@ -104,7 +104,7 @@ namespace LibraryManagementUsingDB
          return screenHeight;
       }
 
-      public static void RegistrationScreen()
+      public static void PrintRegistration()
       {
          Console.SetWindowSize(42, 30);
          Console.Clear();

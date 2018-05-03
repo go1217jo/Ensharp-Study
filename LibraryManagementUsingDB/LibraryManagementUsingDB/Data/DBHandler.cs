@@ -9,9 +9,9 @@ namespace LibraryManagementUsingDB.Data
 {
    class DBHandler
    {
-      MySqlConnection connect;
+      MySqlConnection connect = null;
       MySqlCommand command;
-      MySqlDataReader reader;
+      MySqlDataReader reader = null;
 
       public DBHandler()
       {
@@ -23,8 +23,10 @@ namespace LibraryManagementUsingDB.Data
 
       public void Close()
       {
-         reader.Close();
-         connect.Close();
+         if(reader != null)
+            reader.Close();
+         if(connect != null)
+            connect.Close();
       }
 
       ~DBHandler()
@@ -44,17 +46,42 @@ namespace LibraryManagementUsingDB.Data
 
       public bool InsertMember(string memberName, string studentNo, string address, string phoneNumber, string password)
       {
-         string sqlQuery = "INSERT INTO book values ('" + studentNo + "', '" + memberName + "', '" + address + "', '" + password + "');";
-         command = new MySqlCommand(sqlQuery, connect);
-         if (command.ExecuteNonQuery() != 1)
-            return false;
+         string sqlQuery = "INSERT INTO member values ('" + studentNo + "', '" + memberName + "', '" + address + "', '" + phoneNumber + "', '" + password + "');";
+         // 이미 있는 멤버와 학번이 같지 않은 경우 추가
+         if (!IsOverlapMember(studentNo))
+         {
+            command = new MySqlCommand(sqlQuery, connect);
+            if (command.ExecuteNonQuery() != 1)
+               return false;
+            else
+               return true;
+         }
          else
-            return true;
+            return false;
+      }
+
+      public bool InsertMember(Student student)
+      {
+         return InsertMember(student.name, student.StudentNo, student.address, student.phoneNumber, student.Password);
       }
 
       public bool InsertRental(string sno, string bno, int loaned, string dueTo)
       {
          return true;
+      }
+
+      public bool IsOverlapMember(string studentNo)
+      {
+         string sqlQuery = "SELECT studentno FROM MEMBER WHERE studentno = '" + studentNo + "';";
+         MySqlDataReader reader = SelectQuery(sqlQuery);
+         if (IsThereOneValue(reader, "studentno")) {
+            reader.Close();
+            return true;
+         }
+         else {
+            reader.Close();
+            return false;
+         }
       }
 
       public MySqlDataReader SelectQuery(string query)

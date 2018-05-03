@@ -38,7 +38,22 @@ namespace LibraryManagementUsingDB.Member
 
       public void AdminScreen()
       {
-         outputProcessor.MenuScreen(ConsoleUI.ADMIN_MENU);
+         MemberManagement memberManagement = new MemberManagement(DB, outputProcessor);
+         Library.BookManagement bookManagement = new Library.BookManagement(DB, outputProcessor);
+         while (true)
+         {
+            switch(outputProcessor.MenuScreen(ConsoleUI.ADMIN_MENU))
+            {
+               case ConstNumber.MENULIST_1:
+                  memberManagement.ManageMember();
+                  break;
+               case ConstNumber.MENULIST_2:
+                  bookManagement.ManageBook();
+                  break;
+               case ConstNumber.MENULIST_3:
+                  return;
+            }
+         }
       }
       
       public void Login()
@@ -47,6 +62,11 @@ namespace LibraryManagementUsingDB.Member
          while (true)
          {
             Data.Student student = LoginProcess();
+            if (student == null)
+            {
+               Console.Clear();
+               return;
+            }
 
             switch (student.status)
             {
@@ -54,7 +74,7 @@ namespace LibraryManagementUsingDB.Member
                   AdminScreen();
                   break;
                case ConstNumber.LOGIN_USER:
-                  new Library.BookManagement(student, outputProcessor).UserRentalSystem();
+                  new Library.BookManagement(student, DB, outputProcessor).UserRentalSystem();
                   break;
                case ConstNumber.LOGIN_FAIL:
                   outputProcessor.PressAnyKey("로그인 실패");
@@ -68,6 +88,8 @@ namespace LibraryManagementUsingDB.Member
       {
          // 로그인 화면 출력
          Data.Student student = outputProcessor.LoginScreen();
+         if (student == null)
+            return null;
 
          // 유저 로그인 확인
          if (CheckUserLogin(student))
