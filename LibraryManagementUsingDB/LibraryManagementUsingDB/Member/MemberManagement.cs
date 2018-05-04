@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace LibraryManagementUsingDB.Member
 {
+   /// <summary>
+   ///  멤버 관리 클래스
+   /// </summary>
    class MemberManagement
    {
       IOException.OutputProcessor outputProcessor;
@@ -17,6 +20,7 @@ namespace LibraryManagementUsingDB.Member
          this.DB = DB;
       }
 
+      // 멤버 추가
       public void AddMember()
       {
          Data.Student student;
@@ -30,6 +34,7 @@ namespace LibraryManagementUsingDB.Member
             outputProcessor.PressAnyKey("회원 등록 실패");
       }
 
+      // 멤버 수정
       public void AlterMember()
       {
          string modification = null;
@@ -64,6 +69,7 @@ namespace LibraryManagementUsingDB.Member
             outputProcessor.PressAnyKey("회원 수정 실패 : 중복 학번");
       }
 
+      // 멤버 삭제
       public void DeleteMember()
       {
          Console.Clear();
@@ -78,6 +84,7 @@ namespace LibraryManagementUsingDB.Member
          }
       }
 
+      // 관리자 멤버 관리 메뉴
       public void ManageMember()
       {
          while (true)

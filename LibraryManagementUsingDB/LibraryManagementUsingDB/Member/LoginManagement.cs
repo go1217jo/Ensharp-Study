@@ -7,6 +7,9 @@ using MySql.Data.MySqlClient;
 
 namespace LibraryManagementUsingDB.Member
 {
+   /// <summary>
+   ///   로그인 관리 클래스
+   /// </summary>
    class LoginManagement
    {
       Data.DBHandler DB;
@@ -18,6 +21,8 @@ namespace LibraryManagementUsingDB.Member
       {
          DB = dbHandler;
       }
+
+      // 유저로 로그인하는건지 확인
       public bool CheckUserLogin(Data.Student student)
       {
          sqlQuery = "SELECT MEMBERNAME FROM MEMBER WHERE studentno = '" + student.StudentNo + "' AND password = '" + student.Password + "';";
@@ -26,7 +31,8 @@ namespace LibraryManagementUsingDB.Member
          reader.Close();
          return success;
       }
-      
+
+      // 관리자로 로그인하는건지 확인      
       public bool CheckAdminLogin(Data.Student student)
       {
          sqlQuery = "SELECT ID FROM admin WHERE ID = '" + student.StudentNo + "' AND password = '" + student.Password + "';";
@@ -36,6 +42,7 @@ namespace LibraryManagementUsingDB.Member
          return success;
       }
 
+      // 관리자로 로그인 시 보이는 메뉴
       public void AdminScreen()
       {
          MemberManagement memberManagement = new MemberManagement(DB, outputProcessor);
@@ -56,6 +63,7 @@ namespace LibraryManagementUsingDB.Member
          }
       }
       
+      // 로그인 화면을 출력하고 로그인 정보를 입력 받는다
       public void Login()
       {
          // 유저 또는 관리자 로그인
@@ -83,7 +91,7 @@ namespace LibraryManagementUsingDB.Member
          }
       }
       
-      // 0 반환 : 로그인 실패, 1 반환 : 유저 로그인, 2 반환 : 관리자 로그인
+      // 로그인 성공 시 입력 받은 로그인 정보를 전달한다.
       public Data.Student LoginProcess()
       {
          // 로그인 화면 출력

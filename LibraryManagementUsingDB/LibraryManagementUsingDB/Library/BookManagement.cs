@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace LibraryManagementUsingDB.Library
 {
+   /// <summary>
+   ///  도서 관리 클래스
+   /// </summary>
    class BookManagement
    {
       Data.Student student;
@@ -32,6 +35,7 @@ namespace LibraryManagementUsingDB.Library
          bookno = DB.GetBookCount() + 1;
       }
 
+      // 도서번호를 생성한다.
       public string CreateBookNo()
       {
          string returnbookno = "";
@@ -41,6 +45,7 @@ namespace LibraryManagementUsingDB.Library
          return returnbookno;
       }
 
+      // 유저로 로그인 시 이용 가능한 메뉴
       public void UserRentalSystem()
       {
          while (true)
@@ -66,6 +71,7 @@ namespace LibraryManagementUsingDB.Library
          }
       }
 
+      // 책 추가
       public void AddBook()
       {
          Data.Book book;
@@ -80,6 +86,7 @@ namespace LibraryManagementUsingDB.Library
             outputProcessor.PressAnyKey("책 등록 실패");
       }
 
+      // 책 수정
       public void AlterBook()
       {
          string modification = null;
@@ -114,6 +121,7 @@ namespace LibraryManagementUsingDB.Library
             outputProcessor.PressAnyKey("책 정보 수정 실패");
       }
 
+      // 책 삭제
       public void DeleteBook()
       {
          Console.Clear();
@@ -126,6 +134,7 @@ namespace LibraryManagementUsingDB.Library
          }
       }
 
+      // 관리자 책 관리 메뉴
       public void ManageBooks()
       {
          while (true) {

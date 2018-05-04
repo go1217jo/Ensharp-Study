@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace LibraryManagementUsingDB.Library
 {
+   /// <summary>
+   ///  대여 관리 클래스
+   /// </summary>
    class RentalManagement
    {
       Data.Student student;
@@ -18,6 +21,7 @@ namespace LibraryManagementUsingDB.Library
          this.DB = DB;
       }
 
+      // 책을 직접 검색한 뒤 대여
       public void RentalBookSearch()
       {
          string search = "";
@@ -56,6 +60,7 @@ namespace LibraryManagementUsingDB.Library
          Rental(bookno);
       }
 
+      // 현재 존재하는 전체 책 목록을 출력 후 대여
       public void RentalBookOfAll()
       {
          string bookno = output.PrintBookList(DB);
@@ -65,6 +70,7 @@ namespace LibraryManagementUsingDB.Library
          Rental(bookno);
       }
 
+      // 대여, 연장, 반납을 하는 함수
       public void Rental(string bookno)
       {
          // 대출중인지 확인
@@ -97,6 +103,7 @@ namespace LibraryManagementUsingDB.Library
          }
       }
 
+      // 전체 대출 목록을 보여주고 반납, 연장을 할 수 있다.
       public void ViewRentalList()
       {
          string bookno = output.PrintRentalList(DB, student.StudentNo);

@@ -36,6 +36,7 @@ namespace LibraryManagementUsingDB.Data
             Console.WriteLine("     보유 중    ");
       }
 
+      // 대출 기간이 포함된 정보 출력
       public void PrintDuetoInformation()
       {
          outputProcessor = new IOException.OutputProcessor();
