@@ -48,7 +48,7 @@ namespace LibraryManagementUsingDB.Member
                   memberManagement.ManageMember();
                   break;
                case ConstNumber.MENULIST_2:
-                  bookManagement.ManageBook();
+                  bookManagement.ManageBooks();
                   break;
                case ConstNumber.MENULIST_3:
                   return;

@@ -168,6 +168,8 @@ namespace LibraryManagementUsingDB.IOException
          }
       }
 
+
+
       /*
       public int PrintBookList(ArrayList bookList)
       {
@@ -242,7 +244,7 @@ namespace LibraryManagementUsingDB.IOException
          }
       }
 
-      public Data.Student RegistrationScreen()
+      public Data.Student MemberRegistrationScreen()
       {
          Data.Student newStudent = new Data.Student();
 
@@ -319,5 +321,28 @@ namespace LibraryManagementUsingDB.IOException
          }
          return modification;
       }
+
+      public Data.Book BookRegistrationScreen()
+      {
+         Data.Book book = new Data.Book();
+         ConsoleUI.PrintRegisterBook();
+
+         // 각각 항목들에 대해 문자열을 입력받는다.
+         Console.SetCursorPosition(14, 11);
+         book.Name = inputProcessor.ReadAndCheckString(25, 25, 14, 11);
+         if (book.Name == null)
+            return null;
+         Console.SetCursorPosition(14, 13);
+         book.Company = inputProcessor.ReadAndCheckString(15, 25, 14, 13);
+         if (book.Company == null)
+            return null;
+         Console.SetCursorPosition(14, 15);
+         book.Writer = inputProcessor.ReadAndCheckString(20, 25, 14, 15);
+         if (book.Writer == null)
+            return null;
+
+         return book;
+      }
+
    }
 }

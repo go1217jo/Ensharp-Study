@@ -52,14 +52,37 @@ namespace LibraryManagementUsingDB.Data
          return students;
       }
 
+      public int GetBookCount()
+      {
+         int count = 0;
+         MySqlDataReader reader = SelectQuery("SELECT * FROM BOOK;");
+         while (reader.Read())
+            count++;
+         reader.Close();
+
+         return count;
+      }
+
       public bool InsertBook(string bookno, string bookname, string company, string writer)
       {
          string sqlQuery = "INSERT INTO book values ('" + bookno + "', '" + bookname + "', '" + company + "', '" + writer + "');";
-         command = new MySqlCommand(sqlQuery, connect);
-         if (command.ExecuteNonQuery() != 1)
-            return false;
+
+         // 중복되는 도서가 없다면
+         if (!IsOverlapBook(bookname, writer))
+         {
+            command = new MySqlCommand(sqlQuery, connect);
+            if (command.ExecuteNonQuery() != 1)
+               return false;
+            else
+               return true;
+         }
          else
-            return true;
+            return false;
+      }
+
+      public bool InsertBook(Data.Book book)
+      {
+         return InsertBook(book.BookNo, book.Name, book.Company, book.Writer);
       }
 
       public bool UpdateMemberInformation(string studentNo, string modification, string attribute)
@@ -105,6 +128,16 @@ namespace LibraryManagementUsingDB.Data
          if (IsThereOneValue(reader, "studentno"))
             return true;
          else 
+            return false;
+      }
+
+      public bool IsOverlapBook(string bookName, string writer)
+      {
+         string sqlQuery = "SELECT bookno FROM book WHERE bookname = '" + bookName + "' AND writer = '"+writer+"';";
+         MySqlDataReader reader = SelectQuery(sqlQuery);
+         if (IsThereOneValue(reader, "bookno"))
+            return true;
+         else
             return false;
       }
 

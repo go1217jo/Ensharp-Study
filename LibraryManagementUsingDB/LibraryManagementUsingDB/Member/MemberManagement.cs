@@ -21,7 +21,7 @@ namespace LibraryManagementUsingDB.Member
       {
          Data.Student student;
          ConsoleUI.PrintRegistration();
-         student = outputProcessor.RegistrationScreen();
+         student = outputProcessor.MemberRegistrationScreen();
          if (student == null)
             return;
          if (DB.InsertMember(student))

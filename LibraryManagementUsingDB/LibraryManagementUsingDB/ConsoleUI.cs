@@ -9,6 +9,8 @@ namespace LibraryManagementUsingDB
    class ConsoleUI
    {
       static IOException.OutputProcessor outputProcessor = new IOException.OutputProcessor();
+
+      // 메뉴 문자열 집합
       public static string[] RENTAL_MENU = { "책 검색", "전체 보기", "대출 목록", "돌아 가기" };
       public static string[] ADMIN_MENU = { "회원 관리", "도서 관리", "돌아 가기" };
       public static string[] BOOK_MENU = { "서적 추가", "서적 삭제", "서적 수정", "전체 보기", "돌아 가기" };
@@ -58,17 +60,17 @@ namespace LibraryManagementUsingDB
          Console.ForegroundColor = ConsoleColor.Yellow;
          Console.Write(" ▲▲");
          Console.ForegroundColor = ConsoleColor.White;
-         Console.WriteLine("                ||");
-         Console.Write(" ||    Book    ");
+         Console.WriteLine("     Book       ||");
+         Console.Write(" ||            ");
          Console.ForegroundColor = ConsoleColor.Yellow;
          Console.Write("■■ ■■");
          Console.ForegroundColor = ConsoleColor.White;
-         Console.Write("    EN#     ");
+         Console.Write(" Management ");
          Console.ForegroundColor = ConsoleColor.Yellow;
          Console.Write("■");
          Console.ForegroundColor = ConsoleColor.White;
          Console.WriteLine(" ||");
-         Console.Write(" || Management ");
+         Console.Write(" ||     EN#    ");
          Console.ForegroundColor = ConsoleColor.Yellow;
          Console.Write("■■■■■         ■■ ");
          Console.ForegroundColor = ConsoleColor.White;
@@ -132,6 +134,21 @@ namespace LibraryManagementUsingDB
 
          Console.SetCursorPosition(3, 28);
          Console.Write("ESC : 돌아가기");
+      }
+
+      public static void PrintRegisterBook()
+      {
+         Console.SetWindowSize(42, 25);
+         Console.Clear();
+         PrintLogo();
+         Console.WriteLine("\n\t\t<도서 추가>");
+         Console.WriteLine("\n    도서명 > ");
+         Console.WriteLine("\n    출판사 > ");
+         Console.WriteLine("\n      저자 > ");
+
+         Console.SetCursorPosition(3, 23);
+         Console.Write("ESC : 돌아가기");
+
       }
    }
 }

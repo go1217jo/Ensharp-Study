@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="ConsoleUI.cs" />
     <Compile Include="ConstNumber.cs" />
+    <Compile Include="Data\Book.cs" />
     <Compile Include="Data\DBHandler.cs" />
     <Compile Include="Data\Student.cs" />
     <Compile Include="IOException\CursorPoint.cs" />

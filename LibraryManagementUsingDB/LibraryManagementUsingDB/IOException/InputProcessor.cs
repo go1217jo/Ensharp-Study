@@ -309,6 +309,80 @@ namespace LibraryManagementUsingDB.IOException
          return inputString;
       }
 
+      // 일반적인 문자열을 입력받을 시 사용
+      public string ReadAndCheckString(int letterLimit, int screenHeight, int cursorLeft, int cursorTop)
+      {
+         string input = "";
+         ConsoleKeyInfo inputKey;
+
+         while (true)
+         {
+            while (true)
+            {
+               inputKey = Console.ReadKey(true);
+               if (inputKey.Key == ConsoleKey.Escape)
+                  return null;
+               if (inputKey.Key == ConsoleKey.Enter)
+                  break;
+
+               if (input.Length <= letterLimit)
+               {
+                  if (Encoding.Default.GetBytes(inputKey.KeyChar + "").Length >= 2)
+                  {
+                     // 자음이나 모음만 들어오지 않도록 함
+                     if (IsPerfectHangleChar(inputKey.KeyChar))
+                     {
+                        input += inputKey.KeyChar;
+                        Console.Write(inputKey.KeyChar);
+                        if (input.Length == letterLimit)
+                           return input;
+                     }
+                  }
+                  else
+                  {
+                     input += inputKey.KeyChar;
+                     Console.Write(inputKey.KeyChar);
+                     if (input.Length == letterLimit)
+                        return input;
+                  }
+               }
+               
+               if (inputKey.Key == ConsoleKey.Backspace)
+               {
+                  int buf = 0;
+                  if (input.Length >= 2)
+                     buf = Encoding.Default.GetBytes(input[input.Length - 2] + "").Length;
+
+                  Console.SetCursorPosition(Console.CursorLeft - buf + 1, Console.CursorTop);
+                  if (buf == 1)
+                     Console.Write(" ");
+                  else
+                     Console.Write("  ");
+                  Console.SetCursorPosition(Console.CursorLeft - buf, Console.CursorTop);
+                  if (input.Length > 0)
+                     input = input.Remove(input.Length - 1);
+                  if (cursorLeft > Console.CursorLeft)
+                     Console.SetCursorPosition(cursorLeft, Console.CursorTop);
+               }
+            }
+
+            // 입력되지 않은 경우 다시 입력
+            if (input.Length == 0)
+            {
+               // 입력되면서 화면에 표시되었던 문자열을 지우고 커서를 다시 위치시킨다.
+               Console.SetCursorPosition(5, screenHeight - 2);
+               Console.WriteLine("잘못된 입력 : 입력되지 않음");
+               Console.SetCursorPosition(cursorLeft, cursorTop);
+               Console.Write("                ");
+               Console.SetCursorPosition(cursorLeft, cursorTop);
+               continue;
+            }
+
+            // 입력된 문자열을 반환한다.
+            return input;
+         }
+      }
+
       public int ComboBox(List<string> items, CursorPoint cursor, string blankString)
       {
          int choice = 0, inputKey;
