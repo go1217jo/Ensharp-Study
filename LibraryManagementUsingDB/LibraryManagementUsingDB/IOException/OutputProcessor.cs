@@ -247,6 +247,7 @@ namespace LibraryManagementUsingDB.IOException
                   Console.ForegroundColor = ConsoleColor.Red;
                books[i].PrintDuetoInformation();
                Console.ForegroundColor = ConsoleColor.White;
+               Console.WriteLine();
             }
 
             // 첫 행으로 커서를 옮긴다
