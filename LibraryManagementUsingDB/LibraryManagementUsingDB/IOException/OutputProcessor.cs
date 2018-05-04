@@ -145,6 +145,11 @@ namespace LibraryManagementUsingDB.IOException
          {
             Console.SetCursorPosition(0, 4);
             students = DB.GetAllMember();
+            if (students.Count == 0)
+            {
+               PressAnyKey("멤버가 없습니다.");
+               return null;
+            }
             for (int i = 0; i < students.Count; i++)
             {
                if (choice == i)
@@ -182,6 +187,11 @@ namespace LibraryManagementUsingDB.IOException
          {
             Console.SetCursorPosition(0, 4);
             books = DB.GetAllBooks();
+            if (books.Count == 0)
+            {
+               PressAnyKey("도서가 없습니다.");
+               return null;
+            }
             for (int i = 0; i < books.Count; i++)
             {
                // 선택된 행이면 빨간색으로 표시
@@ -208,7 +218,55 @@ namespace LibraryManagementUsingDB.IOException
             choice = Console.CursorTop - 4;
          }
       }
-      
+
+      public string PrintRentalList(Data.DBHandler DB, string studentno)
+      {
+         int choice = 0;
+         List<Data.Book> books = null;
+         Console.Clear();
+         Console.SetWindowSize(103, 39);
+         Console.WriteLine("\n ====================================================================================================");
+         Console.WriteLine("   도서번호             도서명                 출판사              저자            반납 기간");
+         Console.WriteLine(" ====================================================================================================");
+
+         while (true)
+         {
+            Console.SetCursorPosition(0, 4);
+            books = DB.RentalList(studentno);
+
+            if (books.Count == 0)
+            {
+               PressAnyKey("대출된 도서가 없습니다.");
+               return null;
+            }
+
+            for (int i = 0; i < books.Count; i++)
+            {
+               // 선택된 행이면 빨간색으로 표시
+               if (choice == i)
+                  Console.ForegroundColor = ConsoleColor.Red;
+               books[i].PrintDuetoInformation();
+               Console.ForegroundColor = ConsoleColor.White;
+            }
+
+            // 첫 행으로 커서를 옮긴다
+            Console.SetCursorPosition(0, 4 + choice);
+
+            // 엔터를 치면 선택된 인덱스를 반환한다.
+            if (inputProcessor.ChoiceByKey())
+               return books[choice].BookNo;
+
+            // 커서의 위아래 이동 구간을 제한한다.
+            if (Console.CursorTop < 4)
+               Console.SetCursorPosition(Console.CursorLeft, 4);
+            if (Console.CursorTop > 4 + ((books.Count == 0) ? 1 : books.Count) - 1)
+               Console.SetCursorPosition(Console.CursorLeft, 4 + ((books.Count == 0) ? 1 : books.Count) - 1);
+
+            // 커서 위치에 따른 메뉴 선택
+            choice = Console.CursorTop - 4;
+         }
+      }
+
       // 예 아니오를 선택하게 하는 화면 출력, 두 번째 줄 알림 출력 뒤 호출
       // 예 : 1, 아니오 : 2
       public int YesOrNo(string alert)
@@ -322,11 +380,11 @@ namespace LibraryManagementUsingDB.IOException
          return modification;
       }
 
-      public string AlterBookInformation(string bookNo, int attribute)
+      public string GetBookInformation(int attribute)
       {
          string modification = null;
          ConsoleUI.PrintEnsharpLogo();
-         Console.WriteLine("\n   수정 내용 입력");
+         Console.WriteLine("\n   정보 입력");
          Console.Write("   → ");
 
          switch (attribute)

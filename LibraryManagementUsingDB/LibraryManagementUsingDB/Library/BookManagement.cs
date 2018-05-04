@@ -19,7 +19,7 @@ namespace LibraryManagementUsingDB.Library
          this.student = student;
          this.outputProcessor = outputProcessor;
          this.DB = DB;
-         rentalManager = new RentalManagement(student);
+         rentalManager = new RentalManagement(DB, student);
          bookno = DB.GetBookCount() + 2;
       }
 
@@ -43,19 +43,26 @@ namespace LibraryManagementUsingDB.Library
 
       public void UserRentalSystem()
       {
-         switch(outputProcessor.MenuScreen(ConsoleUI.RENTAL_MENU))
+         while (true)
          {
-            case ConstNumber.MENULIST_1:
-               SearchBook();
-               break;
-            case ConstNumber.MENULIST_2:
-               outputProcessor.PrintBookList(DB);
-               break;
-            case ConstNumber.MENULIST_3:
-               rentalManager.ViewRentalList();
-               break;
-            case ConstNumber.MENULIST_4:
-               return;
+            switch (outputProcessor.MenuScreen(ConsoleUI.RENTAL_MENU))
+            {
+               // 책 검색
+               case ConstNumber.MENULIST_1:
+                  rentalManager.RentalBookSearch();
+                  break;
+               // 전체보기
+               case ConstNumber.MENULIST_2:
+                  rentalManager.RentalBookOfAll();
+                  break;
+               // 대출 목록 보기
+               case ConstNumber.MENULIST_3:
+                  rentalManager.ViewRentalList();
+                  break;
+               // 돌아가기
+               case ConstNumber.MENULIST_4:
+                  return;
+            }
          }
       }
 
@@ -83,17 +90,17 @@ namespace LibraryManagementUsingDB.Library
          {
             // 책 이름 수정
             case ConstNumber.MENULIST_1:
-               modification = outputProcessor.AlterBookInformation(bookNo, ConstNumber.BOOK_NAME);
+               modification = outputProcessor.GetBookInformation(ConstNumber.BOOK_NAME);
                attribute = "bookname";
                break;
             // 책 출판사 수정
             case ConstNumber.MENULIST_2:
-               modification = outputProcessor.AlterBookInformation(bookNo, ConstNumber.BOOK_COMPANY);
+               modification = outputProcessor.GetBookInformation(ConstNumber.BOOK_COMPANY);
                attribute = "company";
                break;
             // 멤버 전화번호 수정
             case ConstNumber.MENULIST_3:
-               modification = outputProcessor.AlterBookInformation(bookNo, ConstNumber.BOOK_WRITER);
+               modification = outputProcessor.GetBookInformation(ConstNumber.BOOK_WRITER);
                attribute = "writer";
                break;
             case ConstNumber.MENULIST_4:
@@ -117,11 +124,6 @@ namespace LibraryManagementUsingDB.Library
             if (!DB.DeleteBook(bookno))
                outputProcessor.PressAnyKey("삭제할 책이 존재하지 않습니다.");
          }
-      }
-
-      public void SearchBook()
-      {
-
       }
 
       public void ManageBooks()

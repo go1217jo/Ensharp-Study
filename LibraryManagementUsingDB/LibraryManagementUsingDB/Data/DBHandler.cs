@@ -67,6 +67,9 @@ namespace LibraryManagementUsingDB.Data
             books.Add(book);
          }
          reader.Close();
+         for (int i = 0; i < books.Count; i++)
+            books[i].Rental = CheckRental(books[i].BookNo);
+
          return books;
       }
 
@@ -164,7 +167,7 @@ namespace LibraryManagementUsingDB.Data
       public bool IsOverlapBook(string bookName, string writer)
       {
          string sqlQuery = "SELECT bookno FROM book WHERE bookname = '" + bookName + "' AND writer = '"+writer+"';";
-         MySqlDataReader reader = SelectQuery(sqlQuery);
+         reader = SelectQuery(sqlQuery);
          if (IsThereOneValue(reader, "bookno"))
             return true;
          else
@@ -204,9 +207,10 @@ namespace LibraryManagementUsingDB.Data
          reader.Close();
       }
 
-      public void LoadBookInformation(Data.Book book)
+      /*
+      public void LoadBookInformation(Data.Book book, string bookno)
       {
-         string sqlQuery = "SELECT bookno FROM book WHERE bookname = '" + book.Name + "' AND writer = '" + book.Writer + "';";
+         string sqlQuery = "SELECT * FROM book WHERE bookno = '" + bookno + "';";
          reader = SelectQuery(sqlQuery);
          while (reader.Read())
          {
@@ -214,9 +218,10 @@ namespace LibraryManagementUsingDB.Data
             book.Name = reader["bookname"].ToString();
             book.Company = reader["company"].ToString();
             book.Writer = reader["writer"].ToString();
+            book.Rental = CheckRental(book.BookNo);
          }
          reader.Close();
-      }
+      }*/
 
       public bool DeleteMember(string studentNo)
       {
@@ -245,6 +250,118 @@ namespace LibraryManagementUsingDB.Data
             return false;
          else
             return true;
+      }
+
+      public bool CheckRental(string bookno)
+      {
+         string sqlQuery = "SELECT bno FROM rental WHERE bno = '" + bookno + "';";
+
+         if (IsThereOneValue(SelectQuery(sqlQuery), "bno"))
+            return true;
+         else
+            return false;
+      }
+
+      public string SearchBook(string search, string attribute)
+      {
+         string bookno = "";
+         string sqlQuery = "SELECT bookno FROM book WHERE " + attribute + " = '" + search + "';";
+
+         reader = SelectQuery(sqlQuery);
+         while (reader.Read())
+            bookno = reader["bookno"].ToString();
+         reader.Close();
+
+         return bookno;
+      }
+
+      public bool Extension(string bookno)
+      {
+         // 만기일
+         string dueDate = DateTime.Now.AddDays(7).ToString("yyyy-MM-dd");
+         string sqlQuery1 = "SELECT times FROM rental WHERE bno = '" + bookno + "';";
+         string sqlQuery2 = "UPDATE rental set times = times+1, dueto = '" + dueDate + "' WHERE bno = '" + bookno + "';";
+
+         reader = SelectQuery(sqlQuery1);
+         int times = 0;
+         while (reader.Read())
+            times = (int)reader["times"];
+         reader.Close();
+
+         if (times < 3)
+         {
+            command = new MySqlCommand(sqlQuery2, connect);
+            if (command.ExecuteNonQuery() != 1)
+               return false;
+            else
+               return true;
+         }
+         else
+            return false;
+      }
+
+      public bool IsBorrowSamePerson(string studentno, string bookno)
+      {
+         string sqlQuery = "SELECT bno FROM rental WHERE sno = '" + studentno + "' AND bno = '" + bookno + "';";
+         if (IsThereOneValue(SelectQuery(sqlQuery), "bno"))
+            return true;
+         else
+            return false;
+      }
+
+      public bool Rental(string studentNo, string bookno)
+      {
+         // 만기일
+         string dueDate = DateTime.Now.AddDays(7).ToString("yyyy-MM-dd");
+         string sqlQuery = "INSERT INTO rental values ('" + studentNo + "', '" + bookno + "', " + "'"+dueDate+"', 0);";
+
+         command = new MySqlCommand(sqlQuery, connect);
+
+         if (command.ExecuteNonQuery() != 1)
+            return false;
+         else
+            return true;
+      }
+
+      public string GetDueTo(string bookno)
+      {
+         string sqlQuery = "SELECT dueto FROM rental Where bno = '" + bookno + "';";
+         string dueto=null;
+         reader = SelectQuery(sqlQuery);
+         while (reader.Read())
+            dueto = reader["dueto"].ToString();
+         reader.Close();
+         return dueto;
+      }
+
+      public bool DeleteRental(string bookno)
+      {
+         string sqlQuery = "DELETE FROM rental WHERE bno = '" + bookno + "';";
+         command = new MySqlCommand(sqlQuery, connect);
+         if (command.ExecuteNonQuery() == 1)
+            return false;
+         else
+            return true;
+      }
+
+      public List<Book> RentalList(string studentno)
+      {
+         List<Book> books = new List<Book>();
+         string sqlQuery = "SELECT bookno, bookname, company, writer, dueto FROM book, rental WHERE book.bookno = rental.bno AND rental.sno = '" + studentno + "';";
+         reader = SelectQuery(sqlQuery);
+         while (reader.Read())
+         {
+            Book book = new Book();
+            book.BookNo = reader["bookno"].ToString();
+            book.Name = reader["bookname"].ToString();
+            book.Company = reader["company"].ToString();
+            book.Writer = reader["writer"].ToString();
+            book.dueto = reader["dueto"].ToString();
+            books.Add(book);
+         }
+         reader.Close();
+         
+         return books;
       }
    }
 }
