@@ -50,12 +50,12 @@ namespace LibraryManagementUsingDB.Member
                break;
             // 멤버 주소 수정
             case ConstNumber.MENULIST_2:
-               outputProcessor.AlterMemberInformation(studentNo, ConstNumber.MEMBER_ADDRESS);
+               modification = outputProcessor.AlterMemberInformation(studentNo, ConstNumber.MEMBER_ADDRESS);
                attribute = "address";
                break;
             // 멤버 전화번호 수정
             case ConstNumber.MENULIST_3:
-               outputProcessor.AlterMemberInformation(studentNo, ConstNumber.MEMBER_PHONENUMBER);
+               modification = outputProcessor.AlterMemberInformation(studentNo, ConstNumber.MEMBER_PHONENUMBER);
                attribute = "phonenumber";
                break;
             case ConstNumber.MENULIST_4:
@@ -63,6 +63,7 @@ namespace LibraryManagementUsingDB.Member
          }
          if (modification == null)
             return;
+
 
          // DB에서 변경
          if (!DB.UpdateMemberInformation(studentNo, modification, attribute))
