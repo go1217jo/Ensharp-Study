@@ -37,5 +37,10 @@ namespace LibraryManagementUsingDB
       public const int MEMBER_NAME = 0;
       public const int MEMBER_ADDRESS = 1;
       public const int MEMBER_PHONENUMBER = 2;
+
+      // 책 정보 검색 상수
+      public const int BOOK_NAME = 0;
+      public const int BOOK_COMPANY = 1;
+      public const int BOOK_WRITER = 2;
    }
 }

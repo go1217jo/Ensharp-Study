@@ -38,7 +38,7 @@ namespace LibraryManagementUsingDB.Data
       {
          List<Student> students = new List<Student>();
          string sqlQuery = "SELECT * FROM member;";
-         MySqlDataReader reader = SelectQuery(sqlQuery);
+         reader = SelectQuery(sqlQuery);
          while(reader.Read())
          {
             Student student = new Student();
@@ -50,6 +50,24 @@ namespace LibraryManagementUsingDB.Data
          }
          reader.Close();
          return students;
+      }
+
+      public List<Book> GetAllBooks()
+      {
+         List<Book> books = new List<Book>();
+         string sqlQuery = "SELECT * FROM book;";
+         reader = SelectQuery(sqlQuery);
+         while (reader.Read())
+         {
+            Book book = new Book();
+            book.BookNo = reader["bookno"].ToString();
+            book.Name = reader["bookname"].ToString();
+            book.Company = reader["company"].ToString();
+            book.Writer = reader["writer"].ToString();
+            books.Add(book);
+         }
+         reader.Close();
+         return books;
       }
 
       public int GetBookCount()
@@ -88,7 +106,19 @@ namespace LibraryManagementUsingDB.Data
       public bool UpdateMemberInformation(string studentNo, string modification, string attribute)
       {
          string sqlQuery = "UPDATE member set " + attribute + " = '" + modification + "' WHERE studentno = '" + studentNo + "';";
-         
+
+         command = new MySqlCommand(sqlQuery, connect);
+         if (command.ExecuteNonQuery() != 1)
+            return false;
+         else
+            return true;
+      }
+
+      public bool UpdateBookInformation(string bookNo, string modification, string attribute)
+      {
+         string sqlQuery = "UPDATE book set " + attribute + " = '" + modification + "' WHERE bookno = '" + bookNo + "';";
+
+         command = new MySqlCommand(sqlQuery, connect);
          if (command.ExecuteNonQuery() != 1)
             return false;
          else
@@ -124,7 +154,7 @@ namespace LibraryManagementUsingDB.Data
       public bool IsOverlapMember(string studentNo)
       {
          string sqlQuery = "SELECT studentno FROM MEMBER WHERE studentno = '" + studentNo + "';";
-         MySqlDataReader reader = SelectQuery(sqlQuery);
+         reader = SelectQuery(sqlQuery);
          if (IsThereOneValue(reader, "studentno"))
             return true;
          else 
@@ -174,6 +204,20 @@ namespace LibraryManagementUsingDB.Data
          reader.Close();
       }
 
+      public void LoadBookInformation(Data.Book book)
+      {
+         string sqlQuery = "SELECT bookno FROM book WHERE bookname = '" + book.Name + "' AND writer = '" + book.Writer + "';";
+         reader = SelectQuery(sqlQuery);
+         while (reader.Read())
+         {
+            book.BookNo = reader["bookno"].ToString();
+            book.Name = reader["bookname"].ToString();
+            book.Company = reader["company"].ToString();
+            book.Writer = reader["writer"].ToString();
+         }
+         reader.Close();
+      }
+
       public bool DeleteMember(string studentNo)
       {
          string sqlQuery1 = "DELETE FROM member WHERE studentno = '" + studentNo + "';";
@@ -190,6 +234,17 @@ namespace LibraryManagementUsingDB.Data
          }
          else
             return false;
+      }
+
+      public bool DeleteBook(string bookno)
+      {
+         string sqlQuery1 = "DELETE FROM book WHERE bookno = '" + bookno + "';";
+
+         command = new MySqlCommand(sqlQuery1, connect);
+         if (command.ExecuteNonQuery() != 1)
+            return false;
+         else
+            return true;
       }
    }
 }

@@ -24,9 +24,9 @@ namespace LibraryManagementUsingDB.Data
         // 행 내용을 글자 간격에 맞춰 출력
         public void PrintInformation() {
             outputProcessor = new IOException.OutputProcessor();
-            Console.Write("{0}", outputProcessor.PrintFixString(BookNo, 14));
-            Console.Write("{0}", outputProcessor.PrintFixString(Name, 25));
-            Console.Write("{0}", outputProcessor.PrintFixString(Company, 15));
+            Console.Write("{0}", outputProcessor.PrintFixString(BookNo, 13));
+            Console.Write("{0}", outputProcessor.PrintFixString(Name, 28));
+            Console.Write("{0}", outputProcessor.PrintFixString(Company, 18));
             Console.Write("{0}", outputProcessor.PrintFixString(Writer, 20));
             if (Rental)
                 Console.WriteLine("     대출 중    ");

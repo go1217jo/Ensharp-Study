@@ -16,6 +16,7 @@ namespace LibraryManagementUsingDB
       public static string[] BOOK_MENU = { "서적 추가", "서적 삭제", "서적 수정", "전체 보기", "돌아 가기" };
       public static string[] MEMBER_MENU = { "회원 추가", "회원 수정", "회원 삭제", "회원 목록", "돌아 가기" };
       public static string[] BOOK_SEARCH = { "도서명 검색", "출판사 검색", "저자 검색", "돌아 가기"};
+      public static string[] BOOK_MODIFY = { "도서명 수정", "출판사 수정", "저자 수정", "돌아 가기" };
       public static string[] MEMBER_MODIFY = { "회원명 수정", "주소 수정", "전화번호 수정", "돌아 가기" };
 
       // 로그인 화면

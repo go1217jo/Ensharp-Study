@@ -25,7 +25,7 @@ namespace LibraryManagementUsingDB.IOException
 
          Console.SetCursorPosition(cursorLeft, 12);
          student.Password = inputProcessor.InputPassword(12, screenHeight, cursorLeft, 12);
-         if (student.Password == null)
+         if (student.Password == null || student.Password.Contains("\\"))
             return null;
 
          return student;
@@ -168,47 +168,47 @@ namespace LibraryManagementUsingDB.IOException
          }
       }
 
-
-
-      /*
-      public int PrintBookList(ArrayList bookList)
+      public string PrintBookList(Data.DBHandler DB)
       {
-         int choice = 1;
+         int choice = 0;
+         List<Data.Book> books = null;
+         Console.Clear();
          Console.SetWindowSize(103, 39);
          Console.WriteLine("\n ====================================================================================================");
-         Console.WriteLine("      도서번호                도서명                출판사             저자             대출 여부     ");
+         Console.WriteLine("   도서번호             도서명                 출판사              저자            대출 여부     ");
          Console.WriteLine(" ====================================================================================================");
+
          while (true)
          {
             Console.SetCursorPosition(0, 4);
-
-            for (int i = 0; i < bookList.Count; i++)
+            books = DB.GetAllBooks();
+            for (int i = 0; i < books.Count; i++)
             {
-               Data.Book book = (Data.Book)bookList[i];
                // 선택된 행이면 빨간색으로 표시
-               if (choice - 1 == i)
+               if (choice == i)
                   Console.ForegroundColor = ConsoleColor.Red;
-               book.PrintInformation();
+               books[i].PrintInformation();
                Console.ForegroundColor = ConsoleColor.White;
             }
+
             // 첫 행으로 커서를 옮긴다
-            Console.SetCursorPosition(0, 3 + choice);
+            Console.SetCursorPosition(0, 4 + choice);
 
             // 엔터를 치면 선택된 인덱스를 반환한다.
             if (inputProcessor.ChoiceByKey())
-               return choice;
+               return books[choice].BookNo;
 
             // 커서의 위아래 이동 구간을 제한한다.
             if (Console.CursorTop < 4)
-               Console.SetCursorPosition(Console.CursorLeft - 1, 4);
-            if (Console.CursorTop > 3 + ((bookList.Count == 0) ? 1 : bookList.Count))
-               Console.SetCursorPosition(Console.CursorLeft, 3 + ((bookList.Count == 0) ? 1 : bookList.Count));
+               Console.SetCursorPosition(Console.CursorLeft, 4);
+            if (Console.CursorTop > 4 + ((books.Count == 0) ? 1 : books.Count) - 1)
+               Console.SetCursorPosition(Console.CursorLeft, 4 + ((books.Count == 0) ? 1 : books.Count) - 1 );
 
             // 커서 위치에 따른 메뉴 선택
-            choice = Console.CursorTop - 3;
+            choice = Console.CursorTop - 4;
          }
       }
-      */
+      
       // 예 아니오를 선택하게 하는 화면 출력, 두 번째 줄 알림 출력 뒤 호출
       // 예 : 1, 아니오 : 2
       public int YesOrNo(string alert)
@@ -319,6 +319,29 @@ namespace LibraryManagementUsingDB.IOException
                modification = inputProcessor.PhoneNumberFormatInput(new CursorPoint(Console.CursorLeft,Console.CursorTop));
                break;
          }
+         return modification;
+      }
+
+      public string AlterBookInformation(string bookNo, int attribute)
+      {
+         string modification = null;
+         ConsoleUI.PrintEnsharpLogo();
+         Console.WriteLine("\n   수정 내용 입력");
+         Console.Write("   → ");
+
+         switch (attribute)
+         {
+            case ConstNumber.BOOK_NAME:
+               modification = inputProcessor.ReadAndCheckString(25, 16, Console.CursorLeft, Console.CursorTop);
+               break;
+            case ConstNumber.BOOK_COMPANY:
+               modification = inputProcessor.ReadAndCheckString(15, 16, Console.CursorLeft, Console.CursorTop);
+               break;
+            case ConstNumber.BOOK_WRITER:
+               modification = inputProcessor.ReadAndCheckString(20, 16, Console.CursorLeft, Console.CursorTop);
+               break;
+         }
+
          return modification;
       }
 

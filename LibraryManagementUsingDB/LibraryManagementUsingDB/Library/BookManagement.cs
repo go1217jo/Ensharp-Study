@@ -20,7 +20,7 @@ namespace LibraryManagementUsingDB.Library
          this.outputProcessor = outputProcessor;
          this.DB = DB;
          rentalManager = new RentalManagement(student);
-         bookno = DB.GetBookCount() + 1;
+         bookno = DB.GetBookCount() + 2;
       }
 
       public BookManagement(Data.DBHandler DB, IOException.OutputProcessor outputProcessor)
@@ -49,7 +49,7 @@ namespace LibraryManagementUsingDB.Library
                SearchBook();
                break;
             case ConstNumber.MENULIST_2:
-               ViewAllBook();
+               outputProcessor.PrintBookList(DB);
                break;
             case ConstNumber.MENULIST_3:
                rentalManager.ViewRentalList();
@@ -73,28 +73,28 @@ namespace LibraryManagementUsingDB.Library
             outputProcessor.PressAnyKey("책 등록 실패");
       }
 
-      public void AlterMember()
+      public void AlterBook()
       {
          string modification = null;
          string attribute = null;
-         string studentNo = outputProcessor.PrintMemberList(DB);
+         string bookNo = outputProcessor.PrintBookList(DB);
 
-         switch (outputProcessor.MenuScreen(ConsoleUI.MEMBER_MODIFY))
+         switch (outputProcessor.MenuScreen(ConsoleUI.BOOK_MODIFY))
          {
-            // 멤버 이름 수정
+            // 책 이름 수정
             case ConstNumber.MENULIST_1:
-               modification = outputProcessor.AlterMemberInformation(studentNo, ConstNumber.MEMBER_NAME);
-               attribute = "membername";
+               modification = outputProcessor.AlterBookInformation(bookNo, ConstNumber.BOOK_NAME);
+               attribute = "bookname";
                break;
-            // 멤버 주소 수정
+            // 책 출판사 수정
             case ConstNumber.MENULIST_2:
-               outputProcessor.AlterMemberInformation(studentNo, ConstNumber.MEMBER_ADDRESS);
-               attribute = "address";
+               modification = outputProcessor.AlterBookInformation(bookNo, ConstNumber.BOOK_COMPANY);
+               attribute = "company";
                break;
             // 멤버 전화번호 수정
             case ConstNumber.MENULIST_3:
-               outputProcessor.AlterMemberInformation(studentNo, ConstNumber.MEMBER_PHONENUMBER);
-               attribute = "phonenumber";
+               modification = outputProcessor.AlterBookInformation(bookNo, ConstNumber.BOOK_WRITER);
+               attribute = "writer";
                break;
             case ConstNumber.MENULIST_4:
                return;
@@ -103,30 +103,23 @@ namespace LibraryManagementUsingDB.Library
             return;
 
          // DB에서 변경
-         if (!DB.UpdateMemberInformation(studentNo, modification, attribute))
-            outputProcessor.PressAnyKey("회원 수정 실패 : 중복 학번");
+         if (!DB.UpdateBookInformation(bookNo, modification, attribute))
+            outputProcessor.PressAnyKey("책 정보 수정 실패");
       }
 
-      public void DeleteMember()
+      public void DeleteBook()
       {
          Console.Clear();
-         Console.WriteLine("\n   삭제할 멤버의 학번을 입력하세요.");
-         Console.Write("   → ");
-         string studentNo = outputProcessor.inputProcessor.InputStudentNoFormat(Console.CursorLeft);
+         string bookno = outputProcessor.PrintBookList(DB);
 
-         if (outputProcessor.YesOrNo("해당 멤버를 정말 삭제하시겠습니까?") == 1)
+         if (outputProcessor.YesOrNo("해당 책을 정말 삭제하시겠습니까?") == 1)
          {
-            if (!DB.DeleteMember(studentNo))
-               outputProcessor.PressAnyKey("삭제할 멤버가 존재하지 않습니다.");
+            if (!DB.DeleteBook(bookno))
+               outputProcessor.PressAnyKey("삭제할 책이 존재하지 않습니다.");
          }
       }
 
       public void SearchBook()
-      {
-
-      }
-
-      public void ViewAllBook()
       {
 
       }
@@ -140,11 +133,17 @@ namespace LibraryManagementUsingDB.Library
                case ConstNumber.MENULIST_1:
                   AddBook();
                   break;
+               // 서적 삭제
                case ConstNumber.MENULIST_2:
+                  DeleteBook();
                   break;
+               // 서적 수정
                case ConstNumber.MENULIST_3:
+                  AlterBook();
                   break;
+               // 전체 보기
                case ConstNumber.MENULIST_4:
+                  outputProcessor.PrintBookList(DB);
                   break;
                case ConstNumber.MENULIST_5:
                   return;

@@ -340,20 +340,23 @@ namespace LibraryManagementUsingDB.IOException
                   }
                   else
                   {
-                     input += inputKey.KeyChar;
-                     Console.Write(inputKey.KeyChar);
-                     if (input.Length == letterLimit)
-                        return input;
+                     if ((inputKey.KeyChar >= 'A' && inputKey.KeyChar <= 'z') || (inputKey.KeyChar >= '0' && inputKey.KeyChar <= '9') || inputKey.KeyChar == ' ')
+                     {
+                        input += inputKey.KeyChar;
+                        Console.Write(inputKey.KeyChar);
+                        if (input.Length == letterLimit)
+                           return input;
+                     }
                   }
                }
                
                if (inputKey.Key == ConsoleKey.Backspace)
                {
-                  int buf = 0;
+                  int buf = 1;
                   if (input.Length >= 2)
                      buf = Encoding.Default.GetBytes(input[input.Length - 2] + "").Length;
 
-                  Console.SetCursorPosition(Console.CursorLeft - buf + 1, Console.CursorTop);
+                  Console.SetCursorPosition(Console.CursorLeft - buf, Console.CursorTop);
                   if (buf == 1)
                      Console.Write(" ");
                   else
