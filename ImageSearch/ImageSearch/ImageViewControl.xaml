@@ -7,11 +7,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="500">
    <Grid>
-      <Button x:Name="btn_back" Content="Back" Click ="Btn_back_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="57" Height="43" Margin="11,23,0,0" RenderTransformOrigin="0.498,0.514"/>
-      <TextBox x:Name="txtSearchBox" HorizontalAlignment="Left" Height="43" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="272" Margin="79,23,0,0"/>
-      <Button x:Name="btn_search" Content="검색" Click="Btn_search_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="73" Margin="361,23,0,0" Height="43" RenderTransformOrigin="1.015,0.598"/>
+      <Button x:Name="btn_back" Content="Back" Click ="Btn_back_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="33" Height="26" Margin="11,23,0,0" RenderTransformOrigin="0.498,0.514"/>
+      <TextBox x:Name="txtSearchBox" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="207" Margin="170,23,0,0"/>
+      <Button x:Name="btn_search" Content="검색" Click="Btn_search_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Margin="386,23,0,0" Height="26" RenderTransformOrigin="1.015,0.598"/>
       <ScrollViewer HorizontalAlignment="Left" Height="368" VerticalAlignment="Top" Width="423" Margin="11,83,0,0">
-         <StackPanel x:Name="viewPanel"/>
+         <StackPanel x:Name="viewPanel" >
+         </StackPanel>
       </ScrollViewer>
+      <ComboBox x:Name="cbx_count" HorizontalAlignment="Left" Margin="55,23,0,0" VerticalAlignment="Top" Width="105" Height="26">
+         <ComboBoxItem IsSelected="True">10개 검색</ComboBoxItem>
+         <ComboBoxItem>20개 검색</ComboBoxItem>
+         <ComboBoxItem>30개 검색</ComboBoxItem>
+      </ComboBox>
    </Grid>
 </UserControl>

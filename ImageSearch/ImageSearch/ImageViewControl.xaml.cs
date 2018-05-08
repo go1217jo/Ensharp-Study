@@ -23,6 +23,8 @@ namespace ImageSearch
    /// </summary>
    public partial class ImageViewControl : UserControl
    {
+      ImageViewer imageViewer = new ImageViewer();
+
       public ImageViewControl()
       {
          InitializeComponent();
@@ -31,13 +33,14 @@ namespace ImageSearch
       private void Btn_back_Click(object sender, RoutedEventArgs e)
       {
          viewPanel.Children.Clear();
+         txtSearchBox.Text = "";
       }
 
       public void Btn_search_Click(object sender, RoutedEventArgs e)
       {
          viewPanel.Children.Clear();
-         HttpGet(txtSearchBox.Text, 10);
-         
+         int count = (cbx_count.SelectedIndex + 1) * 10;
+         HttpGet(txtSearchBox.Text, count);  
       }
       
       public bool HttpGet(string POI, int count)
@@ -75,13 +78,21 @@ namespace ImageSearch
       {
          var json = JObject.Parse(responseFromServer);
          var documents = json["documents"];
-         for(int i=0;i<count;i++)
+         for(int i=0; i<count; i++)
          {
             BitmapImage bitmap = new BitmapImage(new Uri(documents[i]["image_url"].ToString()));
             Image image = new Image();
+            image.AddHandler(MouseDoubleClickEvent, new RoutedEventHandler(Image_Click));
             image.Source = bitmap;
             viewPanel.Children.Add(image);
          }
+      }
+
+      public void Image_Click(object sender, RoutedEventArgs e)
+      {
+         Window imageViewer = new ImageViewer();
+         //imageViewer.
+         imageViewer.Show();
       }
    }
 }
