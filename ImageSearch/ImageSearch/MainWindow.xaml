@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageSearch"
         mc:Ignorable="d"
-        Title="이미지 검색" Height="510" Width="533.6">
+        Title="이미지 검색" Height="700" Width="533.6">
    <Grid x:Name="MainGrid" HorizontalAlignment="Center">
       
    </Grid>

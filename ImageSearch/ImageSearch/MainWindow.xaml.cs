@@ -26,8 +26,9 @@ namespace ImageSearch
       public MainWindow()
       {
          InitializeComponent();
-         MainGrid.Children.Add(mainControl);
 
+         MainGrid.Children.Add(mainControl);
+         
          mainControl.btn_image.Click += new RoutedEventHandler(Btn_image_Click);
          mainControl.btn_recent.Click += Btn_recent_Click;
          imageViewControl.btn_back.Click += Btn_back_Click;

@@ -26,6 +26,7 @@ namespace ImageSearch
    {
       DateTime mouseLastClick = DateTime.Now.AddSeconds(-1);
       Hashtable hashtable = new Hashtable();
+      Data.DBHandler DB = new Data.DBHandler();
 
       public ImageViewControl()
       {
@@ -43,7 +44,10 @@ namespace ImageSearch
          viewPanel.Children.Clear();
          int count = (cbx_count.SelectedIndex + 1) * 10;
          if (!txtSearchBox.Text.Equals(""))
+         {
             HttpGet(txtSearchBox.Text, count);
+            DB.InsertLog(txtSearchBox.Text);
+         }
          else
             MessageBox.Show("검색어를 입력해주세요.");
       }
@@ -93,12 +97,17 @@ namespace ImageSearch
          }
       }
 
+      // 이미지 클릭 시 이미지 크게 보기
       public void Image_Click(object sender, RoutedEventArgs e)
       {
          Image image = new Image();
+         // 현재 클릭된 이미지 소스를 가지고 옴
          image.Source = (BitmapImage)hashtable[sender];
          Window imageViewer = new ImageViewer(image);
+
+         // 이미지 보기 창을 맨 위에 띄움
          imageViewer.Topmost = true;
+         // 이미지 보기 창 띄우기
          imageViewer.Show();
       }
    }
