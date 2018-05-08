@@ -20,9 +20,11 @@ namespace ImageSearch
    /// </summary>
    public partial class ImageViewer : Window
    {
-      public ImageViewer()
+      public ImageViewer(Image image)
       {
          InitializeComponent();
+         image.Stretch = Stretch.Uniform;       
+         image_view.Children.Add(image);
       }
    }
 }

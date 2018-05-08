@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json.Linq;
+using System.Collections;
 
 namespace ImageSearch
 {
@@ -23,7 +24,8 @@ namespace ImageSearch
    /// </summary>
    public partial class ImageViewControl : UserControl
    {
-      ImageViewer imageViewer = new ImageViewer();
+      DateTime mouseLastClick = DateTime.Now.AddSeconds(-1);
+      Hashtable hashtable = new Hashtable();
 
       public ImageViewControl()
       {
@@ -40,7 +42,10 @@ namespace ImageSearch
       {
          viewPanel.Children.Clear();
          int count = (cbx_count.SelectedIndex + 1) * 10;
-         HttpGet(txtSearchBox.Text, count);  
+         if (!txtSearchBox.Text.Equals(""))
+            HttpGet(txtSearchBox.Text, count);
+         else
+            MessageBox.Show("검색어를 입력해주세요.");
       }
       
       public bool HttpGet(string POI, int count)
@@ -65,8 +70,6 @@ namespace ImageSearch
 
          AddSearchedImage(responseFromServer, count);
 
-        // MessageBox.Show(responseFromServer);
-
          reader.Close();
          respPostStream.Close();
          wRespFirst.Close();
@@ -78,20 +81,24 @@ namespace ImageSearch
       {
          var json = JObject.Parse(responseFromServer);
          var documents = json["documents"];
-         for(int i=0; i<count; i++)
+         
+         for(int i=0; i < documents.Count(); i++)
          {
             BitmapImage bitmap = new BitmapImage(new Uri(documents[i]["image_url"].ToString()));
             Image image = new Image();
-            image.AddHandler(MouseDoubleClickEvent, new RoutedEventHandler(Image_Click));
+            image.AddHandler(MouseDownEvent, new RoutedEventHandler(Image_Click));
             image.Source = bitmap;
+            hashtable.Add(image, bitmap);
             viewPanel.Children.Add(image);
          }
       }
 
       public void Image_Click(object sender, RoutedEventArgs e)
       {
-         Window imageViewer = new ImageViewer();
-         //imageViewer.
+         Image image = new Image();
+         image.Source = (BitmapImage)hashtable[sender];
+         Window imageViewer = new ImageViewer(image);
+         imageViewer.Topmost = true;
          imageViewer.Show();
       }
    }
