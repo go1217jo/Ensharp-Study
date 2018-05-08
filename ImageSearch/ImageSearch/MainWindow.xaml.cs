@@ -21,17 +21,22 @@ namespace ImageSearch
    public partial class MainWindow : Window
    {
       MainControl mainControl = new MainControl();
-      ImageViewControl imageViewControl = new ImageViewControl();
+      RecentViewControl recentViewControl = new RecentViewControl();
+      ImageViewControl imageViewControl;
+      Data.DBHandler DB = new Data.DBHandler();
 
       public MainWindow()
       {
          InitializeComponent();
-
+         imageViewControl = new ImageViewControl(DB);
+         
          MainGrid.Children.Add(mainControl);
          
          mainControl.btn_image.Click += new RoutedEventHandler(Btn_image_Click);
          mainControl.btn_recent.Click += Btn_recent_Click;
-         imageViewControl.btn_back.Click += Btn_back_Click;
+         imageViewControl.btn_back.AddHandler(MouseDownEvent, new RoutedEventHandler(Btn_back_Click));
+         recentViewControl.btn_back.AddHandler(MouseDownEvent, new RoutedEventHandler(Btn_back_Click));
+         recentViewControl.btn_deleteLog.Click += Btn_deleteLog_Click;
       }
 
       private void Btn_image_Click(object sender, RoutedEventArgs e)
@@ -42,13 +47,26 @@ namespace ImageSearch
 
       private void Btn_recent_Click(object sender, RoutedEventArgs e)
       {
-         
+         MainGrid.Children.Clear();
+         recentViewControl.list_log.ItemsSource = DB.ViewAllLog();
+         MainGrid.Children.Add(recentViewControl);
       }
 
       private void Btn_back_Click(object sender, RoutedEventArgs e)
       {
+         imageViewControl.viewPanel.Children.Clear();
+         imageViewControl.txtSearchBox.Text = "";
+         imageViewControl.cbx_count.SelectedIndex = 0;
+
          MainGrid.Children.Clear();
          MainGrid.Children.Add(mainControl);
+      }
+
+      private void Btn_deleteLog_Click(object sender, RoutedEventArgs e)
+      {
+         Data.Log deleteItem = (Data.Log)recentViewControl.list_log.SelectedItem;
+         DB.DeleteLog(deleteItem.LogTime);
+         recentViewControl.list_log.ItemsSource = DB.ViewAllLog();
       }
    }
 }

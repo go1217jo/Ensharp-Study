@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient;
 
 namespace ImageSearch.Data
 {
-   class DBHandler
+   public class DBHandler
    {
       MySqlConnection connect = null;
       MySqlCommand command;
@@ -21,6 +21,7 @@ namespace ImageSearch.Data
          // connect MySQL
          connect = new MySqlConnection(databaseConnect);
          connect.Open();
+         no = TupleCount() + 1;
       }
 
       public void Close()
@@ -45,7 +46,7 @@ namespace ImageSearch.Data
 
       public bool InsertLog(string keyword)
       {
-         string now = DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss");
+         string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
          string sqlQuery = "INSERT INTO history values(" + (no++) + ", '" + now + "', '" + keyword + "');";
 
          command = new MySqlCommand(sqlQuery, connect);
@@ -53,6 +54,46 @@ namespace ImageSearch.Data
             return false;
          else
             return true;
+      }
+
+      public int TupleCount()
+      {
+         int count = 0;
+         string sqlQuery = "SELECT no FROM history;";
+         reader = SelectQuery(sqlQuery);
+         while (reader.Read())
+            count++;
+         reader.Close();
+
+         return count;
+      }
+
+      public List<Log> ViewAllLog()
+      {
+         string sqlQuery = "SELECT * FROM history;";
+         List<Log> logs = new List<Log>();
+         reader = SelectQuery(sqlQuery);
+         while(reader.Read())
+         {
+            Log log = new Log();
+            log.LogTime = reader["searchtime"].ToString();
+            log.Keyword = reader["keyword"].ToString();
+            logs.Add(log);
+         }
+         reader.Close();
+
+         return logs;
+      }
+
+      public bool DeleteLog(string deleteTime)
+      {
+         DateTime time = DateTime.Parse(deleteTime);
+         string sqlQuery = "DELETE FROM history WHERE searchtime = '" + time.ToString("yyyy-MM-dd HH:mm:ss") + "';";
+         command = new MySqlCommand(sqlQuery, connect);
+         if (command.ExecuteNonQuery() != -1)
+            return true;
+         else
+            return false;
       }
    }
 }

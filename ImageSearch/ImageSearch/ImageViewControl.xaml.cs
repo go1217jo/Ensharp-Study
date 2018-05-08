@@ -26,19 +26,14 @@ namespace ImageSearch
    {
       DateTime mouseLastClick = DateTime.Now.AddSeconds(-1);
       Hashtable hashtable = new Hashtable();
-      Data.DBHandler DB = new Data.DBHandler();
+      Data.DBHandler DB;
 
-      public ImageViewControl()
+      public ImageViewControl(Data.DBHandler DB)
       {
          InitializeComponent();
+         this.DB = DB;
       }
-
-      private void Btn_back_Click(object sender, RoutedEventArgs e)
-      {
-         viewPanel.Children.Clear();
-         txtSearchBox.Text = "";
-      }
-
+                  
       public void Btn_search_Click(object sender, RoutedEventArgs e)
       {
          viewPanel.Children.Clear();
@@ -104,7 +99,7 @@ namespace ImageSearch
          // 현재 클릭된 이미지 소스를 가지고 옴
          image.Source = (BitmapImage)hashtable[sender];
          Window imageViewer = new ImageViewer(image);
-
+         
          // 이미지 보기 창을 맨 위에 띄움
          imageViewer.Topmost = true;
          // 이미지 보기 창 띄우기

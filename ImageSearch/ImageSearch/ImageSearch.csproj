@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\DBHandler.cs" />
+    <Compile Include="Data\Log.cs" />
     <Compile Include="ImageViewControl.xaml.cs">
       <DependentUpon>ImageViewControl.xaml</DependentUpon>
     </Compile>
@@ -82,6 +83,9 @@
     </Compile>
     <Compile Include="MainControl.xaml.cs">
       <DependentUpon>MainControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RecentViewControl.xaml.cs">
+      <DependentUpon>RecentViewControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="TitleImage.xaml.cs">
       <DependentUpon>TitleImage.xaml</DependentUpon>
@@ -110,6 +114,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="RecentViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TitleImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -145,6 +153,11 @@
   <ItemGroup>
     <Resource Include="images\ImageSearchTitle.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="images\Clock.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\Back.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
