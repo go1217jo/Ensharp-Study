@@ -30,17 +30,14 @@ namespace ImageSearch
 
       private void Btn_back_Click(object sender, RoutedEventArgs e)
       {
-
+         viewPanel.Children.Clear();
       }
 
       public void Btn_search_Click(object sender, RoutedEventArgs e)
       {
+         viewPanel.Children.Clear();
          HttpGet(txtSearchBox.Text, 10);
-         //BitmapImage bitmap = new BitmapImage(new Uri());
-         //Image image = new Image();
-         //image.Source = bitmap;
-
-         //viewPanel.Children.Add(image);
+         
       }
       
       public bool HttpGet(string POI, int count)
@@ -52,7 +49,7 @@ namespace ImageSearch
          StringBuilder getParams = new StringBuilder();
          getParams.Append("?query=" + POI);
 
-         HttpWebRequest wReqFirst = (HttpWebRequest)WebRequest.Create(Url+getParams+"size="+count);
+         HttpWebRequest wReqFirst = (HttpWebRequest)WebRequest.Create(Url+getParams+"&size="+count);
          wReqFirst.Headers.Add("Authorization", header);
          wReqFirst.ContentType = "application/json; charset=utf-8";
          wReqFirst.Method = "GET";
@@ -63,7 +60,7 @@ namespace ImageSearch
          StreamReader reader = new StreamReader(respPostStream, Encoding.GetEncoding("EUC-KR"), true);
          string responseFromServer = reader.ReadToEnd();
 
-         AddSearchedImage(responseFromServer);
+         AddSearchedImage(responseFromServer, count);
 
         // MessageBox.Show(responseFromServer);
 
@@ -74,12 +71,17 @@ namespace ImageSearch
          return true;
       }
 
-      public void AddSearchedImage(string responseFromServer)
+      public void AddSearchedImage(string responseFromServer, int count)
       {
          var json = JObject.Parse(responseFromServer);
-
+         var documents = json["documents"];
+         for(int i=0;i<count;i++)
+         {
+            BitmapImage bitmap = new BitmapImage(new Uri(documents[i]["image_url"].ToString()));
+            Image image = new Image();
+            image.Source = bitmap;
+            viewPanel.Children.Add(image);
+         }
       }
    }
-
-
 }
