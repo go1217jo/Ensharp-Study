@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="ImageSearch.ImageViewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ImageSearch"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="500">
+   <Grid>
+      <Button x:Name="btn_back" Content="Back" Click ="Btn_back_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="57" Height="43" Margin="11,23,0,0" RenderTransformOrigin="0.498,0.514"/>
+      <TextBox x:Name="txtSearchBox" HorizontalAlignment="Left" Height="43" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="272" Margin="79,23,0,0"/>
+      <Button x:Name="btn_search" Content="검색" Click="Btn_search_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="73" Margin="361,23,0,0" Height="43" RenderTransformOrigin="1.015,0.598"/>
+      <ScrollViewer HorizontalAlignment="Left" Height="368" VerticalAlignment="Top" Width="423" Margin="11,83,0,0">
+         <WrapPanel x:Name="viewPanel" Height="218" Width="235"/>
+      </ScrollViewer>
+   </Grid>
+</UserControl>

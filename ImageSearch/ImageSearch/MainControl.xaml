@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="ImageSearch.MainControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ImageSearch"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="500">
+   <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="500" Margin="0,-16,0,2.4">
+      <WrapPanel x:Name="title_img_panel" Height="200" Width="500" VerticalAlignment="Top" Margin="32,30,0,0" RenderTransformOrigin="0.505,0.865"/>
+      <Button x:Name="btn_image" Content="이미지 검색" HorizontalAlignment="Center" VerticalAlignment="Center" Width="175" Height="65" Click="btn_image_Click" FontSize="16" Margin="157,246,157.6,189"/>
+      <Button x:Name="btn_recent" Content="최근 검색어" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="175" Height="65" Click="btn_recent_Click" FontSize="16" Margin="157,0,157.6,67"/>
+   </Grid>
+</UserControl>
