@@ -41,7 +41,9 @@ namespace ImageSearch
          if (!txtSearchBox.Text.Equals(""))
          {
             HttpGet(txtSearchBox.Text, count);
-            DB.InsertLog(txtSearchBox.Text);
+            // 검색했던 키워드가 없어 갱신에 실패했다면 로그 추가
+            if(!DB.UpdateTime(txtSearchBox.Text))
+               DB.InsertLog(txtSearchBox.Text);
          }
          else
             MessageBox.Show("검색어를 입력해주세요.");

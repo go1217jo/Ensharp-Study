@@ -12,7 +12,6 @@ namespace ImageSearch.Data
       MySqlConnection connect = null;
       MySqlCommand command;
       MySqlDataReader reader = null;
-      int no = 1;
 
       // DB 접속
       public DBHandler()
@@ -21,7 +20,6 @@ namespace ImageSearch.Data
          // connect MySQL
          connect = new MySqlConnection(databaseConnect);
          connect.Open();
-         no = TupleCount() + 1;
       }
 
       public void Close()
@@ -44,28 +42,20 @@ namespace ImageSearch.Data
          return command.ExecuteReader();
       }
 
+      public bool ExecuteQuery(string query)
+      {
+         command = new MySqlCommand(query, connect);
+         if (command.ExecuteNonQuery() != -1)
+            return true;
+         else
+            return false;
+      }
+
       public bool InsertLog(string keyword)
       {
          string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-         string sqlQuery = "INSERT INTO history values(" + (no++) + ", '" + now + "', '" + keyword + "');";
-
-         command = new MySqlCommand(sqlQuery, connect);
-         if (command.ExecuteNonQuery() != -1)
-            return false;
-         else
-            return true;
-      }
-
-      public int TupleCount()
-      {
-         int count = 0;
-         string sqlQuery = "SELECT no FROM history;";
-         reader = SelectQuery(sqlQuery);
-         while (reader.Read())
-            count++;
-         reader.Close();
-
-         return count;
+         string sqlQuery = "INSERT INTO history values('" + now + "', '" + keyword + "');";
+         return ExecuteQuery(sqlQuery);
       }
 
       public List<Log> ViewAllLog()
@@ -89,9 +79,23 @@ namespace ImageSearch.Data
       {
          DateTime time = DateTime.Parse(deleteTime);
          string sqlQuery = "DELETE FROM history WHERE searchtime = '" + time.ToString("yyyy-MM-dd HH:mm:ss") + "';";
-         command = new MySqlCommand(sqlQuery, connect);
-         if (command.ExecuteNonQuery() != -1)
-            return true;
+         return ExecuteQuery(sqlQuery);
+      }
+
+      // 기록에 이미 검색된 키워드가 있으면 검색 시간을 갱신한다.
+      public bool UpdateTime(string keyword)
+      {
+         int count = 0;
+         string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+         string sqlQuery1 = "SELECT keyword FROM history WHERE keyword = '" + keyword + "';";
+         string sqlQuery2 = "UPDATE history SET searchtime = '" + now + "' WHERE keyword = '" + keyword + "';";
+
+         reader = SelectQuery(sqlQuery1);
+         while (reader.Read())
+            count++;
+         reader.Close();
+         if (count != 0)
+            return ExecuteQuery(sqlQuery2);
          else
             return false;
       }
