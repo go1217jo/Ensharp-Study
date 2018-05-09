@@ -29,5 +29,10 @@ namespace ImageSearch
       {
        
       }
+
+      private void btn_clear_Click(object sender, RoutedEventArgs e)
+      {
+
+      }
    }
 }

@@ -99,5 +99,14 @@ namespace ImageSearch.Data
          else
             return false;
       }
+
+      public bool ClearTable()
+      {
+         string sqlQuery1 = "DROP TABLE IF EXISTS history;";
+         string sqlQuery2 = "CREATE TABLE history (searchtime datetime NOT NULL, keyword varchar(50) DEFAULT NULL, PRIMARY KEY(searchtime)) ENGINE = InnoDB DEFAULT CHARSET = utf8;";
+
+         ExecuteQuery(sqlQuery1);
+         return ExecuteQuery(sqlQuery2);
+      }
    }
 }

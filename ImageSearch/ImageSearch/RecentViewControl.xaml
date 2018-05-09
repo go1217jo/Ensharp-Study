@@ -17,7 +17,7 @@
          </ListView.View>
       </ListView>
       <Label Content="검색 기록" HorizontalAlignment="Center" VerticalAlignment="Top" Width="78" Height="31" FontSize="16" Margin="211,114,211,0" FontWeight="Bold" FontFamily="Arial Black"/>
-      <Button Content="기록 초기화" HorizontalAlignment="Center" Margin="390,26,36,0" VerticalAlignment="Top" Width="74" Height="35"/>
+      <Button x:Name="btn_clear" Click="btn_clear_Click" Content="기록 초기화" HorizontalAlignment="Center" Margin="390,26,36,0" VerticalAlignment="Top" Width="74" Height="35"/>
       <Button x:Name="btn_deleteLog" Click ="Btn_deleteLog_Click"  Content="삭제" HorizontalAlignment="Center" Margin="409,117,36,0" VerticalAlignment="Top" Width="55" Height="28"/>
       <Image x:Name="title_img" Width="85" Height="85" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="Fill" Source="images/Clock.jpg" Margin="204,10,211,0"/>
 

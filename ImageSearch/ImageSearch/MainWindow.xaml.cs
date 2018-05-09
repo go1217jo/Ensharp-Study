@@ -37,6 +37,7 @@ namespace ImageSearch
          imageViewControl.btn_back.AddHandler(MouseDownEvent, new RoutedEventHandler(Btn_back_Click));
          recentViewControl.btn_back.AddHandler(MouseDownEvent, new RoutedEventHandler(Btn_back_Click));
          recentViewControl.btn_deleteLog.Click += Btn_deleteLog_Click;
+         recentViewControl.btn_clear.Click += Btn_clear_Click;
       }
 
       private void Btn_image_Click(object sender, RoutedEventArgs e)
@@ -66,6 +67,12 @@ namespace ImageSearch
       {
          Data.Log deleteItem = (Data.Log)recentViewControl.list_log.SelectedItem;
          DB.DeleteLog(deleteItem.LogTime);
+         recentViewControl.list_log.ItemsSource = DB.ViewAllLog();
+      }
+
+      private void Btn_clear_Click(object sender, RoutedEventArgs e)
+      {
+         DB.ClearTable();
          recentViewControl.list_log.ItemsSource = DB.ViewAllLog();
       }
    }
