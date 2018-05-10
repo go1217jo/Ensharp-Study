@@ -13,7 +13,7 @@ namespace LibraryManagementUsingDB
       // 메뉴 문자열 집합
       public static string[] RENTAL_MENU = { "책 검색", "전체 보기", "대출 목록", "돌아 가기" };
       public static string[] ADMIN_MENU = { "회원 관리", "도서 관리", "돌아 가기" };
-      public static string[] BOOK_MENU = { "서적 추가", "서적 삭제", "서적 수정", "전체 보기", "돌아 가기" };
+      public static string[] BOOK_MENU = { "서적 추가", "서적 삭제", "수량 수정", "전체 보기", "돌아 가기" };
       public static string[] MEMBER_MENU = { "회원 추가", "회원 수정", "회원 삭제", "회원 목록", "돌아 가기" };
       public static string[] BOOK_SEARCH = { "도서명 검색", "출판사 검색", "저자 검색", "돌아 가기"};
       public static string[] BOOK_MODIFY = { "도서명 수정", "출판사 수정", "저자 수정", "돌아 가기" };

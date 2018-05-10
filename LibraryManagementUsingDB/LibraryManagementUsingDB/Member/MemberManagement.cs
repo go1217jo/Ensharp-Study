@@ -79,7 +79,8 @@ namespace LibraryManagementUsingDB.Member
          Console.WriteLine("\n   삭제할 멤버의 학번을 입력하세요.");
          Console.Write("   → ");
          string studentNo = outputProcessor.inputProcessor.InputStudentNoFormat(Console.CursorLeft);
-
+         if (studentNo == null)
+            return;
          if (outputProcessor.YesOrNo("해당 멤버를 정말 삭제하시겠습니까?") == 1)
          {
             if (!DB.DeleteMember(studentNo))

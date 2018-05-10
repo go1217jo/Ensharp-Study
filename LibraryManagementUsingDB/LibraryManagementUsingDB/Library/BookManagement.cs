@@ -95,7 +95,8 @@ namespace LibraryManagementUsingDB.Library
       {
          Console.Clear();
          Data.Book book = outputProcessor.PrintBookList(DB.GetAllBooks());
-
+         if (book == null)
+            return;
          if (outputProcessor.YesOrNo("해당 책을 정말 삭제하시겠습니까?") == 1)
          {
             if (!DB.DeleteBook(book.ISBN))
