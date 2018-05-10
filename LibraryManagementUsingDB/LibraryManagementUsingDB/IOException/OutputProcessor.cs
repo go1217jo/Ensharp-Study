@@ -177,7 +177,7 @@ namespace LibraryManagementUsingDB.IOException
 
       public Data.Book PrintBookList(List<Data.Book> books)
       {
-         int choice = 0;
+         int choice = 0, pressedKey = 0;
          Console.Clear();
          Console.SetWindowSize(167, 40);
          Console.WriteLine("\n ====================================================================================================================================================================");
@@ -205,8 +205,11 @@ namespace LibraryManagementUsingDB.IOException
             Console.SetCursorPosition(0, 4 + choice);
 
             // 엔터를 치면 선택된 인덱스를 반환한다.
-            if (inputProcessor.ChoiceByKey())
+            pressedKey = inputProcessor.ChoiceByKeyUsableESC();
+            if (pressedKey == ConstNumber.ENTER)
                return books[choice];
+            else if (pressedKey == ConstNumber.ESC)
+               return null;
 
             // 커서의 위아래 이동 구간을 제한한다.
             if (Console.CursorTop < 4)
@@ -272,17 +275,17 @@ namespace LibraryManagementUsingDB.IOException
          Console.SetWindowSize(42, 16);
          while (true) {
             Console.Clear();
-            Console.WriteLine("\n   수량을 입력하세요. (30권 이하)\n");
+            Console.WriteLine("\n   수량을 입력하세요. (1~30권)\n");
             Console.Write("   >> ");
             string input = Console.ReadLine();
             if (input.Length == 0)
                continue;
             if (Regex.IsMatch(input, "^[0-9]*$"))
             {
-               if (int.Parse(input) <= 30)
+               if (int.Parse(input) <= 30 && int.Parse(input) != 0)
                   return int.Parse(input);
             }
-            PressAnyKey("50 이하의 숫자를 입력해주세요.\n  이 화면에서는 돌아갈 수 없습니다.");
+            PressAnyKey("1이상 30 이하의 숫자를 입력해주세요.\n  이 화면에서는 돌아갈 수 없습니다.");
             Console.SetWindowSize(42, 16);
          }
       }
@@ -427,6 +430,8 @@ namespace LibraryManagementUsingDB.IOException
       public List<Data.Book> APISearchScreen()
       {
          string keyword;
+         int count = 0;
+         List<string> searchCount = new List<string>(new string[]{ "10개", "20개", "30개" });
          NaverAPI.SearchEngine engine = new NaverAPI.SearchEngine();
          ConsoleUI.PrintAPISearchBook();
 
@@ -435,8 +440,11 @@ namespace LibraryManagementUsingDB.IOException
          keyword = inputProcessor.ReadAndCheckString(25, 25, 14, 11);
          if (keyword == null)
             return null;
+         Console.SetCursorPosition(14, 13);
+         // 검색 개수를 입력받는다.
+         count = int.Parse(searchCount[inputProcessor.ComboBox(searchCount, new CursorPoint(14, 13), "     ")].Substring(0,2));
 
-         return engine.SearchBooks(keyword);
+         return engine.SearchBooks(keyword, count);
       }
    }
 }

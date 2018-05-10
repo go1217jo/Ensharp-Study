@@ -79,13 +79,23 @@ namespace LibraryManagementUsingDB.Data
       public string Company
       {
          get { return company; }
-         set { company = value; }
+         set {
+            if (Encoding.Default.GetByteCount(value) >= 34)
+               company = value.Substring(0, 24) + "...";
+            else
+               company = value;
+         }
       }
 
       public string Writer
       {
          get { return writer; }
-         set { writer = value; }
+         set {
+            if (Encoding.Default.GetByteCount(value) >= 30)
+               writer = value.Substring(0, 20) + "...";
+            else
+               writer = value;
+         }
       }
 
       public string ISBN

@@ -70,6 +70,8 @@ namespace LibraryManagementUsingDB.Library
             return;
 
          Data.Book book = outputProcessor.PrintBookList(books);
+         if (book == null)
+            return;
          book.Count = outputProcessor.InputBookCount();
 
          if (book!=null && DB.InsertBook(book))

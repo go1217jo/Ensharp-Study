@@ -12,12 +12,12 @@ namespace LibraryManagementUsingDB.NaverAPI
    class SearchEngine
    {
       // keyword : 검색할 문자열
-      public List<Data.Book> SearchBooks(string keyword)
+      public List<Data.Book> SearchBooks(string keyword, int count)
       {
          List<Data.Book> books = null;
          string url = "https://openapi.naver.com/v1/search/book?query=" + keyword; // 결과가 JSON 포맷
 
-         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url + "&display=" + count);
          request.Headers.Add("X-Naver-Client-Id", "NnoFUiv7o5xIs3PKAFKR"); // 클라이언트 아이디
          request.Headers.Add("X-Naver-Client-Secret", "rS50GYs7BX");       // 클라이언트 시크릿
          request.ContentType = "application/json; charset=utf-8";
