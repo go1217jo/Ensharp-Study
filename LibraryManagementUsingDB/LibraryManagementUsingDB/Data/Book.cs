@@ -31,13 +31,14 @@ namespace LibraryManagementUsingDB.Data
       public void PrintInformation()
       {
          outputProcessor = new IOException.OutputProcessor();
-         Console.Write("{0}", outputProcessor.PrintFixString(ISBN, 22));
-         Console.Write("{0}", outputProcessor.PrintFixString(Name, 28));
-         Console.Write("{0}", outputProcessor.PrintFixString(Company, 18));
-         Console.Write("{0}", outputProcessor.PrintFixString(Writer, 20));
+         Console.Write(" {0}", outputProcessor.PrintFixString(ISBN, 26));
+         Console.Write("{0}", outputProcessor.PrintFixString(Name, 50));
+         Console.Write("{0}", outputProcessor.PrintFixString(Company, 34));
+         Console.Write("{0}", outputProcessor.PrintFixString(Writer, 30));
          Console.Write("{0}", outputProcessor.PrintFixString(Price+"", 8));
          Console.Write("{0}", outputProcessor.PrintFixString(Count + "", 6));
          Console.Write("{0}", outputProcessor.PrintFixString(Pubdate, 10));
+         Console.WriteLine();
       }
       
       // 대출 기간이 포함된 정보 출력
@@ -49,6 +50,7 @@ namespace LibraryManagementUsingDB.Data
          Console.Write("{0}", outputProcessor.PrintFixString(Company, 18));
          Console.Write("{0}", outputProcessor.PrintFixString(Writer, 20));
          Console.Write("{0}", outputProcessor.PrintFixString(dueto, 16));
+         Console.WriteLine();
       }
 
       public Book(string name, string company, string writer)
@@ -62,7 +64,16 @@ namespace LibraryManagementUsingDB.Data
       public string Name
       {
          get { return name; }
-         set { name = value; }
+         set {
+            string bookname = "";
+            string[] words = value.Split(new string[] { "<b>", "</b>" }, StringSplitOptions.None);
+            for (int idx = 0; idx < words.Length; idx++)
+               bookname += words[idx];
+
+            if (Encoding.Default.GetByteCount(bookname) >= 50)
+               bookname = bookname.Substring(0, 25) + "...";
+            name = bookname;
+         }
       }
 
       public string Company

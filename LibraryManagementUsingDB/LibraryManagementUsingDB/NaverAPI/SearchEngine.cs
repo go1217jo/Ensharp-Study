@@ -52,7 +52,7 @@ namespace LibraryManagementUsingDB.NaverAPI
          {
             Data.Book book = new Data.Book();
             book.ISBN = items[idx]["isbn"].ToString();
-            book.Name = items[idx]["bookname"].ToString();
+            book.Name = items[idx]["title"].ToString();
             book.Company = items[idx]["publisher"].ToString();
             book.Writer = items[idx]["author"].ToString();
             book.Price = int.Parse(items[idx]["price"].ToString());

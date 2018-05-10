@@ -59,6 +59,27 @@ namespace LibraryManagementUsingDB.IOException
          }
       }
 
+      // ESC를 누르면 나갈 수 있도록 한 개선된 함수
+      public int ChoiceByKeyUsableESC()
+      {
+         switch (PressDirectionKey())
+         {
+            case ConstNumber.UP:
+               Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1);
+               return ConstNumber.UP;
+            case ConstNumber.DOWN:
+               Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop + 1);
+               return ConstNumber.DOWN;
+            case ConstNumber.ENTER:
+               return ConstNumber.ENTER;
+            case ConstNumber.ESC:
+               return ConstNumber.ESC;
+            default:
+               Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
+               return 0;
+         }
+      }
+
       // 한글 자음, 모음만 입력되는 현상 제한
       public bool IsPerfectHangleChar(char checkChar)
       {

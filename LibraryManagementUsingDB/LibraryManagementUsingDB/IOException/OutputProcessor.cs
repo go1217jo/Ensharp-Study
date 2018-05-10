@@ -119,6 +119,7 @@ namespace LibraryManagementUsingDB.IOException
       // 엔터 누르면 다른 화면으로 이동하게 하는 함수
       public void PressAnyKey(string comment)
       {
+         Console.SetWindowSize(70, 10);
          Console.Clear();
          Console.WriteLine("\n  " + comment);
          while (true)
@@ -178,10 +179,10 @@ namespace LibraryManagementUsingDB.IOException
       {
          int choice = 0;
          Console.Clear();
-         Console.SetWindowSize(143, 39);
-         Console.WriteLine("\n ==============================================================================================================");
-         Console.WriteLine("         ISBN             도서명                 출판사              저자            가격    수량    출판일");
-         Console.WriteLine(" ==============================================================================================================");
+         Console.SetWindowSize(167, 40);
+         Console.WriteLine("\n ====================================================================================================================================================================");
+         Console.WriteLine("           ISBN                                  도서명                                    출판사                           저자                가격  수량   출판일");
+         Console.WriteLine(" ====================================================================================================================================================================");
 
          while (true)
          {
@@ -225,7 +226,7 @@ namespace LibraryManagementUsingDB.IOException
          Console.Clear();
          Console.SetWindowSize(143, 39);
          Console.WriteLine("\n ====================================================================================================");
-         Console.WriteLine("        ISBN             도서명                 출판사              저자            반납 기간");
+         Console.WriteLine("        ISBN             도서명                 출판사                  저자            반납 기간");
          Console.WriteLine(" ====================================================================================================");
 
          while (true)
@@ -271,13 +272,18 @@ namespace LibraryManagementUsingDB.IOException
          Console.SetWindowSize(42, 16);
          while (true) {
             Console.Clear();
-            Console.WriteLine("\n   수량을 입력하세요. (50권 이하)\n");
+            Console.WriteLine("\n   수량을 입력하세요. (30권 이하)\n");
             Console.Write("   >> ");
             string input = Console.ReadLine();
-            if (Regex.IsMatch(input, "/(^[1-9]{1}$|^[1-4]{1}[0-9]{1}$|^50$)/gm"))
-               return int.Parse(input);
-            else
-               PressAnyKey("50 이하의 숫자를 입력해주세요.\n  이 화면에서는 돌아갈 수 없습니다.");
+            if (input.Length == 0)
+               continue;
+            if (Regex.IsMatch(input, "^[0-9]*$"))
+            {
+               if (int.Parse(input) <= 30)
+                  return int.Parse(input);
+            }
+            PressAnyKey("50 이하의 숫자를 입력해주세요.\n  이 화면에서는 돌아갈 수 없습니다.");
+            Console.SetWindowSize(42, 16);
          }
       }
 
