@@ -40,6 +40,8 @@ namespace LibraryManagementUsingDB.Member
          string modification = null;
          string attribute = null;
          string studentNo = outputProcessor.PrintMemberList(DB);
+         if (studentNo == null)
+            return;
 
          switch (outputProcessor.MenuScreen(ConsoleUI.MEMBER_MODIFY))
          {

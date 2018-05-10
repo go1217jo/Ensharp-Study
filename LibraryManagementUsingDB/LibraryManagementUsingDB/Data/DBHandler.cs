@@ -124,7 +124,7 @@ namespace LibraryManagementUsingDB.Data
          string sqlQuery = "INSERT INTO book values ('" + ISBN + "', '" + bookname + "', '" + company + "', '" + writer + "', " + price + ", " + count + ", '" + description + "', '" + pubdate + "');";
 
          // 중복되는 도서가 없다면
-         if (!IsOverlapBook(bookname, writer))
+         if (!IsOverlapBook(ISBN))
             return ExecuteQuery(sqlQuery);
          else
             return false;
@@ -179,9 +179,9 @@ namespace LibraryManagementUsingDB.Data
       }
       
       // 중복되는 도서번호가 있는지 확인한다.
-      public bool IsOverlapBook(string bookName, string writer)
+      public bool IsOverlapBook(string ISBN)
       {
-         string sqlQuery = "SELECT ISBN FROM book WHERE bookname = '" + bookName + "' AND writer = '"+writer+"';";
+         string sqlQuery = "SELECT ISBN FROM book WHERE ISBN = '" + ISBN + "';";
          reader = SelectQuery(sqlQuery);
          if (IsThereOneValue(reader, "ISBN"))
             return true;

@@ -135,7 +135,7 @@ namespace LibraryManagementUsingDB.IOException
       // 회원들의 정보를 출력한다.
       public string PrintMemberList(Data.DBHandler DB)
       {
-         int choice = 0;
+         int choice = 0, pressedKey = 0;
          List<Data.Student> students = null;
          Console.SetWindowSize(79, 39);
          Console.Clear();
@@ -162,8 +162,12 @@ namespace LibraryManagementUsingDB.IOException
             }
             Console.SetCursorPosition(0, 4 + choice);
 
-            if (inputProcessor.ChoiceByKey())
+            // 엔터를 치면 선택된 인덱스를 반환한다.
+            pressedKey = inputProcessor.ChoiceByKeyUsableESC();
+            if (pressedKey == ConstNumber.ENTER)
                return students[choice].StudentNo;
+            else if (pressedKey == ConstNumber.ESC)
+               return null;
 
             if (Console.CursorTop < 4)
                Console.SetCursorPosition(Console.CursorLeft, 4);

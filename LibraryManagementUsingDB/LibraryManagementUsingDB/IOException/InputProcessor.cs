@@ -394,7 +394,7 @@ namespace LibraryManagementUsingDB.IOException
             if (input.Length == 0)
             {
                // 입력되면서 화면에 표시되었던 문자열을 지우고 커서를 다시 위치시킨다.
-               Console.SetCursorPosition(5, screenHeight - 2);
+               Console.SetCursorPosition(5, screenHeight - 3);
                Console.WriteLine("잘못된 입력 : 입력되지 않음");
                Console.SetCursorPosition(cursorLeft, cursorTop);
                Console.Write("                ");
