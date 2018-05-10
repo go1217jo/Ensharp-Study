@@ -28,6 +28,7 @@ namespace ImageSearch
       public MainWindow()
       {
          InitializeComponent();
+         this.ResizeMode = ResizeMode.NoResize; 
          imageViewControl = new ImageViewControl(DB);
          
          MainGrid.Children.Add(mainControl);

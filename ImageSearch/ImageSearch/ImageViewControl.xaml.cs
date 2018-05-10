@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json.Linq;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace ImageSearch
 {
@@ -24,9 +25,12 @@ namespace ImageSearch
    /// </summary>
    public partial class ImageViewControl : UserControl
    {
+      // 처음 클릭시간 저장
       DateTime mouseLastClick = DateTime.Now.AddSeconds(-1);
+
       Hashtable hashtable = new Hashtable();
       Data.DBHandler DB;
+      Window imageViewer;
 
       public ImageViewControl(Data.DBHandler DB)
       {
@@ -38,15 +42,16 @@ namespace ImageSearch
       {
          viewPanel.Children.Clear();
          int count = (cbx_count.SelectedIndex + 1) * 10;
-         if (!txtSearchBox.Text.Equals(""))
+
+         if (!(txtSearchBox.Text.Equals("") || txtSearchBox.Text.Contains("\\") || txtSearchBox.Text.Contains("/") || txtSearchBox.Text.Contains(".")))
          {
             HttpGet(txtSearchBox.Text, count);
             // 검색했던 키워드가 없어 갱신에 실패했다면 로그 추가
-            if(!DB.UpdateTime(txtSearchBox.Text))
+            if (!DB.UpdateTime(txtSearchBox.Text))
                DB.InsertLog(txtSearchBox.Text);
          }
          else
-            MessageBox.Show("검색어를 입력해주세요.");
+            MessageBox.Show("올바른 검색어를 입력해주세요.");
       }
       
       public bool HttpGet(string POI, int count)
@@ -82,7 +87,11 @@ namespace ImageSearch
       {
          var json = JObject.Parse(responseFromServer);
          var documents = json["documents"];
-         
+
+         if (documents.Count() == 0)
+            MessageBox.Show("검색결과가 없습니다.");
+
+         // 이미지를 로드하고 이미지 패널에 출력한다
          for(int i=0; i < documents.Count(); i++)
          {
             BitmapImage bitmap = new BitmapImage(new Uri(documents[i]["image_url"].ToString()));
@@ -97,15 +106,28 @@ namespace ImageSearch
       // 이미지 클릭 시 이미지 크게 보기
       public void Image_Click(object sender, RoutedEventArgs e)
       {
-         Image image = new Image();
-         // 현재 클릭된 이미지 소스를 가지고 옴
-         image.Source = (BitmapImage)hashtable[sender];
-         Window imageViewer = new ImageViewer(image);
+         if ((DateTime.Now - mouseLastClick).Milliseconds < 200)
+         {
+            Image image = new Image();
+            // 현재 클릭된 이미지 소스를 가지고 옴
+            image.Source = ((BitmapImage)hashtable[sender]).Clone();
+            image.AddHandler(MouseDownEvent, new RoutedEventHandler(Image_Close_Click));
+            imageViewer = new ImageViewer(image);
          
-         // 이미지 보기 창을 맨 위에 띄움
-         imageViewer.Topmost = true;
-         // 이미지 보기 창 띄우기
-         imageViewer.Show();
+            // 이미지 보기 창을 맨 위에 띄움
+            imageViewer.Topmost = true;
+            // 이미지 보기 창 띄우기
+            imageViewer.Show();
+
+            mouseLastClick = DateTime.Now.AddSeconds(-1);
+         }
+         else
+            mouseLastClick = DateTime.Now;
+      }
+
+      public void Image_Close_Click(object sender, RoutedEventArgs e)
+      {
+         imageViewer.Close();
       }
    }
 }

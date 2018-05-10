@@ -42,6 +42,7 @@ namespace ImageSearch.Data
          return command.ExecuteReader();
       }
 
+      // 쿼리 명령문을 실행하고 성공 여부를 반환
       public bool ExecuteQuery(string query)
       {
          command = new MySqlCommand(query, connect);
