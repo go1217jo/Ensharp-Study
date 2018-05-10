@@ -137,16 +137,15 @@ namespace LibraryManagementUsingDB
          Console.Write("ESC : 돌아가기");
       }
 
-      public static void PrintRegisterBook()
+      // API를 통해 책을 검색하는 화면
+      public static void PrintAPISearchBook()
       {
          Console.SetWindowSize(42, 25);
          Console.Clear();
          PrintLogo();
-         Console.WriteLine("\n\t\t<도서 추가>");
+         Console.WriteLine("\n\t\t<도서 검색>");
          Console.WriteLine("\n    도서명 > ");
-         Console.WriteLine("\n    출판사 > ");
-         Console.WriteLine("\n      저자 > ");
-
+         
          Console.SetCursorPosition(3, 23);
          Console.Write("ESC : 돌아가기");
 

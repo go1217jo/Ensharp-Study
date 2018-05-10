@@ -63,11 +63,11 @@ namespace LibraryManagementUsingDB.Library
       // 현재 존재하는 전체 책 목록을 출력 후 대여
       public void RentalBookOfAll()
       {
-         string bookno = output.PrintBookList(DB);
-         if (bookno == null)
+         Data.Book book = output.PrintBookList(DB.GetAllBooks());
+         if (book == null)
             return;
 
-         Rental(bookno);
+         Rental(book.ISBN);
       }
 
       // 대여, 연장, 반납을 하는 함수

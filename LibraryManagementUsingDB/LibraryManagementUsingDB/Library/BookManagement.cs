@@ -35,16 +35,6 @@ namespace LibraryManagementUsingDB.Library
          bookno = DB.GetBookCount() + 1;
       }
 
-      // 도서번호를 생성한다.
-      public string CreateBookNo()
-      {
-         string returnbookno = "";
-         for (int i = 0; i < 6 - (bookno + "").Length; i++)
-            returnbookno += "0";
-         returnbookno += (bookno + "");
-         return returnbookno;
-      }
-
       // 유저로 로그인 시 이용 가능한 메뉴
       public void UserRentalSystem()
       {
@@ -74,62 +64,39 @@ namespace LibraryManagementUsingDB.Library
       // 책 추가
       public void AddBook()
       {
-         Data.Book book;
-         book = outputProcessor.BookRegistrationScreen();
-         if (book == null)
+         List<Data.Book> books;
+         books = outputProcessor.APISearchScreen();
+         if (books == null)
             return;
 
-         book.BookNo = CreateBookNo();
-         if (DB.InsertBook(book))
+         Data.Book book = outputProcessor.PrintBookList(books);
+         book.Count = outputProcessor.InputBookCount();
+
+         if (book!=null && DB.InsertBook(book))
             outputProcessor.PressAnyKey(book.Name + "이 등록되었습니다.");
          else
             outputProcessor.PressAnyKey("책 등록 실패");
       }
 
-      // 책 수정
-      public void AlterBook()
+      // 책 수량 수정
+      public void AlterBookCount()
       {
-         string modification = null;
-         string attribute = null;
-         string bookNo = outputProcessor.PrintBookList(DB);
-
-         switch (outputProcessor.MenuScreen(ConsoleUI.BOOK_MODIFY))
-         {
-            // 책 이름 수정
-            case ConstNumber.MENULIST_1:
-               modification = outputProcessor.GetBookInformation(ConstNumber.BOOK_NAME);
-               attribute = "bookname";
-               break;
-            // 책 출판사 수정
-            case ConstNumber.MENULIST_2:
-               modification = outputProcessor.GetBookInformation(ConstNumber.BOOK_COMPANY);
-               attribute = "company";
-               break;
-            // 멤버 전화번호 수정
-            case ConstNumber.MENULIST_3:
-               modification = outputProcessor.GetBookInformation(ConstNumber.BOOK_WRITER);
-               attribute = "writer";
-               break;
-            case ConstNumber.MENULIST_4:
-               return;
-         }
-         if (modification == null)
+         Data.Book book = outputProcessor.PrintBookList(DB.GetAllBooks());
+         if (book == null)
             return;
 
-         // DB에서 변경
-         if (!DB.UpdateBookInformation(bookNo, modification, attribute))
-            outputProcessor.PressAnyKey("책 정보 수정 실패");
+         DB.ModifyBookCount(book.ISBN, outputProcessor.InputBookCount());
       }
 
       // 책 삭제
       public void DeleteBook()
       {
          Console.Clear();
-         string bookno = outputProcessor.PrintBookList(DB);
+         Data.Book book = outputProcessor.PrintBookList(DB.GetAllBooks());
 
          if (outputProcessor.YesOrNo("해당 책을 정말 삭제하시겠습니까?") == 1)
          {
-            if (!DB.DeleteBook(bookno))
+            if (!DB.DeleteBook(book.ISBN))
                outputProcessor.PressAnyKey("삭제할 책이 존재하지 않습니다.");
          }
       }
@@ -148,13 +115,13 @@ namespace LibraryManagementUsingDB.Library
                case ConstNumber.MENULIST_2:
                   DeleteBook();
                   break;
-               // 서적 수정
+               // 서적 수량 수정
                case ConstNumber.MENULIST_3:
-                  AlterBook();
+                  AlterBookCount();
                   break;
                // 전체 보기
                case ConstNumber.MENULIST_4:
-                  outputProcessor.PrintBookList(DB);
+                  outputProcessor.PrintBookList(DB.GetAllBooks());
                   break;
                case ConstNumber.MENULIST_5:
                   return;

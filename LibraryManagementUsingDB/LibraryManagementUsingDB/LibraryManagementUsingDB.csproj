@@ -40,6 +40,9 @@
       <HintPath>..\packages\MySql.Data.8.0.11\lib\net452\MySql.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -62,6 +65,7 @@
     <Compile Include="ConstNumber.cs" />
     <Compile Include="Data\Book.cs" />
     <Compile Include="Data\DBHandler.cs" />
+    <Compile Include="Data\Log.cs" />
     <Compile Include="Data\Student.cs" />
     <Compile Include="IOException\CursorPoint.cs" />
     <Compile Include="IOException\InputProcessor.cs" />
@@ -70,6 +74,8 @@
     <Compile Include="Library\RentalManagement.cs" />
     <Compile Include="Member\LoginManagement.cs" />
     <Compile Include="Member\MemberManagement.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="NaverAPI\SearchEngine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

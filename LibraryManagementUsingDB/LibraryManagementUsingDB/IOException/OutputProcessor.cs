@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LibraryManagementUsingDB.IOException
@@ -173,20 +174,18 @@ namespace LibraryManagementUsingDB.IOException
          }
       }
 
-      public string PrintBookList(Data.DBHandler DB)
+      public Data.Book PrintBookList(List<Data.Book> books)
       {
          int choice = 0;
-         List<Data.Book> books = null;
          Console.Clear();
-         Console.SetWindowSize(103, 39);
-         Console.WriteLine("\n ====================================================================================================");
-         Console.WriteLine("   도서번호             도서명                 출판사              저자            대출 여부     ");
-         Console.WriteLine(" ====================================================================================================");
+         Console.SetWindowSize(143, 39);
+         Console.WriteLine("\n ==============================================================================================================");
+         Console.WriteLine("         ISBN             도서명                 출판사              저자            가격    수량    출판일");
+         Console.WriteLine(" ==============================================================================================================");
 
          while (true)
          {
             Console.SetCursorPosition(0, 4);
-            books = DB.GetAllBooks();
             if (books.Count == 0)
             {
                PressAnyKey("도서가 없습니다.");
@@ -206,7 +205,7 @@ namespace LibraryManagementUsingDB.IOException
 
             // 엔터를 치면 선택된 인덱스를 반환한다.
             if (inputProcessor.ChoiceByKey())
-               return books[choice].BookNo;
+               return books[choice];
 
             // 커서의 위아래 이동 구간을 제한한다.
             if (Console.CursorTop < 4)
@@ -224,9 +223,9 @@ namespace LibraryManagementUsingDB.IOException
          int choice = 0;
          List<Data.Book> books = null;
          Console.Clear();
-         Console.SetWindowSize(103, 39);
+         Console.SetWindowSize(143, 39);
          Console.WriteLine("\n ====================================================================================================");
-         Console.WriteLine("   도서번호             도서명                 출판사              저자            반납 기간");
+         Console.WriteLine("        ISBN             도서명                 출판사              저자            반납 기간");
          Console.WriteLine(" ====================================================================================================");
 
          while (true)
@@ -255,7 +254,7 @@ namespace LibraryManagementUsingDB.IOException
 
             // 엔터를 치면 선택된 인덱스를 반환한다.
             if (inputProcessor.ChoiceByKey())
-               return books[choice].BookNo;
+               return books[choice].ISBN;
 
             // 커서의 위아래 이동 구간을 제한한다.
             if (Console.CursorTop < 4)
@@ -265,6 +264,20 @@ namespace LibraryManagementUsingDB.IOException
 
             // 커서 위치에 따른 메뉴 선택
             choice = Console.CursorTop - 4;
+         }
+      }
+      public int InputBookCount()
+      {
+         Console.SetWindowSize(42, 16);
+         while (true) {
+            Console.Clear();
+            Console.WriteLine("\n   수량을 입력하세요. (50권 이하)\n");
+            Console.Write("   >> ");
+            string input = Console.ReadLine();
+            if (Regex.IsMatch(input, "/(^[1-9]{1}$|^[1-4]{1}[0-9]{1}$|^50$)/gm"))
+               return int.Parse(input);
+            else
+               PressAnyKey("50 이하의 숫자를 입력해주세요.\n  이 화면에서는 돌아갈 수 없습니다.");
          }
       }
 
@@ -404,27 +417,20 @@ namespace LibraryManagementUsingDB.IOException
          return modification;
       }
 
-      public Data.Book BookRegistrationScreen()
+      // API를 통해 책을 검색하는 화면
+      public List<Data.Book> APISearchScreen()
       {
-         Data.Book book = new Data.Book();
-         ConsoleUI.PrintRegisterBook();
+         string keyword;
+         NaverAPI.SearchEngine engine = new NaverAPI.SearchEngine();
+         ConsoleUI.PrintAPISearchBook();
 
-         // 각각 항목들에 대해 문자열을 입력받는다.
+         // 검색어를 입력받는다.
          Console.SetCursorPosition(14, 11);
-         book.Name = inputProcessor.ReadAndCheckString(25, 25, 14, 11);
-         if (book.Name == null)
-            return null;
-         Console.SetCursorPosition(14, 13);
-         book.Company = inputProcessor.ReadAndCheckString(15, 25, 14, 13);
-         if (book.Company == null)
-            return null;
-         Console.SetCursorPosition(14, 15);
-         book.Writer = inputProcessor.ReadAndCheckString(20, 25, 14, 15);
-         if (book.Writer == null)
+         keyword = inputProcessor.ReadAndCheckString(25, 25, 14, 11);
+         if (keyword == null)
             return null;
 
-         return book;
+         return engine.SearchBooks(keyword);
       }
-
    }
 }

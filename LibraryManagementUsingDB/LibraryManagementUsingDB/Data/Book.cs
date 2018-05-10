@@ -11,11 +11,16 @@ namespace LibraryManagementUsingDB.Data
    /// </summary>
    class Book
    {
-      // 이름, 출판사, 저자, 책번호, 대출여부
+      // 책번호, 이름, 출판사, 저자, 가격, 수량, 설명, 대출여부
+      private string isbn;
       private string name;
       private string company;
       private string writer;
-      private string bookNo;
+      private int price;
+      private int count;
+      private string pubdate;
+      private string description;
+      
       private bool rental;
       public string dueto;
       public IOException.OutputProcessor outputProcessor;
@@ -26,21 +31,20 @@ namespace LibraryManagementUsingDB.Data
       public void PrintInformation()
       {
          outputProcessor = new IOException.OutputProcessor();
-         Console.Write("{0}", outputProcessor.PrintFixString(BookNo, 13));
+         Console.Write("{0}", outputProcessor.PrintFixString(ISBN, 22));
          Console.Write("{0}", outputProcessor.PrintFixString(Name, 28));
          Console.Write("{0}", outputProcessor.PrintFixString(Company, 18));
          Console.Write("{0}", outputProcessor.PrintFixString(Writer, 20));
-         if (Rental)
-            Console.WriteLine("     대출 중    ");
-         else
-            Console.WriteLine("     보유 중    ");
+         Console.Write("{0}", outputProcessor.PrintFixString(Price+"", 8));
+         Console.Write("{0}", outputProcessor.PrintFixString(Count + "", 6));
+         Console.Write("{0}", outputProcessor.PrintFixString(Pubdate, 10));
       }
-
+      
       // 대출 기간이 포함된 정보 출력
       public void PrintDuetoInformation()
       {
          outputProcessor = new IOException.OutputProcessor();
-         Console.Write("{0}", outputProcessor.PrintFixString(BookNo, 13));
+         Console.Write("{0}", outputProcessor.PrintFixString(ISBN, 13));
          Console.Write("{0}", outputProcessor.PrintFixString(Name, 28));
          Console.Write("{0}", outputProcessor.PrintFixString(Company, 18));
          Console.Write("{0}", outputProcessor.PrintFixString(Writer, 20));
@@ -73,16 +77,40 @@ namespace LibraryManagementUsingDB.Data
          set { writer = value; }
       }
 
-      public string BookNo
+      public string ISBN
       {
-         get { return bookNo; }
-         set { bookNo = value; }
+         get { return isbn; }
+         set { isbn = value; }
       }
 
       public bool Rental
       {
          get { return rental; }
          set { rental = value; }
+      }
+
+      public int Price
+      {
+         get { return price; }
+         set { price = value; }
+      }
+
+      public int Count
+      {
+         get { return count; }
+         set { count = value; }
+      }
+
+      public string Pubdate
+      {
+         get { return pubdate; }
+         set { pubdate = value; }
+      }
+
+      public string Description
+      {
+         get { return description; }
+         set { description = value; }
       }
    }
 }

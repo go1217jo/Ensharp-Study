@@ -116,9 +116,7 @@ namespace LibraryManagementUsingDB.Member
             }
             // 둘 다 아니면 로그인 실패
             else
-            {
                student.status = ConstNumber.LOGIN_FAIL;
-            }
          }
          
          return student;
