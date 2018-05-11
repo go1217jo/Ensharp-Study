@@ -45,7 +45,17 @@ namespace LibraryManagementUsingDB.Data
 
       public void ExportLog()
       {
-
+         List<Data.Log> logs = DB.ViewAllLog();
+         using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\log.txt", false))
+         {
+            file.WriteLine(" ============================================================================================================");
+            file.WriteLine("          발생시간          실행자                          키워드                                로그 유형");
+            file.WriteLine(" ============================================================================================================");
+            for (int i = 0; i < logs.Count; i++)
+               file.WriteLine(logs[i].PrintLogInformation());
+         }
+         outputProcessor.PressAnyKey("로그가 성공적으로 저장되었습니다.");
       }
    }
 }

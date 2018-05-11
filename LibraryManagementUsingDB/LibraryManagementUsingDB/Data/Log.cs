@@ -13,14 +13,13 @@ namespace LibraryManagementUsingDB.Data
       private string keyword;
       private string type;
 
-      public void PrintLogInformation()
+      public string PrintLogInformation()
       {
          IOException.OutputProcessor outputProcessor = new IOException.OutputProcessor();
-         Console.Write("  ");
-         Console.Write(outputProcessor.PrintFixString(logTime, 22));
-         Console.Write(outputProcessor.PrintFixString(membername, 12));
-         Console.Write(outputProcessor.PrintFixString(keyword, 54));
-         Console.WriteLine(outputProcessor.PrintFixString(type, 22));
+         return "  " + outputProcessor.PrintFixString(logTime, 22)
+         + outputProcessor.PrintFixString(membername, 12)
+         + outputProcessor.PrintFixString(keyword, 54)
+         + outputProcessor.PrintFixString(type, 22);
       }
 
       public string LogTime

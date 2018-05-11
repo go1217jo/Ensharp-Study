@@ -455,13 +455,13 @@ namespace LibraryManagementUsingDB.IOException
       public void ViewAllLogs(Data.DBHandler DB)
       {
          Console.Clear();
-         Console.SetWindowSize(120, 40);
+         Console.SetWindowSize(111, 40);
          Console.WriteLine("\n ============================================================================================================");
          Console.WriteLine("          발생시간          실행자                          키워드                                로그 유형");
          Console.WriteLine(" ============================================================================================================");
          List<Data.Log> logs = DB.ViewAllLog();
          for (int idx = 0; idx < logs.Count; idx++)
-            logs[idx].PrintLogInformation();
+            Console.WriteLine(logs[idx].PrintLogInformation());
          Console.ReadKey();
       }
    }
