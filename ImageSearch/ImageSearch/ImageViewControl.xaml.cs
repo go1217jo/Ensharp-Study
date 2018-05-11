@@ -40,12 +40,14 @@ namespace ImageSearch
          txtSearchBox.Focus();
       }
 
+      // 엔터가 눌리면 검색 이벤트 발생
       public void txt_KeyDown(object sender, KeyEventArgs e)
       {
          if(e.Key == Key.Enter)
             Btn_search_Click(sender, e);
       }
 
+      // 검색버튼 누르기 이벤트
       public void Btn_search_Click(object sender, RoutedEventArgs e)
       {
          viewPanel.Children.Clear();
@@ -62,6 +64,7 @@ namespace ImageSearch
             MessageBox.Show("올바른 검색어를 입력해주세요.");
       }
       
+      // 개수 만큼 이미지를 검색함
       public bool HttpGet(string POI, int count)
       {
          string app_key = "bfad53875abbf0b4112cb53a3c24e202";
@@ -82,7 +85,7 @@ namespace ImageSearch
          StreamReader reader = new StreamReader(respPostStream, Encoding.GetEncoding("EUC-KR"), true);
          string responseFromServer = reader.ReadToEnd();
 
-         AddSearchedImage(responseFromServer);
+         AddSearchedImage(responseFromServer, POI);
 
          reader.Close();
          respPostStream.Close();
@@ -91,7 +94,8 @@ namespace ImageSearch
          return true;
       }
 
-      public void AddSearchedImage(string responseFromServer)
+      // 검색된 이미지를 패널에 추가한다
+      public void AddSearchedImage(string responseFromServer, string POI)
       {
          var json = JObject.Parse(responseFromServer);
          var documents = json["documents"];
@@ -102,7 +106,12 @@ namespace ImageSearch
          // 이미지를 로드하고 이미지 패널에 출력한다
          for (int idx = 0; idx < documents.Count(); idx++)
          {
-            BitmapImage bitmap = new BitmapImage(new Uri(documents[idx]["image_url"].ToString()));
+            BitmapImage bitmap;
+            // 발견된 예외를 제외하고 고화질로 받아옴
+            if (POI.Equals("던파") || POI.Equals("더블 클릭") || POI.Equals("더블클릭"))
+               bitmap = new BitmapImage(new Uri(documents[idx]["thumbnail_url"].ToString()));
+            else
+               bitmap = new BitmapImage(new Uri(documents[idx]["image_url"].ToString()));
             Image image = new Image();
             image.AddHandler(MouseDownEvent, new RoutedEventHandler(Image_Click));
             image.Source = bitmap;
@@ -133,6 +142,7 @@ namespace ImageSearch
             mouseLastClick = DateTime.Now;
       }
 
+      // 이미지 뷰어 닫기
       public void Image_Close_Click(object sender, RoutedEventArgs e)
       {
          imageViewer.Close();

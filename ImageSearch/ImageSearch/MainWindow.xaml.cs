@@ -25,6 +25,7 @@ namespace ImageSearch
       ImageViewControl imageViewControl;
       Data.DBHandler DB = new Data.DBHandler();
 
+      // 메인 윈도우
       public MainWindow()
       {
          InitializeComponent();
@@ -41,12 +42,14 @@ namespace ImageSearch
          recentViewControl.btn_clear.Click += Btn_clear_Click;
       }
 
+      // 이미지 클릭시 이벤트
       private void Btn_image_Click(object sender, RoutedEventArgs e)
       {
          MainGrid.Children.Clear();
          MainGrid.Children.Add(imageViewControl);
       }
 
+      // 최근 검색어 버튼 클릭 시 이벤트
       private void Btn_recent_Click(object sender, RoutedEventArgs e)
       {
          MainGrid.Children.Clear();
@@ -54,6 +57,7 @@ namespace ImageSearch
          MainGrid.Children.Add(recentViewControl);
       }
 
+      // 되돌아가기 버튼 이벤트
       private void Btn_back_Click(object sender, RoutedEventArgs e)
       {
          imageViewControl.viewPanel.Children.Clear();
@@ -64,6 +68,7 @@ namespace ImageSearch
          MainGrid.Children.Add(mainControl);
       }
 
+      // 로그 삭제 버튼 누를 시 이벤트
       private void Btn_deleteLog_Click(object sender, RoutedEventArgs e)
       {
          Data.Log deleteItem = (Data.Log)recentViewControl.list_log.SelectedItem;
@@ -71,6 +76,7 @@ namespace ImageSearch
          recentViewControl.list_log.ItemsSource = DB.ViewAllLog();
       }
 
+      // 로그 초기화 버튼 누를 시 이벤트
       private void Btn_clear_Click(object sender, RoutedEventArgs e)
       {
          DB.ClearTable();
