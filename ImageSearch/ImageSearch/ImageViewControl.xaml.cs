@@ -36,8 +36,16 @@ namespace ImageSearch
       {
          InitializeComponent();
          this.DB = DB;
+         txtSearchBox.KeyDown += new KeyEventHandler(txt_KeyDown);
+         txtSearchBox.Focus();
       }
-                  
+
+      public void txt_KeyDown(object sender, KeyEventArgs e)
+      {
+         if(e.Key == Key.Enter)
+            Btn_search_Click(sender, e);
+      }
+
       public void Btn_search_Click(object sender, RoutedEventArgs e)
       {
          viewPanel.Children.Clear();
@@ -63,7 +71,7 @@ namespace ImageSearch
          StringBuilder getParams = new StringBuilder();
          getParams.Append("?query=" + POI);
 
-         HttpWebRequest wReqFirst = (HttpWebRequest)WebRequest.Create(Url+getParams+"&size="+count);
+         HttpWebRequest wReqFirst = (HttpWebRequest)WebRequest.Create(Url+getParams + "&size=" + count);
          wReqFirst.Headers.Add("Authorization", header);
          wReqFirst.ContentType = "application/json; charset=utf-8";
          wReqFirst.Method = "GET";
@@ -74,7 +82,7 @@ namespace ImageSearch
          StreamReader reader = new StreamReader(respPostStream, Encoding.GetEncoding("EUC-KR"), true);
          string responseFromServer = reader.ReadToEnd();
 
-         AddSearchedImage(responseFromServer, count);
+         AddSearchedImage(responseFromServer);
 
          reader.Close();
          respPostStream.Close();
@@ -83,7 +91,7 @@ namespace ImageSearch
          return true;
       }
 
-      public void AddSearchedImage(string responseFromServer, int count)
+      public void AddSearchedImage(string responseFromServer)
       {
          var json = JObject.Parse(responseFromServer);
          var documents = json["documents"];
@@ -92,9 +100,9 @@ namespace ImageSearch
             MessageBox.Show("검색결과가 없습니다.");
 
          // 이미지를 로드하고 이미지 패널에 출력한다
-         for(int i=0; i < documents.Count(); i++)
+         for (int idx = 0; idx < documents.Count(); idx++)
          {
-            BitmapImage bitmap = new BitmapImage(new Uri(documents[i]["image_url"].ToString()));
+            BitmapImage bitmap = new BitmapImage(new Uri(documents[idx]["image_url"].ToString()));
             Image image = new Image();
             image.AddHandler(MouseDownEvent, new RoutedEventHandler(Image_Click));
             image.Source = bitmap;
