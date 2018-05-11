@@ -456,10 +456,13 @@ namespace LibraryManagementUsingDB.IOException
       {
          Console.Clear();
          Console.SetWindowSize(120, 40);
-         Console.WriteLine("\n =======================================================================================================");
-         Console.WriteLine("         발생시간          실행자                           키워드                               로그유형                                    출판사                           저자                가격  수량   출판일");
-         Console.WriteLine(" ===========================================================================================================");
-         
+         Console.WriteLine("\n ============================================================================================================");
+         Console.WriteLine("          발생시간          실행자                          키워드                                로그 유형");
+         Console.WriteLine(" ============================================================================================================");
+         List<Data.Log> logs = DB.ViewAllLog();
+         for (int idx = 0; idx < logs.Count; idx++)
+            logs[idx].PrintLogInformation();
+         Console.ReadKey();
       }
    }
 }
