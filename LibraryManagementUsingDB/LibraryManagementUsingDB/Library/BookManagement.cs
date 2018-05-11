@@ -74,8 +74,12 @@ namespace LibraryManagementUsingDB.Library
             return;
          book.Count = outputProcessor.InputBookCount();
 
-         if (book!=null && DB.InsertBook(book))
+         if (book != null && DB.InsertBook(book))
+         {
             outputProcessor.PressAnyKey(book.Name + "이 등록되었습니다.");
+            // 로그 기록
+            DB.InsertLog("관리자", book.Name, "도서 추가");
+         }
          else
             outputProcessor.PressAnyKey("책 등록 실패");
       }
@@ -87,7 +91,8 @@ namespace LibraryManagementUsingDB.Library
          if (book == null)
             return;
 
-         DB.ModifyBookCount(book.ISBN, outputProcessor.InputBookCount());
+         if (DB.ModifyBookCount(book.ISBN, outputProcessor.InputBookCount()))
+            DB.InsertLog("관리자", book.Name, "수량 수정");  // 로그 기록
       }
 
       // 책 삭제
@@ -101,6 +106,8 @@ namespace LibraryManagementUsingDB.Library
          {
             if (!DB.DeleteBook(book.ISBN))
                outputProcessor.PressAnyKey("삭제할 책이 존재하지 않습니다.");
+            // 로그 기록
+            DB.InsertLog("관리자", book.Name, "도서 삭제");
          }
       }
 

@@ -66,6 +66,7 @@
     <Compile Include="Data\Book.cs" />
     <Compile Include="Data\DBHandler.cs" />
     <Compile Include="Data\Log.cs" />
+    <Compile Include="Data\LogManagement.cs" />
     <Compile Include="Data\Student.cs" />
     <Compile Include="IOException\CursorPoint.cs" />
     <Compile Include="IOException\InputProcessor.cs" />

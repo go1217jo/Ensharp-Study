@@ -131,7 +131,12 @@ namespace LibraryManagementUsingDB.Data
       public string Description
       {
          get { return description; }
-         set { description = value; }
+         set {
+            if (value.Length >= 256)
+               description = value.Substring(0, 255);
+            else
+               description = value;
+         }
       }
    }
 }

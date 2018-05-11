@@ -47,6 +47,7 @@ namespace LibraryManagementUsingDB.Member
       {
          MemberManagement memberManagement = new MemberManagement(DB, outputProcessor);
          Library.BookManagement bookManagement = new Library.BookManagement(DB, outputProcessor);
+         Data.LogManagement logManagement = new Data.LogManagement(DB, outputProcessor);
          while (true)
          {
             switch(outputProcessor.MenuScreen(ConsoleUI.ADMIN_MENU))
@@ -58,6 +59,9 @@ namespace LibraryManagementUsingDB.Member
                   bookManagement.ManageBooks();
                   break;
                case ConstNumber.MENULIST_3:
+                  logManagement.ManageLog();
+                  break;
+               case ConstNumber.MENULIST_4:
                   return;
             }
          }
@@ -112,6 +116,7 @@ namespace LibraryManagementUsingDB.Member
             if (CheckAdminLogin(student))
             {
                outputProcessor.PressAnyKey("관리자님 환영합니다.");
+               student.name = "관리자";
                student.status = ConstNumber.LOGIN_ADMIN;
             }
             // 둘 다 아니면 로그인 실패

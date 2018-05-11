@@ -450,5 +450,16 @@ namespace LibraryManagementUsingDB.IOException
 
          return engine.SearchBooks(keyword, count);
       }
+
+      // 로그 전체 보기
+      public void ViewAllLogs(Data.DBHandler DB)
+      {
+         Console.Clear();
+         Console.SetWindowSize(120, 40);
+         Console.WriteLine("\n =======================================================================================================");
+         Console.WriteLine("         발생시간          실행자                           키워드                               로그유형                                    출판사                           저자                가격  수량   출판일");
+         Console.WriteLine(" ===========================================================================================================");
+         
+      }
    }
 }

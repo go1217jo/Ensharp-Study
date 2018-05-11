@@ -29,7 +29,10 @@ namespace LibraryManagementUsingDB.Member
          if (student == null)
             return;
          if (DB.InsertMember(student))
+         {
             outputProcessor.PressAnyKey(student.name + " 회원님이 등록되었습니다.");
+            DB.InsertLog("관리자", student.StudentNo, "회원 추가");
+         }
          else
             outputProcessor.PressAnyKey("회원 등록 실패");
       }
@@ -70,6 +73,9 @@ namespace LibraryManagementUsingDB.Member
          // DB에서 변경
          if (!DB.UpdateMemberInformation(studentNo, modification, attribute))
             outputProcessor.PressAnyKey("회원 수정 실패 : 중복 학번");
+         else
+            DB.InsertLog("관리자", studentNo, "회원 수정");
+
       }
 
       // 멤버 삭제
@@ -85,6 +91,8 @@ namespace LibraryManagementUsingDB.Member
          {
             if (!DB.DeleteMember(studentNo))
                outputProcessor.PressAnyKey("삭제할 멤버가 존재하지 않습니다.");
+            else
+               DB.InsertLog("관리자", studentNo, "회원 삭제");
          }
       }
 
