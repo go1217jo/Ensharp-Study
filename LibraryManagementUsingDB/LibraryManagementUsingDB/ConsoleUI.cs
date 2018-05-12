@@ -145,7 +145,7 @@ namespace LibraryManagementUsingDB
          Console.Clear();
          PrintLogo();
          Console.WriteLine("\n\t\t<도서 검색>");
-         Console.WriteLine("\n    도서명 > ");
+         Console.WriteLine("\n    검색어 > ");
          Console.WriteLine("\n 검색 개수 > ");
          
          Console.SetCursorPosition(3, 23);

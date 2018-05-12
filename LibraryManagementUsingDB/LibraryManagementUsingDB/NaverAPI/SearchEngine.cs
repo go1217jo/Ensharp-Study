@@ -55,7 +55,8 @@ namespace LibraryManagementUsingDB.NaverAPI
             book.Name = items[idx]["title"].ToString();
             book.Company = items[idx]["publisher"].ToString();
             book.Writer = items[idx]["author"].ToString();
-            book.Price = int.Parse(items[idx]["price"].ToString());
+            // 가격이 소수점으로 들어오는 거 방지
+            book.Price = int.Parse(items[idx]["price"].ToString().Split('.')[0]);
             book.Pubdate = items[idx]["pubdate"].ToString();
             book.Description = items[idx]["description"].ToString();
             book.Count = 9999;

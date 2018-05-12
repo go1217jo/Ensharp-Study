@@ -33,8 +33,14 @@ namespace LibraryManagementUsingDB.Data
                   break;
                // 로그 초기화
                case ConstNumber.MENULIST_3:
-                  if(outputProcessor.YesOrNo("로그를 초기화하시겠습니까?") == 1)
+                  if (outputProcessor.YesOrNo("로그를 초기화하시겠습니까?") == 1)
+                  {
+                     // 로그 테이블 초기화
                      DB.ClearTable();
+                     // 이전 로그 파일이 존재하면 삭제
+                     if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\log.txt"))
+                        System.IO.File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\log.txt");
+                  }
                   break;
                // 돌아 가기
                case ConstNumber.MENULIST_4:
