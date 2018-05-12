@@ -19,6 +19,7 @@ namespace LibraryManagementUsingDB
       public static string[] BOOK_MODIFY = { "도서명 수정", "출판사 수정", "저자 수정", "돌아 가기" };
       public static string[] MEMBER_MODIFY = { "회원명 수정", "주소 수정", "전화번호 수정", "돌아 가기" };
       public static string[] LOG_MENU = { "로그 보기", "로그 내보내기", "로그 초기화", "돌아 가기" };
+      public static string[] Tray_Menu = { " 도서 선택 ", "책 상세보기" };
 
       // 로그인 화면
       public static int PrintLoginPage()
@@ -150,7 +151,13 @@ namespace LibraryManagementUsingDB
          
          Console.SetCursorPosition(3, 23);
          Console.Write("ESC : 돌아가기");
+      }
 
+      public static void PrintBookListHeader()
+      {
+         Console.WriteLine("\n ====================================================================================================================================================================");
+         Console.WriteLine("           ISBN                                  도서명                                    출판사                           저자               가격   수량   출판일");
+         Console.WriteLine(" ====================================================================================================================================================================");
       }
    }
 }

@@ -32,7 +32,7 @@ namespace LibraryManagementUsingDB.Data
          outputProcessor = new IOException.OutputProcessor();
          Console.Write(" {0}", outputProcessor.PrintFixString(ISBN, 26));
          Console.Write("{0}", outputProcessor.PrintFixString(Name, 50));
-         Console.Write("{0}", outputProcessor.PrintFixString(Company, 34));
+         Console.Write("{0}", outputProcessor.PrintFixString(Company, 30));
          Console.Write("{0}", outputProcessor.PrintFixString(Writer, 30));
          Console.Write("{0}", outputProcessor.PrintFixString(Price+"", 8));
          Console.Write("{0}", outputProcessor.PrintFixString(Count + "", 6));
@@ -71,7 +71,7 @@ namespace LibraryManagementUsingDB.Data
       {
          get {
             if (Encoding.Default.GetByteCount(name) >= 50)
-               return name.Substring(0, 25) + "...";
+               return name.Substring(0, 25) + "..";
             else
                return name;
          }
@@ -87,8 +87,8 @@ namespace LibraryManagementUsingDB.Data
       public string Company
       {
          get {
-            if (Encoding.Default.GetByteCount(company) >= 34)
-               return company.Substring(0, 17) + "...";
+            if (Encoding.Default.GetByteCount(company) >= 30)
+               return company.Substring(0, 15) + "..";
             else
                return company;
          }
@@ -105,7 +105,7 @@ namespace LibraryManagementUsingDB.Data
       {
          get {
             if (Encoding.Default.GetByteCount(writer) >= 30)
-               return writer.Substring(0, 15) + "...";
+               return writer.Substring(0, 15) + "..";
             else
                return writer;
          }
@@ -146,10 +146,15 @@ namespace LibraryManagementUsingDB.Data
       {
          get { return description; }
          set {
-            if (value.Length >= 256)
-               description = value.Substring(0, 255);
+            string descriptionOrigin = "";
+            string[] words = value.Split(new string[] { "<b>", "</b>" }, StringSplitOptions.None);
+            for (int idx = 0; idx < words.Length; idx++)
+               descriptionOrigin += words[idx];
+
+            if (descriptionOrigin.Length >= 256)
+               description = descriptionOrigin.Substring(0, 255);
             else
-               description = value;
+               description = descriptionOrigin;
          }
       }
 

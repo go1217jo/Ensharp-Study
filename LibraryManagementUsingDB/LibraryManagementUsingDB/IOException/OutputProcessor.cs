@@ -184,10 +184,8 @@ namespace LibraryManagementUsingDB.IOException
          int choice = 0, pressedKey = 0;
          Console.Clear();
          Console.SetWindowSize(167, 45);
-         Console.WriteLine("\n ====================================================================================================================================================================");
-         Console.WriteLine("           ISBN                                  도서명                                    출판사                           저자               가격   수량   출판일");
-         Console.WriteLine(" ====================================================================================================================================================================");
-
+         // 헤더 출력
+         ConsoleUI.PrintBookListHeader();
          while (true)
          {
             Console.SetCursorPosition(0, 4);
@@ -208,10 +206,24 @@ namespace LibraryManagementUsingDB.IOException
             // 첫 행으로 커서를 옮긴다
             Console.SetCursorPosition(0, 4 + choice);
 
-            // 엔터를 치면 선택된 인덱스를 반환한다.
+            // 엔터를 치면 트레이 메뉴를 반환한다.
             pressedKey = inputProcessor.ChoiceByKeyUsableESC();
             if (pressedKey == ConstNumber.ENTER)
-               return books[choice];
+            {
+               switch(TrayMenu(Console.CursorTop + 1))
+               {
+                  case ConstNumber.MENULIST_1:
+                     return books[choice];
+                  case ConstNumber.MENULIST_2:
+                     PrintDetailBookInformation(books[choice]);
+                     break;
+                  default:
+                     break;
+               }
+               Console.Clear();
+               ConsoleUI.PrintBookListHeader();
+               continue;
+            }   
             else if (pressedKey == ConstNumber.ESC)
                return null;
 
@@ -472,6 +484,77 @@ namespace LibraryManagementUsingDB.IOException
          List<Data.Log> logs = DB.ViewAllLog();
          for (int idx = 0; idx < logs.Count; idx++)
             Console.WriteLine(logs[idx].PrintLogInformation());
+         Console.ReadKey();
+      }
+
+      public int TrayMenu(int cursorTop)
+      {
+         int choice = 0, pressedKey = 0;
+         while (true)
+         {
+            // 트레이 메뉴 표시
+            Console.SetCursorPosition(49, cursorTop);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(" =============== ");
+            for (int i = 0; i < ConsoleUI.Tray_Menu.Length; i++)
+            {
+               Console.SetCursorPosition(50, cursorTop + i + 1);
+               Console.Write("| ");
+               // 선택된 행이면 빨간색으로 표시
+               if (choice == i)
+                  Console.ForegroundColor = ConsoleColor.Red;
+               Console.Write(ConsoleUI.Tray_Menu[i]);
+               Console.ForegroundColor = ConsoleColor.Yellow;
+               Console.WriteLine(" |");
+            }
+            Console.SetCursorPosition(49, cursorTop + 3);
+            Console.Write(" =============== ");
+
+            // 첫 행으로 커서를 옮긴다
+            Console.SetCursorPosition(0, cursorTop + choice + 1);
+
+            // 엔터를 치면 선택된 인덱스를 반환한다.
+            pressedKey = inputProcessor.ChoiceByKeyUsableESC();
+            if (pressedKey == ConstNumber.ENTER) {
+               Console.ForegroundColor = ConsoleColor.White;
+               return choice;
+            }
+            else if (pressedKey == ConstNumber.ESC) {
+               Console.ForegroundColor = ConsoleColor.White;
+               return ConstNumber.ESC;
+            }
+
+            // 커서의 위아래 이동 구간을 제한한다.
+            if (Console.CursorTop < cursorTop + 1)
+               Console.SetCursorPosition(Console.CursorLeft, cursorTop + 1);
+            if (Console.CursorTop > (cursorTop + ConsoleUI.Tray_Menu.Length))
+               Console.SetCursorPosition(Console.CursorLeft, cursorTop + ConsoleUI.Tray_Menu.Length);
+
+            // 커서 위치에 따른 메뉴 선택
+            choice = Console.CursorTop - cursorTop - 1;
+         }
+      }
+
+      public void PrintDetailBookInformation(Data.Book book)
+      {
+         int startPoint = 0;
+         string description = book.Description;
+         Console.Clear();
+         Console.WriteLine("\n   ISBN > " + book.ISBN);
+         Console.WriteLine("\n 도서명 > " + book.GetName());
+         Console.WriteLine("\n 출판사 > " + book.GetCompany());
+         Console.WriteLine("\n 저  자 > " + book.GetWriter());
+         Console.WriteLine("\n 가  격 > " + book.Price + "원");
+         Console.WriteLine("\n 출판일 > " + book.Pubdate);
+         Console.WriteLine("\n <설  명>");
+
+         // 설명 문장 나누기
+         while(description.Length > 45)
+         {
+            Console.WriteLine("  " + description.Substring(startPoint, 45));
+            description = description.Substring(startPoint + 45);
+         }
+         Console.WriteLine("  " + description);
          Console.ReadKey();
       }
    }
