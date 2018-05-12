@@ -20,12 +20,11 @@ namespace LibraryManagementUsingDB.Data
       private int count;
       private string pubdate;
       private string description;
+      private int extension = 0;
       
-      private bool rental;
       public string dueto;
       public IOException.OutputProcessor outputProcessor;
 
-      public Book() { rental = false; }
 
       // 행 내용을 글자 간격에 맞춰 출력
       public void PrintInformation()
@@ -45,56 +44,77 @@ namespace LibraryManagementUsingDB.Data
       public void PrintDuetoInformation()
       {
          outputProcessor = new IOException.OutputProcessor();
-         Console.Write("{0}", outputProcessor.PrintFixString(ISBN, 13));
-         Console.Write("{0}", outputProcessor.PrintFixString(Name, 28));
-         Console.Write("{0}", outputProcessor.PrintFixString(Company, 18));
-         Console.Write("{0}", outputProcessor.PrintFixString(Writer, 20));
+         Console.Write(" {0}", outputProcessor.PrintFixString(ISBN, 26));
+         Console.Write("{0}", outputProcessor.PrintFixString(Name, 50));
+         Console.Write("{0}", outputProcessor.PrintFixString(Company, 34));
+         Console.Write("{0}", outputProcessor.PrintFixString(Writer, 30));
          Console.Write("{0}", outputProcessor.PrintFixString(dueto, 16));
+         Console.Write("{0}", outputProcessor.PrintFixString(Extension+"회", 8));
          Console.WriteLine();
       }
 
+      public Book() { }
+
       public Book(string name, string company, string writer)
       {
-         rental = false;
          this.name = name;
          this.company = company;
          this.writer = writer;
       }
 
+      // 편집되지 않은 길이의 문자열을 반환
+      public string GetName() { return name; }
+      public string GetCompany() { return company; }
+      public string GetWriter() { return writer; }
+
       public string Name
       {
-         get { return name; }
+         get {
+            if (Encoding.Default.GetByteCount(name) >= 50)
+               return name.Substring(0, 25) + "...";
+            else
+               return name;
+         }
          set {
             string bookname = "";
             string[] words = value.Split(new string[] { "<b>", "</b>" }, StringSplitOptions.None);
             for (int idx = 0; idx < words.Length; idx++)
                bookname += words[idx];
-
-            if (Encoding.Default.GetByteCount(bookname) >= 50)
-               bookname = bookname.Substring(0, 25) + "...";
             name = bookname;
          }
       }
 
       public string Company
       {
-         get { return company; }
-         set {
-            if (Encoding.Default.GetByteCount(value) >= 34)
-               company = value.Substring(0, 24) + "...";
+         get {
+            if (Encoding.Default.GetByteCount(company) >= 34)
+               return company.Substring(0, 17) + "...";
             else
-               company = value;
+               return company;
+         }
+         set {
+            string companyOrigin = "";
+            string[] words = value.Split(new string[] { "<b>", "</b>" }, StringSplitOptions.None);
+            for (int idx = 0; idx < words.Length; idx++)
+               companyOrigin += words[idx];
+            company = companyOrigin;
          }
       }
 
       public string Writer
       {
-         get { return writer; }
-         set {
-            if (Encoding.Default.GetByteCount(value) >= 30)
-               writer = value.Substring(0, 20) + "...";
+         get {
+            if (Encoding.Default.GetByteCount(writer) >= 30)
+               return writer.Substring(0, 15) + "...";
             else
-               writer = value;
+               return writer;
+         }
+         set {
+            string writerOrigin = "";
+            string[] words = value.Split(new string[] { "<b>", "</b>" }, StringSplitOptions.None);
+            for (int idx = 0; idx < words.Length; idx++)
+               writerOrigin += words[idx];
+            writer = writerOrigin;
          }
       }
 
@@ -102,12 +122,6 @@ namespace LibraryManagementUsingDB.Data
       {
          get { return isbn; }
          set { isbn = value; }
-      }
-
-      public bool Rental
-      {
-         get { return rental; }
-         set { rental = value; }
       }
 
       public int Price
@@ -137,6 +151,12 @@ namespace LibraryManagementUsingDB.Data
             else
                description = value;
          }
+      }
+
+      public int Extension
+      {
+         get { return extension; }
+         set { extension = value; }
       }
    }
 }

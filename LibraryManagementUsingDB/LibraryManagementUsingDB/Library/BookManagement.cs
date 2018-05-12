@@ -23,7 +23,6 @@ namespace LibraryManagementUsingDB.Library
          this.outputProcessor = outputProcessor;
          this.DB = DB;
          rentalManager = new RentalManagement(DB, student);
-         bookno = DB.GetBookCount() + 2;
       }
 
       public BookManagement(Data.DBHandler DB, IOException.OutputProcessor outputProcessor)
@@ -32,7 +31,6 @@ namespace LibraryManagementUsingDB.Library
          rentalManager = null;
          this.outputProcessor = outputProcessor;
          this.DB = DB;
-         bookno = DB.GetBookCount() + 1;
       }
 
       // 유저로 로그인 시 이용 가능한 메뉴
@@ -65,10 +63,10 @@ namespace LibraryManagementUsingDB.Library
       public void AddBook()
       {
          List<Data.Book> books;
-         books = outputProcessor.APISearchScreen();
+         books = outputProcessor.APISearchScreen(DB);
          if (books == null)
             return;
-
+         
          Data.Book book = outputProcessor.PrintBookList(books);
          if (book == null)
             return;

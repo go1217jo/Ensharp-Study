@@ -94,19 +94,30 @@ namespace LibraryManagementUsingDB.Data
             books.Add(book);
          }
          reader.Close();
-         for (int i = 0; i < books.Count; i++)
-            books[i].Rental = CheckRental(books[i].ISBN);
-
+         
          return books;
       }
 
-      // 현재 등록된 책 권수를 반환
-      public int GetBookCount()
+      // 해당 도서번호의 도서명을 반환한다
+      public string GetBookName(string isbn)
+      {
+         string name = null;
+         string sqlQuery = "SELECT bookname FROM book WHERE ISBN = '" + isbn + "';";
+         reader = SelectQuery(sqlQuery);
+         while (reader.Read())
+            name = reader["bookname"].ToString();
+         reader.Close();
+
+         return name;
+      }
+
+      // 해당 남은 수량을 반환
+      public int GetBookCount(string isbn)
       {
          int count = 0;
-         MySqlDataReader reader = SelectQuery("SELECT * FROM BOOK;");
+         MySqlDataReader reader = SelectQuery("SELECT COUNT FROM book WHERE ISBN = '" + isbn + "';");
          while (reader.Read())
-            count++;
+            count = int.Parse(reader["COUNT"].ToString());
          reader.Close();
 
          return count;
@@ -133,7 +144,7 @@ namespace LibraryManagementUsingDB.Data
       // 책을 DB에 추가한다(Overriding)
       public bool InsertBook(Data.Book book)
       {
-         return InsertBook(book.ISBN, book.Name, book.Company, book.Writer, book.Price, book.Count, book.Description, book.Pubdate);
+         return InsertBook(book.ISBN, book.GetName(), book.GetCompany(), book.GetWriter(), book.Price, book.Count, book.Description, book.Pubdate);
       }
 
       // 멤버 정보를 수정한다.
@@ -182,6 +193,17 @@ namespace LibraryManagementUsingDB.Data
       public bool IsOverlapBook(string ISBN)
       {
          string sqlQuery = "SELECT ISBN FROM book WHERE ISBN = '" + ISBN + "';";
+         reader = SelectQuery(sqlQuery);
+         if (IsThereOneValue(reader, "ISBN"))
+            return true;
+         else
+            return false;
+      }
+      
+      // 중복되는 대여도서가 있는지 확인한다.(overloading)
+      public bool IsOverlapBook(string ISBN, string studentno)
+      {
+         string sqlQuery = "SELECT ISBN FROM rental WHERE ISBN = '" + ISBN + "' AND sno = '" + studentno + "';";
          reader = SelectQuery(sqlQuery);
          if (IsThereOneValue(reader, "ISBN"))
             return true;
@@ -237,18 +259,7 @@ namespace LibraryManagementUsingDB.Data
          string sqlQuery = "DELETE FROM book WHERE ISBN = '" + ISBN + "';";
          return ExecuteQuery(sqlQuery);
       }
-
-      // 현재 대출 중인지 확인한다. 대출 중이면 true
-      public bool CheckRental(string ISBN)
-      {
-         string sqlQuery = "SELECT bno FROM rental WHERE bno = '" + ISBN + "';";
-
-         if (IsThereOneValue(SelectQuery(sqlQuery), "bno"))
-            return true;
-         else
-            return false;
-      }
-
+            
       // attribute를 기준으로 책을 찾는다.
       public string SearchBook(string search, string attribute)
       {
@@ -264,12 +275,12 @@ namespace LibraryManagementUsingDB.Data
       }
 
       // 책의 대출 기한을 연장한다.
-      public bool Extension(string ISBN)
+      public string Extension(string ISBN)
       {
          // 만기일
          string dueDate = DateTime.Now.AddDays(7).ToString("yyyy-MM-dd");
-         string sqlQuery1 = "SELECT times FROM rental WHERE bno = '" + ISBN + "';";
-         string sqlQuery2 = "UPDATE rental set times = times+1, dueto = '" + dueDate + "' WHERE bno = '" + ISBN + "';";
+         string sqlQuery1 = "SELECT times FROM rental WHERE ISBN = '" + ISBN + "';";
+         string sqlQuery2 = "UPDATE rental set times = times+1, dueto = '" + dueDate + "' WHERE ISBN = '" + ISBN + "';";
 
          reader = SelectQuery(sqlQuery1);
          int times = 0;
@@ -279,9 +290,12 @@ namespace LibraryManagementUsingDB.Data
 
          // 대출 횟수가 3번 이하면 대출 가능
          if (times < 3)
-            return ExecuteQuery(sqlQuery2);
+         {
+            ExecuteQuery(sqlQuery2);
+            return dueDate;
+         }
          else
-            return false;
+            return null;
       }
 
       // 대출 중인 책을 빌린 사람과 같은 학번인가를 반환
@@ -299,7 +313,7 @@ namespace LibraryManagementUsingDB.Data
       {
          // 만기일
          string dueDate = DateTime.Now.AddDays(7).ToString("yyyy-MM-dd");
-         string sqlQuery = "INSERT INTO rental values ('" + studentNo + "', '" + ISBN + "', " + "'"+dueDate+"', 0);";
+         string sqlQuery = "INSERT INTO rental values ('" + studentNo + "', '" + dueDate + "', 0, '" + ISBN + "');";
 
          return ExecuteQuery(sqlQuery);
       }
@@ -319,7 +333,7 @@ namespace LibraryManagementUsingDB.Data
       // DB에서 대출정보를 삭제한다.
       public bool DeleteRental(string ISBN)
       {
-         string sqlQuery = "DELETE FROM rental WHERE bno = '" + ISBN + "';";
+         string sqlQuery = "DELETE FROM rental WHERE ISBN = '" + ISBN + "';";
          return ExecuteQuery(sqlQuery);
       }
 
@@ -327,7 +341,7 @@ namespace LibraryManagementUsingDB.Data
       public List<Book> RentalList(string studentno)
       {
          List<Book> books = new List<Book>();
-         string sqlQuery = "SELECT ISBN, bookname, company, writer, dueto FROM book, rental WHERE book.ISBN = rental.bno AND rental.sno = '" + studentno + "';";
+         string sqlQuery = "SELECT book.ISBN, bookname, company, writer, dueto, times FROM book , rental WHERE book.ISBN = rental.ISBN AND rental.sno = '" + studentno + "';";
          reader = SelectQuery(sqlQuery);
          while (reader.Read())
          {
@@ -336,7 +350,8 @@ namespace LibraryManagementUsingDB.Data
             book.Name = reader["bookname"].ToString();
             book.Company = reader["company"].ToString();
             book.Writer = reader["writer"].ToString();
-            book.dueto = reader["dueto"].ToString();
+            book.dueto = DateTime.Parse(reader["dueto"].ToString()).ToString("yyyy-MM-dd");
+            book.Extension = int.Parse(reader["times"].ToString());
             books.Add(book);
          }
          reader.Close();

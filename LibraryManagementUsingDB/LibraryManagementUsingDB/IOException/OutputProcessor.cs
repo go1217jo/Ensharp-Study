@@ -183,7 +183,7 @@ namespace LibraryManagementUsingDB.IOException
       {
          int choice = 0, pressedKey = 0;
          Console.Clear();
-         Console.SetWindowSize(167, 40);
+         Console.SetWindowSize(167, 45);
          Console.WriteLine("\n ====================================================================================================================================================================");
          Console.WriteLine("           ISBN                                  도서명                                    출판사                           저자                가격  수량   출판일");
          Console.WriteLine(" ====================================================================================================================================================================");
@@ -228,13 +228,13 @@ namespace LibraryManagementUsingDB.IOException
 
       public string PrintRentalList(Data.DBHandler DB, string studentno)
       {
-         int choice = 0;
+         int choice = 0, pressedKey = 0;
          List<Data.Book> books = null;
          Console.Clear();
-         Console.SetWindowSize(143, 39);
-         Console.WriteLine("\n ====================================================================================================");
-         Console.WriteLine("        ISBN             도서명                 출판사                  저자            반납 기간");
-         Console.WriteLine(" ====================================================================================================");
+         Console.SetWindowSize(170, 39);
+         Console.WriteLine("\n =======================================================================================================================================================================");
+         Console.WriteLine("          ISBN                                  도서명                                    출판사                           저자                  반납기한    연장횟수");
+         Console.WriteLine(" =======================================================================================================================================================================");
 
          while (true)
          {
@@ -261,8 +261,11 @@ namespace LibraryManagementUsingDB.IOException
             Console.SetCursorPosition(0, 4 + choice);
 
             // 엔터를 치면 선택된 인덱스를 반환한다.
-            if (inputProcessor.ChoiceByKey())
+            pressedKey = inputProcessor.ChoiceByKeyUsableESC();
+            if (pressedKey == ConstNumber.ENTER)
                return books[choice].ISBN;
+            else if (pressedKey == ConstNumber.ESC)
+               return null;
 
             // 커서의 위아래 이동 구간을 제한한다.
             if (Console.CursorTop < 4)
@@ -274,6 +277,7 @@ namespace LibraryManagementUsingDB.IOException
             choice = Console.CursorTop - 4;
          }
       }
+
       public int InputBookCount()
       {
          Console.SetWindowSize(42, 16);
@@ -431,11 +435,11 @@ namespace LibraryManagementUsingDB.IOException
       }
 
       // API를 통해 책을 검색하는 화면
-      public List<Data.Book> APISearchScreen()
+      public List<Data.Book> APISearchScreen(Data.DBHandler DB)
       {
          string keyword;
          int count = 0;
-         List<string> searchCount = new List<string>(new string[]{ "10개", "20개", "30개" });
+         List<string> searchCount = new List<string>(new string[]{ "10개", "20개", "30개", "40개" });
          NaverAPI.SearchEngine engine = new NaverAPI.SearchEngine();
          ConsoleUI.PrintAPISearchBook();
 
@@ -446,7 +450,13 @@ namespace LibraryManagementUsingDB.IOException
             return null;
          Console.SetCursorPosition(14, 13);
          // 검색 개수를 입력받는다.
-         count = int.Parse(searchCount[inputProcessor.ComboBox(searchCount, new CursorPoint(14, 13), "     ")].Substring(0,2));
+         int index = inputProcessor.ComboBox(searchCount, new CursorPoint(14, 13), "     ");
+         if (index == ConstNumber.ESC)
+            return null;
+         count = int.Parse(searchCount[index].Substring(0,2));
+
+         // 로그 기록
+         DB.InsertLog("관리자", keyword, "도서 검색");
 
          return engine.SearchBooks(keyword, count);
       }
@@ -457,7 +467,7 @@ namespace LibraryManagementUsingDB.IOException
          Console.Clear();
          Console.SetWindowSize(111, 40);
          Console.WriteLine("\n ============================================================================================================");
-         Console.WriteLine("          발생시간          실행자                          키워드                                로그 유형");
+         Console.WriteLine("          발생시간           실행자                           키워드                               로그 유형");
          Console.WriteLine(" ============================================================================================================");
          List<Data.Log> logs = DB.ViewAllLog();
          for (int idx = 0; idx < logs.Count; idx++)
