@@ -15,7 +15,6 @@ namespace LibraryManagementUsingDB.Library
       IOException.OutputProcessor outputProcessor;
       RentalManagement rentalManager;
       Data.DBHandler DB;
-      int bookno = 1;
 
       public BookManagement(Data.Student student, Data.DBHandler DB, IOException.OutputProcessor outputProcessor)
       {

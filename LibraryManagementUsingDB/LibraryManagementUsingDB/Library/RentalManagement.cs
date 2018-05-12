@@ -112,7 +112,7 @@ namespace LibraryManagementUsingDB.Library
             if (output.YesOrNo("대여하시겠습니까?") == 1)
             {
                // 중복되는 대여 도서가 있다면
-               if (DB.IsOverlapBook(ISBN, student.StudentNo)) {
+               if (DB.IsOverlapBook(isbn, student.StudentNo)) {
                   output.PressAnyKey("이미 대여 중인 도서입니다.");
                   return;
                }
