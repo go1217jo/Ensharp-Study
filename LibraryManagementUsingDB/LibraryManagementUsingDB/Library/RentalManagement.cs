@@ -85,7 +85,8 @@ namespace LibraryManagementUsingDB.Library
          Data.Book searchResult = SearchBook(attribute, search);
          if (searchResult == null)
             return;
-
+         // 로그 기록
+         DB.InsertLog(student.StudentNo, search, "도서 검색");
          // 찾은 책 대여
          Rental(searchResult.ISBN);
       }
@@ -148,6 +149,7 @@ namespace LibraryManagementUsingDB.Library
                if (dueto != null)
                {
                   output.PressAnyKey(dueto + "까지 연장되었습니다");
+                  // 로그 기록
                   DB.InsertLog(student.StudentNo, DB.GetBookName(isbn), "도서 연장");
                }
                else

@@ -551,10 +551,10 @@ namespace LibraryManagementUsingDB.IOException
          // 설명 문장 나누기
          while(description.Length > 45)
          {
-            Console.WriteLine("  " + description.Substring(startPoint, 45));
+            Console.WriteLine("   " + description.Substring(startPoint, 45));
             description = description.Substring(startPoint + 45);
          }
-         Console.WriteLine("  " + description);
+         Console.WriteLine("   " + description);
          Console.ReadKey();
       }
    }
