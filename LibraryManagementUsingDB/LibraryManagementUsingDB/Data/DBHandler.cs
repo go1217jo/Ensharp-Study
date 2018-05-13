@@ -108,7 +108,9 @@ namespace LibraryManagementUsingDB.Data
             name = reader["bookname"].ToString();
          reader.Close();
 
-         return name;
+         if (Encoding.Default.GetByteCount(name) >= 50)
+            name = name.Substring(0, 25);
+         return name + "..";
       }
 
       // 해당 남은 수량을 반환

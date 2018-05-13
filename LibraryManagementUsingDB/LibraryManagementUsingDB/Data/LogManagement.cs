@@ -55,8 +55,8 @@ namespace LibraryManagementUsingDB.Data
          using (System.IO.StreamWriter file =
             new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\log.txt", false))
          {
-            file.WriteLine(" ============================================================================================================");
-            file.WriteLine("          발생시간          실행자                          키워드                                로그 유형");
+            file.WriteLine("\n ============================================================================================================");
+            file.WriteLine("          발생시간            실행자                           키워드                             로그 유형");
             file.WriteLine(" ============================================================================================================");
             for (int i = 0; i < logs.Count; i++)
                file.WriteLine(logs[i].PrintLogInformation());

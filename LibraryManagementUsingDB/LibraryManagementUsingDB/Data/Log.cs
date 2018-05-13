@@ -16,9 +16,9 @@ namespace LibraryManagementUsingDB.Data
       public string PrintLogInformation()
       {
          IOException.OutputProcessor outputProcessor = new IOException.OutputProcessor();
-         return "  " + outputProcessor.PrintFixString(logTime, 24)
+         return "  " + outputProcessor.PrintFixString(logTime, 25)
          + outputProcessor.PrintFixString(membername, 12)
-         + outputProcessor.PrintFixString(keyword, 54)
+         + outputProcessor.PrintFixString(keyword, 52)
          + outputProcessor.PrintFixString(type, 22);
       }
 

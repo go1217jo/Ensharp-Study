@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Web;
 using System.Threading.Tasks;
 
 namespace LibraryManagementUsingDB.NaverAPI
@@ -52,13 +53,13 @@ namespace LibraryManagementUsingDB.NaverAPI
          {
             Data.Book book = new Data.Book();
             book.ISBN = items[idx]["isbn"].ToString();
-            book.Name = items[idx]["title"].ToString();
+            book.Name = WebUtility.HtmlDecode(items[idx]["title"].ToString());
             book.Company = items[idx]["publisher"].ToString();
             book.Writer = items[idx]["author"].ToString();
             // 가격이 소수점으로 들어오는 거 방지
             book.Price = int.Parse(items[idx]["price"].ToString().Split('.')[0]);
             book.Pubdate = items[idx]["pubdate"].ToString();
-            book.Description = items[idx]["description"].ToString();
+            book.Description = WebUtility.HtmlDecode(items[idx]["description"].ToString());
             book.Count = 9999;
             books.Add(book);
          }
