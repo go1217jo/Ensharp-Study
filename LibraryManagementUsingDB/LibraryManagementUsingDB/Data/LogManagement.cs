@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace LibraryManagementUsingDB.Data
 {
+   /// <summary>
+   ///  로그를 관리하는 클래스
+   /// </summary>
    class LogManagement
    {
       DBHandler DB;
@@ -17,6 +20,7 @@ namespace LibraryManagementUsingDB.Data
          this.outputProcessor = outputProcessor;
       }
 
+      // 로그 관리 메뉴
       public void ManageLog()
       {
          while (true)
@@ -49,6 +53,7 @@ namespace LibraryManagementUsingDB.Data
          }
       }     
 
+      // 로그 내보내기
       public void ExportLog()
       {
          List<Data.Log> logs = DB.ViewAllLog();

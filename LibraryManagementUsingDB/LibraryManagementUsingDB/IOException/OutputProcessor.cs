@@ -401,6 +401,7 @@ namespace LibraryManagementUsingDB.IOException
          return newStudent;
       }
 
+      // 멤버 수정 내용을 입력받는 화면을 출력
       public string AlterMemberInformation(string studentNo, int attribute)
       {
          string modification = null;
@@ -423,6 +424,7 @@ namespace LibraryManagementUsingDB.IOException
          return modification;
       }
 
+      // 책 정보를 입력받는 화면을 출력
       public string GetBookInformation(int attribute)
       {
          string modification = null;
@@ -487,6 +489,7 @@ namespace LibraryManagementUsingDB.IOException
          Console.ReadKey();
       }
 
+      // 트레이 메뉴를 출력한다
       public int TrayMenu(int cursorTop)
       {
          int choice = 0, pressedKey = 0;
@@ -535,6 +538,7 @@ namespace LibraryManagementUsingDB.IOException
          }
       }
 
+      // 책의 세부사항을 출력한다
       public void PrintDetailBookInformation(Data.Book book)
       {
          int startPoint = 0;

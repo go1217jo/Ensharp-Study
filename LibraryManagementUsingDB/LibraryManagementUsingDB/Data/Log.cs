@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace LibraryManagementUsingDB.Data
 {
+   /// <summary>
+   ///  log를 저장하는 VO
+   /// </summary>
    class Log
    {
       private string logTime;
@@ -13,6 +16,7 @@ namespace LibraryManagementUsingDB.Data
       private string keyword;
       private string type;
 
+      // 로그 정보를 문자열로 반환한다.ㄴ
       public string PrintLogInformation()
       {
          IOException.OutputProcessor outputProcessor = new IOException.OutputProcessor();

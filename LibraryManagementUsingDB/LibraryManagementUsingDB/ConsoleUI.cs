@@ -85,13 +85,13 @@ namespace LibraryManagementUsingDB
          Console.Write("       ■■■■■■■■■  ");
          Console.ForegroundColor = ConsoleColor.White;
          Console.Write("||\n || ");
-         Console.ForegroundColor = ConsoleColor.Cyan;
+         Console.ForegroundColor = ConsoleColor.Red;
          Console.Write("■■■■■");
          Console.ForegroundColor = ConsoleColor.Yellow;
          Console.Write("     ■■■■■■■■    ");
          Console.ForegroundColor = ConsoleColor.White;
          Console.Write("||\n || ");
-         Console.ForegroundColor = ConsoleColor.Cyan;
+         Console.ForegroundColor = ConsoleColor.Red;
          Console.Write("■■■■■");
          Console.ForegroundColor = ConsoleColor.Yellow;
          Console.Write("     ■ ■      ■ ■    ");

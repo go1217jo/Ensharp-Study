@@ -138,7 +138,7 @@ namespace LibraryManagementUsingDB.Library
          string isbn = output.PrintRentalList(DB, student.StudentNo);
          if (isbn == null)
             return;
-
+         
          if (output.YesOrNo("반납하시겠습니까?") == 1)
             ReturnBook(isbn);
          else
