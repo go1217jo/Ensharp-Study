@@ -31,12 +31,8 @@ namespace LibraryManagementUsingDB.Data
                case ConstNumber.MENULIST_1:
                   outputProcessor.ViewAllLogs(DB);
                   break;
-               // 로그 내보내기
-               case ConstNumber.MENULIST_2:
-                  ExportLog();
-                  break;
                // 로그 초기화
-               case ConstNumber.MENULIST_3:
+               case ConstNumber.MENULIST_2:
                   if (outputProcessor.YesOrNo("로그를 초기화하시겠습니까?") == 1)
                   {
                      // 로그 테이블 초기화
@@ -47,26 +43,10 @@ namespace LibraryManagementUsingDB.Data
                   }
                   break;
                // 돌아 가기
-               case ConstNumber.MENULIST_4:
+               case ConstNumber.MENULIST_3:
                   return;
             }
          }
       }     
-
-      // 로그 내보내기
-      public void ExportLog()
-      {
-         List<Data.Log> logs = DB.ViewAllLog();
-         using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\log.txt", false))
-         {
-            file.WriteLine("\n ============================================================================================================");
-            file.WriteLine("          발생시간            실행자                           키워드                             로그 유형");
-            file.WriteLine(" ============================================================================================================");
-            for (int i = 0; i < logs.Count; i++)
-               file.WriteLine(logs[i].PrintLogInformation());
-         }
-         outputProcessor.PressAnyKey("로그가 성공적으로 저장되었습니다.");
-      }
    }
 }

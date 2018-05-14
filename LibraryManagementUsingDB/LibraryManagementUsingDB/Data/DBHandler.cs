@@ -15,7 +15,7 @@ namespace LibraryManagementUsingDB.Data
       MySqlConnection connect = null;
       MySqlCommand command;
       MySqlDataReader reader = null;
-
+      
       // DB 접속
       public DBHandler()
       {
@@ -361,11 +361,26 @@ namespace LibraryManagementUsingDB.Data
          return books;
       }
 
+      // 로그 내보내기
+      public void ExportLog()
+      {
+         List<Log> logs = ViewAllLog();
+         using (System.IO.StreamWriter file = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\log.txt", false))
+         {
+            file.WriteLine(" ============================================================================================================");
+            file.WriteLine("          발생시간            실행자                           키워드                             로그 유형");
+            file.WriteLine(" ============================================================================================================");
+            for (int i = 0; i < logs.Count; i++)
+               file.WriteLine(logs[i].PrintLogInformation());
+         }
+      }
+
       // 로그를 추가한다.
       public bool InsertLog(string membername, string keyword, string type)
       {
          string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
          string sqlQuery = "INSERT INTO history values('" + now + "', '" + membername + "', '" + keyword + "', '" + type + "');";
+         ExportLog();
          return ExecuteQuery(sqlQuery);
       }
 
