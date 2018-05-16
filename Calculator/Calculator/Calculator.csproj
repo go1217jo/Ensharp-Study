@@ -98,5 +98,8 @@
   <ItemGroup>
     <Folder Include="Calculate\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\icon-11B.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

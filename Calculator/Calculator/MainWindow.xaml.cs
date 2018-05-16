@@ -47,6 +47,7 @@ namespace Calculator
       {
          int floatPartLength = (manatissa.Length - 1 >= 0) ? manatissa.Length - 1 : 0;
          int increaseRate = currentNumber.Length + floatPartLength - 12;
+
          if (increaseRate >= 1 && increaseRate < 4)
             calculationScreen.FontSize = Constant.BASIC_FONT_SIZE - (4.3 - increaseRate * 0.08) * increaseRate;
          // 입력 제한
@@ -83,23 +84,34 @@ namespace Calculator
          char oper = ((Button)sender).Content.ToString()[0];
          if (currentNumber.Length == 0)
             currentEquation = currentEquation.Remove(currentEquation.Length - 1);
+
+         // 소수점만 남아있을 경우
+         if (manatissa.Length == 1)
+            manatissa = "";
+
          switch (oper)
          {
             case '+':
             case '-':
-               currentEquation += (currentNumber + oper);
+               currentEquation += (currentNumber + manatissa + oper);
                break;
             case 'X':
-               currentEquation += (currentNumber + 'x');
+               currentEquation += (currentNumber + manatissa + 'x');
                break;
             case '÷':
-               currentEquation += (currentNumber + '/');
+               currentEquation += (currentNumber + manatissa + '/');
                break;
          }
 
          floatState = false;
+         if (currentEquation.Length >= 28)
+            resultScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
          resultScreen.Text = currentEquation;
+
          currentNumber = "";
+         manatissa = "";
+         for (int idx = 0; idx < numberButtons.Count; idx++)
+            numberButtons[idx].IsHitTestVisible = true;
       }
            
       private void Btn_cancel_Click(object sender, RoutedEventArgs e)

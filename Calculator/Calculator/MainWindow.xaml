@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
+        Icon="Image/icon-11B.png"
         Title="계산기" Height="600" Width="400">
    <Grid Background="#DEE0E5">
       <Grid.RowDefinitions>
@@ -18,10 +18,10 @@
       <Grid Grid.Row="1">
          <Grid ShowGridLines="False">
             <Grid.RowDefinitions>
-               <RowDefinition Height="2*"/>
+               <RowDefinition Height="3*"/>
                <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
-            <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" >
+            <ScrollViewer x:Name="resultScroll" Grid.Row="0" HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" >
                <TextBox x:Name="resultScreen" IsHitTestVisible="False" TextAlignment="Right" FontSize="24" Background="#DEE0E5" BorderBrush="#DEE0E5" Foreground="Gray"/>
             </ScrollViewer>
             <TextBox x:Name="calculationScreen" Grid.Row="1" IsHitTestVisible="False" Text="0" FontWeight="Bold" TextAlignment="Right" FontSize="48" VerticalContentAlignment="Center" Background="#DEE0E5" BorderBrush="#DEE0E5" />
