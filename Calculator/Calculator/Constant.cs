@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Calculator
 {
-   class InputProcessor
+   class Constant
    {
+      public const double BASIC_FONT_SIZE = 48.0;
    }
 }

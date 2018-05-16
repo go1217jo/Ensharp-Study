@@ -21,121 +21,92 @@ namespace Calculator
    public partial class MainWindow : Window
    {
       string currentNumber = "";
+      string currentEquation = "";
 
       Outprocessor outprocessor = new Outprocessor();
+      List<Button> numberButtons;
+      List<Button> operButtons;
+
       public MainWindow()
       {
          InitializeComponent();
-        
+         numberButtons = new List<Button>(new Button[] { Btn_zero, Btn_one, Btn_two, Btn_three, Btn_four, Btn_five, Btn_six, Btn_seven, Btn_eight, Btn_nine });
+         operButtons = new List<Button>(new Button[] { Btn_percentage, Btn_root, Btn_square, Btn_one_divide, Btn_divide, Btn_multiply, Btn_minus, Btn_plus, Btn_enter });
+         for (int idx = 0; idx < numberButtons.Count; idx++)
+            numberButtons[idx].Click += new RoutedEventHandler(Btn_number_Click);
+         for (int idx = 0; idx < operButtons.Count; idx++)
+            operButtons[idx].Click += new RoutedEventHandler(Btn_operation_Click);
       }
 
-      private void Btn_percentage_Click(object sender, RoutedEventArgs e)
+      // 화면에 숫자가 다 출력되도록 텍스트 크기를 조절한다
+      public void AdjustTextSize()
       {
-         
+         int increaseRate = currentNumber.Length - 12;
+         if (increaseRate >= 1 && increaseRate < 4)
+            calculationScreen.FontSize = Constant.BASIC_FONT_SIZE - (4.3 - increaseRate * 0.08) * increaseRate;
+         // 입력 제한
+         else if (increaseRate >= 4)
+         {
+            for (int idx = 0; idx < numberButtons.Count; idx++)
+               numberButtons[idx].IsHitTestVisible = false;
+         }
+         else {
+            calculationScreen.FontSize = Constant.BASIC_FONT_SIZE;
+            if (!numberButtons[0].IsHitTestVisible) {
+               for (int idx = 0; idx < numberButtons.Count; idx++)
+                  numberButtons[idx].IsHitTestVisible = true;
+            }
+         }
       }
 
-      private void Btn_root_Click(object sender, RoutedEventArgs e)
+      private void Btn_number_Click(object sender, RoutedEventArgs e)
       {
-
+         currentNumber += ((Button)sender).Content;
+         calculationScreen.Text = outprocessor.InsertComma(currentNumber);
+         AdjustTextSize();
       }
 
-      private void Btn_square_Click(object sender, RoutedEventArgs e)
+      private void Btn_operation_Click(object sender, RoutedEventArgs e)
       {
+         // 현재 입력된 버튼의 연산 문자를 가져옴
+         char oper = ((Button)sender).Content.ToString()[0];
+         if (currentNumber.Length == 0)
+            currentEquation = currentEquation.Remove(currentEquation.Length - 1);
+         switch (oper)
+         {
+            case '+':
+            case '-':
+               currentEquation += (currentNumber + oper);
+               break;
+            case 'X':
+               currentEquation += (currentNumber + 'x');
+               break;
+            case '÷':
+               currentEquation += (currentNumber + '/');
+               break;
+            case '√':
+               currentEquation += ("√(" + currentNumber + ')');
+               break;
+         }
 
+         resultScreen.Text = currentEquation;
+         currentNumber = "";
       }
-
-      private void Btn_one_divide_Click(object sender, RoutedEventArgs e)
-      {
-
-      }
-
+           
       private void Btn_cancel_Click(object sender, RoutedEventArgs e)
       {
-
+         currentNumber = "";
+         calculationScreen.Text = "0";
+         AdjustTextSize();
       }
 
       private void Btn_cancel_all_Click(object sender, RoutedEventArgs e)
       {
-
-      }
-
-      private void Btn_erase_Click(object sender, RoutedEventArgs e)
-      {
-
-      }
-
-      private void Btn_divide_Click(object sender, RoutedEventArgs e)
-      {
-
-      }
-
-      private void Btn_seven_Click(object sender, RoutedEventArgs e)
-      {
-         currentNumber += '7';
-         calculationScreen.Text = outprocessor.InsertComma(currentNumber);
-      }
-
-      private void Btn_eight_Click(object sender, RoutedEventArgs e)
-      {
-         currentNumber += '8';
-         calculationScreen.Text = outprocessor.InsertComma(currentNumber);
-      }
-
-      private void Btn_nine_Click(object sender, RoutedEventArgs e)
-      {
-         currentNumber += '9';
-         calculationScreen.Text = outprocessor.InsertComma(currentNumber);
-      }
-
-      private void Btn_multiply_Click(object sender, RoutedEventArgs e)
-      {
-
-      }
-
-      private void Btn_four_Click(object sender, RoutedEventArgs e)
-      {
-         currentNumber += '4';
-         calculationScreen.Text = outprocessor.InsertComma(currentNumber);
-      }
-
-      private void Btn_five_Click(object sender, RoutedEventArgs e)
-      {
-         currentNumber += '5';
-         calculationScreen.Text = outprocessor.InsertComma(currentNumber);
-      }
-
-      private void Btn_six_Click(object sender, RoutedEventArgs e)
-      {
-         currentNumber += '6';
-         calculationScreen.Text = outprocessor.InsertComma(currentNumber);
-      }
-
-      private void Btn_minus_Click(object sender, RoutedEventArgs e)
-      {
-
-      }
-
-      private void Btn_one_Click(object sender, RoutedEventArgs e)
-      {
-         currentNumber += '1';
-         calculationScreen.Text = outprocessor.InsertComma(currentNumber);
-      }
-
-      private void Btn_two_Click(object sender, RoutedEventArgs e)
-      {
-         currentNumber += '2';
-         calculationScreen.Text = outprocessor.InsertComma(currentNumber);
-      }
-
-      private void Btn_three_Click(object sender, RoutedEventArgs e)
-      {
-         currentNumber += '3';
-         calculationScreen.Text = outprocessor.InsertComma(currentNumber);
-      }
-
-      private void Btn_plus_Click(object sender, RoutedEventArgs e)
-      {
-
+         currentNumber = "";
+         currentEquation = "";
+         resultScreen.Text = "";
+         calculationScreen.Text = "0";
+         AdjustTextSize();
       }
 
       private void Btn_plusMinus_Click(object sender, RoutedEventArgs e)
@@ -143,10 +114,15 @@ namespace Calculator
 
       }
 
-      private void Btn_zero_Click(object sender, RoutedEventArgs e)
+      private void Btn_erase_Click(object sender, RoutedEventArgs e)
       {
-         currentNumber += '0';
-         calculationScreen.Text = outprocessor.InsertComma(currentNumber);
+         if (currentNumber.Length != 0) {
+            currentNumber = currentNumber.Remove(currentNumber.Length - 1);
+            if (currentNumber.Length == 0)
+               calculationScreen.Text = "0";
+            else
+               calculationScreen.Text = outprocessor.InsertComma(currentNumber);
+         }
       }
 
       private void Btn_dot_Click(object sender, RoutedEventArgs e)
