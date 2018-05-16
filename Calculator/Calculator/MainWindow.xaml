@@ -18,11 +18,13 @@
       <Grid Grid.Row="1">
          <Grid ShowGridLines="False">
             <Grid.RowDefinitions>
-               <RowDefinition Height="1*"/>
-               <RowDefinition Height="2*"/>
+               <RowDefinition Height="3*"/>
+               <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
-            <TextBox x:Name="resultScreen" Grid.Row="0" Text="321" TextAlignment="Right" FontSize="32" Background="LightGray"/>
-            <TextBox x:Name="calculationScreen" Grid.Row="1" Text="321" TextAlignment="Right" FontSize="54" Background="LightGray"/>
+            <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+               <TextBox x:Name="resultScreen" TextAlignment="Right" FontSize="32" Background="LightGray"/>
+            </ScrollViewer>
+            <TextBox x:Name="calculationScreen" Grid.Row="1" Text="0" TextAlignment="Right" FontSize="54" Background="LightGray"/>
          </Grid>
       </Grid>
       <Grid Margin="2" Grid.Row="2">
@@ -61,9 +63,9 @@
          <Button x:Name="Btn_three" Click="Btn_three_Click" Grid.Row="4" Grid.Column="2" Content="3" FontSize="24" FontWeight="Bold" Background="GhostWhite" Margin="2"/>
          <Button x:Name="Btn_plus" Click="Btn_plus_Click" Grid.Row="4" Grid.Column="3" Content="+" FontSize="24" Margin="2"/>
          <Button x:Name="Btn_plusMinus" Click="Btn_plusMinus_Click" Grid.Row="5" Grid.Column="0" Content="±" FontSize="24" Margin="2"/>
-         <Button Grid.Row="5" Grid.Column="1" Content="0" FontSize="24" FontWeight="Bold" Background="GhostWhite" Margin="2"/>
-         <Button Grid.Row="5" Grid.Column="2" Content="." FontSize="24" Margin="2"/>
-         <Button Grid.Row="5" Grid.Column="3" Content="=" FontSize="24" Margin="2"/>
+         <Button x:Name="Btn_zero" Click="Btn_zero_Click"  Grid.Row="5" Grid.Column="1" Content="0" FontSize="24" FontWeight="Bold" Background="GhostWhite" Margin="2"/>
+         <Button x:Name="Btn_dot" Click="Btn_dot_Click" Grid.Row="5" Grid.Column="2" Content="." FontSize="24" Margin="2"/>
+         <Button x:Name="Btn_enter" Click="Btn_enter_Click" Grid.Row="5" Grid.Column="3" Content="=" FontSize="24" Margin="2"/>
       </Grid>
     </Grid>
 </Window>
