@@ -75,6 +75,7 @@
     <Compile Include="Library\RentalManagement.cs" />
     <Compile Include="Member\LoginManagement.cs" />
     <Compile Include="Member\MemberManagement.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="NaverAPI\SearchEngine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -98,35 +98,5 @@ namespace LibraryManagementUsingDB.Member
                DB.InsertLog("관리자", studentNo, "회원 삭제");
          }
       }
-
-      // 관리자 멤버 관리 메뉴
-      public void ManageMember()
-      {
-         while (true)
-         {
-            switch (outputProcessor.MenuScreen(ConsoleUI.MEMBER_MENU))
-            {
-               // 회원 추가
-               case ConstNumber.MENULIST_1:
-                  AddMember();
-                  break;
-               // 회원 정보 수정
-               case ConstNumber.MENULIST_2:
-                  AlterMember();
-                  break;
-               // 회원 삭제
-               case ConstNumber.MENULIST_3:
-                  DeleteMember();
-                  break;
-               // 회원 목록(전체)
-               case ConstNumber.MENULIST_4:
-                  outputProcessor.PrintMemberList(DB);
-                  break;
-               case ConstNumber.MENULIST_5:
-                  return;
-            }
-         }
-      }
-
    }
 }

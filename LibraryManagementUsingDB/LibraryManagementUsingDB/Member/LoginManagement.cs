@@ -41,32 +41,7 @@ namespace LibraryManagementUsingDB.Member
          reader.Close();
          return success;
       }
-
-      // 관리자로 로그인 시 보이는 메뉴
-      public void AdminScreen()
-      {
-         MemberManagement memberManagement = new MemberManagement(DB, outputProcessor);
-         Library.BookManagement bookManagement = new Library.BookManagement(DB, outputProcessor);
-         Data.LogManagement logManagement = new Data.LogManagement(DB, outputProcessor);
-         while (true)
-         {
-            switch(outputProcessor.MenuScreen(ConsoleUI.ADMIN_MENU))
-            {
-               case ConstNumber.MENULIST_1:
-                  memberManagement.ManageMember();
-                  break;
-               case ConstNumber.MENULIST_2:
-                  bookManagement.ManageBooks();
-                  break;
-               case ConstNumber.MENULIST_3:
-                  logManagement.ManageLog();
-                  break;
-               case ConstNumber.MENULIST_4:
-                  return;
-            }
-         }
-      }
-      
+            
       // 로그인 화면을 출력하고 로그인 정보를 입력 받는다
       public void Login()
       {
@@ -83,7 +58,7 @@ namespace LibraryManagementUsingDB.Member
             switch (student.status)
             {
                case ConstNumber.LOGIN_ADMIN:
-                  AdminScreen();
+                  Menu.AdminScreen(DB, outputProcessor);
                   break;
                case ConstNumber.LOGIN_USER:
                   new Library.BookManagement(student, DB, outputProcessor).UserRentalSystem();

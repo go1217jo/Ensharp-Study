@@ -32,32 +32,6 @@ namespace LibraryManagementUsingDB.Library
          this.DB = DB;
       }
 
-      // 유저로 로그인 시 이용 가능한 메뉴
-      public void UserRentalSystem()
-      {
-         while (true)
-         {
-            switch (outputProcessor.MenuScreen(ConsoleUI.RENTAL_MENU))
-            {
-               // 책 검색
-               case ConstNumber.MENULIST_1:
-                  rentalManager.RentalBookSearch();
-                  break;
-               // 전체보기
-               case ConstNumber.MENULIST_2:
-                  rentalManager.RentalBookOfAll();
-                  break;
-               // 대출 목록 보기
-               case ConstNumber.MENULIST_3:
-                  rentalManager.ViewRentalList();
-                  break;
-               // 돌아가기
-               case ConstNumber.MENULIST_4:
-                  return;
-            }
-         }
-      }
-
       // 책 추가
       public void AddBook()
       {
@@ -107,30 +81,29 @@ namespace LibraryManagementUsingDB.Library
             DB.InsertLog("관리자", book.Name, "도서 삭제");
          }
       }
+          
 
-      // 관리자 책 관리 메뉴
-      public void ManageBooks()
+      // 유저로 로그인 시 이용 가능한 메뉴
+      public void UserRentalSystem()
       {
-         while (true) {
-            switch(outputProcessor.MenuScreen(ConsoleUI.BOOK_MENU))
+         while (true)
+         {
+            switch (outputProcessor.MenuScreen(ConsoleUI.RENTAL_MENU))
             {
-               // 서적 추가
+               // 책 검색
                case ConstNumber.MENULIST_1:
-                  AddBook();
+                  rentalManager.RentalBookSearch();
                   break;
-               // 서적 삭제
+               // 전체보기
                case ConstNumber.MENULIST_2:
-                  DeleteBook();
+                  rentalManager.RentalBookOfAll();
                   break;
-               // 서적 수량 수정
+               // 대출 목록 보기
                case ConstNumber.MENULIST_3:
-                  AlterBookCount();
+                  rentalManager.ViewRentalList();
                   break;
-               // 전체 보기
+               // 돌아가기
                case ConstNumber.MENULIST_4:
-                  outputProcessor.PrintBookList(DB.GetAllBooks());
-                  break;
-               case ConstNumber.MENULIST_5:
                   return;
             }
          }
