@@ -284,6 +284,9 @@ namespace LibraryManagementUsingDB.Data
          string sqlQuery1 = "SELECT times FROM rental WHERE ISBN = '" + ISBN + "';";
          string sqlQuery2 = "UPDATE rental set times = times+1, dueto = '" + dueDate + "' WHERE ISBN = '" + ISBN + "';";
 
+         if (GetDueTo(ISBN).Equals(dueDate))
+            return null;
+
          reader = SelectQuery(sqlQuery1);
          int times = 0;
          while (reader.Read())
@@ -323,11 +326,11 @@ namespace LibraryManagementUsingDB.Data
       // 해당 책의 만기일을 얻어온다.
       public string GetDueTo(string ISBN)
       {
-         string sqlQuery = "SELECT dueto FROM rental Where bno = '" + ISBN + "';";
+         string sqlQuery = "SELECT dueto FROM rental Where ISBN = '" + ISBN + "';";
          string dueto=null;
          reader = SelectQuery(sqlQuery);
          while (reader.Read())
-            dueto = reader["dueto"].ToString();
+            dueto = DateTime.Parse(reader["dueto"].ToString()).ToString("yyyy-MM-dd");
          reader.Close();
          return dueto;
       }

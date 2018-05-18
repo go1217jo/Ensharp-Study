@@ -153,7 +153,7 @@ namespace LibraryManagementUsingDB.Library
                   DB.InsertLog(student.StudentNo, DB.GetBookName(isbn), "도서 연장");
                }
                else
-                  output.PressAnyKey("연장 횟수 초과!");
+                  output.PressAnyKey("연장 횟수 초과 혹은 당일 연장 불가 입니다.");
             }
          }
       }
