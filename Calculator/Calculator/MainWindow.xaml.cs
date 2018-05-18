@@ -33,18 +33,29 @@ namespace Calculator
       Outprocessor outprocessor = new Outprocessor();
       List<Button> numberButtons;
       List<Button> operButtons;
+      Calculation calculation = new Calculation();
 
       public MainWindow()
       {
          InitializeComponent();
          numberButtons = new List<Button>(new Button[] { Btn_zero, Btn_one, Btn_two, Btn_three, Btn_four, Btn_five, Btn_six, Btn_seven, Btn_eight, Btn_nine });
-         operButtons = new List<Button>(new Button[] { Btn_percentage, Btn_root, Btn_square, Btn_one_divide, Btn_divide, Btn_multiply, Btn_minus, Btn_plus, Btn_enter });
+         operButtons = new List<Button>(new Button[] { Btn_percentage, Btn_root, Btn_square, Btn_one_divide, Btn_divide, Btn_multiply, Btn_minus, Btn_plus });
          for (int idx = 0; idx < numberButtons.Count; idx++)
             numberButtons[idx].Click += new RoutedEventHandler(Btn_number_Click);
          for (int idx = 0; idx < operButtons.Count; idx++)
             operButtons[idx].Click += new RoutedEventHandler(Btn_operation_Click);
       }
 
+      // 0으로 나누는 수식이 있는지 확인한다.
+      public bool IsDivideByZero()
+      {
+         if (currentEquation.Contains("÷ 0"))
+            return true;
+         else
+            return false;
+      }
+
+      // 숫자 키패드를 누를 수 있도록 전환한다.
       public void EnableNumberButtons()
       {
          for (int idx = 0; idx < numberButtons.Count; idx++)
@@ -72,6 +83,7 @@ namespace Calculator
          }
       }
 
+      // 숫자 키패트 버튼 중 하나가 눌릴 경우
       private void Btn_number_Click(object sender, RoutedEventArgs e)
       {
          // 소수이면
@@ -85,8 +97,13 @@ namespace Calculator
          AdjustTextSize();
       }
 
+      // 연산자 버튼 중 하나가 눌릴 경우
       private void Btn_operation_Click(object sender, RoutedEventArgs e)
       {
+         // 아무것도 입력된 수가 없으면 화면의 값에 대한 연산
+         if (currentNumber.Length == 0)
+            currentNumber = calculationScreen.Text;
+
          // 현재 입력된 버튼의 연산 문자를 가져옴
          char oper = ((Button)sender).Content.ToString()[0];
          if (currentNumber.Length == 0)
@@ -112,6 +129,13 @@ namespace Calculator
          if (currentEquation.Length >= 28)
             resultScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
          resultScreen.Text = currentEquation;
+
+         // 0으로 나누는 수식이 있을 경우
+         if(IsDivideByZero())
+         {
+            Btn_cancel_all_Click(sender, e);
+            calculationScreen.Text = "0으로 나눌 수 없습니다.";
+         }
 
          currentNumber = "";
          manatissa = "";
@@ -161,22 +185,23 @@ namespace Calculator
                   calculationScreen.Text = calculationScreen.Text.Substring(1);
                else
                   calculationScreen.Text = '-' + calculationScreen.Text;
-               if (negateNumber.Length == 0)
-               {
-                  negateNumber = "negate(" + calculationScreen.Text + ")";
-                  negateStartIndex = currentEquation.Length;
-                  currentEquation += negateNumber;
-               }
-               else
-               {
-                  negateNumber = "negate(" + negateNumber + ")";
-                  currentEquation = currentEquation.Remove(negateStartIndex) + negateNumber;
-               }
-               
-               resultScreen.Text = currentEquation;
-               if (currentEquation.Length >= 28)
-                  resultScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
             }
+            if (negateNumber.Length == 0)
+            {
+               negateNumber = "negate(" + calculationScreen.Text + ")";
+               negateStartIndex = currentEquation.Length;
+               currentEquation += negateNumber;
+            }
+            else
+            {
+               negateNumber = "negate(" + negateNumber + ")";
+               currentEquation = currentEquation.Remove(negateStartIndex) + negateNumber;
+            }
+               
+            resultScreen.Text = currentEquation;
+            if (currentEquation.Length >= 28)
+               resultScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
+            
          }
       }
 
@@ -223,7 +248,26 @@ namespace Calculator
 
       private void Btn_enter_Click(object sender, RoutedEventArgs e)
       {
+         currentEquation += calculationScreen.Text;
+         // 0으로 나누는 수식이 있을 경우
+         if (IsDivideByZero())
+         {
+            Btn_cancel_all_Click(sender, e);
+            calculationScreen.Text = "0으로 못 나눔";
+         }
+         else
+         {
+            double result = calculation.ReturnResult(currentEquation);
+            // 실수라면
+            if (((int)(result * 10) % 10) != 0)
+               calculationScreen.Text = result.ToString();
+            else
+               calculationScreen.Text = ((int)result).ToString();
 
+            currentNumber = "";
+            resultScreen.Text = "";
+            currentEquation = "";
+         }   
       }
    }
 }
