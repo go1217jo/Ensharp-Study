@@ -47,5 +47,15 @@ namespace Calculator
 
          return returnNumber;
       }
+
+      // 인수로 들어온 문자열에 대해 comma를 제거하여 반환함
+      public string DeleteComma(string number)
+      {
+         string returnNumber = "";
+         string[] splits = number.Split(',');
+         for (int idx = 0; idx < splits.Length; idx++)
+            returnNumber += splits[idx];
+         return returnNumber;
+      }
    }
 }

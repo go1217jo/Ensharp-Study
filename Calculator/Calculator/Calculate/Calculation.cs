@@ -57,7 +57,12 @@ namespace Calculator
             }
             // 피연산자면
             else
-               numberStack.Push(double.Parse(splitBySpace[idx]));
+            {
+               if (splitBySpace[idx].Contains("negate"))
+                  numberStack.Push(ProcessNegate(splitBySpace[idx]));
+               else
+                  numberStack.Push(double.Parse(splitBySpace[idx]));
+            }
          }
 
          // 남아있는 연산자에 대해 연산을 진행한다.
@@ -125,7 +130,7 @@ namespace Calculator
          while(operand.Contains("negate"))
          {
             // negate( 를 없앰
-            operand = operand.Substring(0, 7);
+            operand = operand.Substring(7);
             negateCount++;
          }
 

@@ -59,7 +59,7 @@ namespace Calculator
       public void EnableNumberButtons()
       {
          for (int idx = 0; idx < numberButtons.Count; idx++)
-            numberButtons[idx].IsHitTestVisible = true;
+            numberButtons[idx].IsHitTestVisible = true;         
       }
 
       // 화면에 숫자가 다 출력되도록 텍스트 크기를 조절한다
@@ -82,6 +82,37 @@ namespace Calculator
                EnableNumberButtons();
          }
       }
+      /*
+      // 키보드를 눌러 입력 이벤트를 받는다.
+      private void Pressed_Keyboard(object sender, KeyEventArgs e)
+      {
+         Button parameter = new Button();
+         switch (e.Key) {
+            case Key.NumPad0: parameter.Content = "0";
+               break;
+            case Key.NumPad1: parameter.Content = "1";
+               break;
+            case Key.NumPad2: parameter.Content = "2";
+               break;
+            case Key.NumPad3: parameter.Content = "3";
+               break;
+            case Key.NumPad4: parameter.Content = "4";
+               break;
+            case Key.NumPad5: parameter.Content = "5";
+               break;
+            case Key.NumPad6: parameter.Content = "6";
+               break;
+            case Key.NumPad7: parameter.Content = "7";
+               break;
+            case Key.NumPad8: parameter.Content = "8";
+               break;
+            case Key.NumPad9: parameter.Content = "9";
+               break;
+         }
+
+         Btn_number_Click(parameter, e);
+      }
+      */
 
       // 숫자 키패트 버튼 중 하나가 눌릴 경우
       private void Btn_number_Click(object sender, RoutedEventArgs e)
@@ -101,12 +132,13 @@ namespace Calculator
       private void Btn_operation_Click(object sender, RoutedEventArgs e)
       {
          // 아무것도 입력된 수가 없으면 화면의 값에 대한 연산
-         if (currentNumber.Length == 0)
+         if (currentNumber.Length == 0 && negateNumber.Length == 0)
             currentNumber = calculationScreen.Text;
+         
 
          // 현재 입력된 버튼의 연산 문자를 가져옴
          char oper = ((Button)sender).Content.ToString()[0];
-         if (currentNumber.Length == 0)
+         if (currentNumber.Length == 0 && negateNumber.Length == 0)
             currentEquation = currentEquation.Remove(currentEquation.Length - 3);
 
          // 소수점만 남아있을 경우
@@ -199,6 +231,7 @@ namespace Calculator
             }
                
             resultScreen.Text = currentEquation;
+            
             if (currentEquation.Length >= 28)
                resultScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
             
