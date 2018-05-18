@@ -174,6 +174,8 @@ namespace Calculator
                }
                
                resultScreen.Text = currentEquation;
+               if (currentEquation.Length >= 28)
+                  resultScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
             }
          }
       }
