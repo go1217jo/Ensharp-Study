@@ -66,8 +66,19 @@ namespace Calculator
       // 화면에 숫자가 다 출력되도록 텍스트 크기를 조절한다
       public void AdjustTextSize()
       {
-         int floatPartLength = (manatissa.Length - 1 >= 0) ? manatissa.Length - 1 : 0;
-         int increaseRate = currentNumber.Length + floatPartLength - 12;
+         string manatissaStr = manatissa;
+         string number = currentNumber;
+
+         if (currentNumber.Length == 0)
+         {
+            string[] splits = calculationScreen.Text.Split('.');
+            number = splits[0];
+            if(splits.Length == 2)
+               manatissaStr = '.' + splits[1];
+         }
+
+         int floatPartLength = (manatissaStr.Length - 1 >= 0) ? manatissaStr.Length - 1 : 0;
+         int increaseRate = number.Length + floatPartLength - 12;
 
          if (increaseRate >= 1 && increaseRate < 4)
             calculationScreen.FontSize = Constant.BASIC_FONT_SIZE - (4.3 - increaseRate * 0.08) * increaseRate;
@@ -76,6 +87,7 @@ namespace Calculator
          {
             for (int idx = 0; idx < numberButtons.Count; idx++)
                numberButtons[idx].IsHitTestVisible = false;
+            calculationScreen.FontSize = Constant.BASIC_FONT_SIZE - increaseRate*2.2;
          }
          else {
             calculationScreen.FontSize = Constant.BASIC_FONT_SIZE;
@@ -312,8 +324,7 @@ namespace Calculator
                calculationScreen.Text = ((int)result).ToString();
 
             // 연산 결과 길이가 길면 텍스트 크기를 조절한다.
-            if (calculationScreen.Text.Length >= 12)
-               calculationScreen.FontSize = 40;
+            AdjustTextSize();
 
             currentNumber = "";
             resultScreen.Text = "";
