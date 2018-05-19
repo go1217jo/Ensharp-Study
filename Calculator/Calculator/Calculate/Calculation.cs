@@ -20,6 +20,7 @@ namespace Calculator
             case 'x':
                return operand1 * operand2;
             case '÷':
+               return operand1 / operand2;
             default:
                return 0.0;
          }

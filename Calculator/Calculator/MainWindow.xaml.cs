@@ -235,7 +235,6 @@ namespace Calculator
             
             if (currentEquation.Length >= 28)
                resultScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
-            
          }
       }
 
@@ -311,6 +310,10 @@ namespace Calculator
                calculationScreen.Text = result.ToString();
             else
                calculationScreen.Text = ((int)result).ToString();
+
+            // 연산 결과 길이가 길면 텍스트 크기를 조절한다.
+            if (calculationScreen.Text.Length >= 12)
+               calculationScreen.FontSize = 40;
 
             currentNumber = "";
             resultScreen.Text = "";
