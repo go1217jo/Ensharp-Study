@@ -29,6 +29,7 @@ namespace Calculator
       // negate를 위한 문자열, 인덱스
       string negateNumber = "";
       int negateStartIndex = 0;
+      string priorOperation = "";
 
       Outprocessor outprocessor = new Outprocessor();
       List<Button> numberButtons;
@@ -281,7 +282,21 @@ namespace Calculator
 
       private void Btn_enter_Click(object sender, RoutedEventArgs e)
       {
+
+         string lastOperator = "";
+
+         // 현재 연산을 저장
+         if (currentEquation.Length - 3 >= 0)
+         {
+            lastOperator = currentEquation.Substring(currentEquation.Length - 3);
+            priorOperation = lastOperator + calculationScreen.Text;
+         }
+
          currentEquation += calculationScreen.Text;
+
+         if (currentNumber.Length == 0)
+            currentEquation += priorOperation;
+
          // 0으로 나누는 수식이 있을 경우
          if (IsDivideByZero())
          {
