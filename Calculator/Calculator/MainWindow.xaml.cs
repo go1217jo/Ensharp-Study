@@ -150,11 +150,12 @@ namespace Calculator
       // 연산자 버튼 중 하나가 눌릴 경우
       private void Btn_operation_Click(object sender, RoutedEventArgs e)
       {
+         Btn_enter_Click(sender, e);
+
          // 아무것도 입력된 수가 없으면 화면의 값에 대한 연산
          if (currentNumber.Length == 0 && negateNumber.Length == 0 && resultScreen.Text.Length == 0)
             currentNumber = calculationScreen.Text;
          
-
          // 현재 입력된 버튼의 연산 문자를 가져옴
          char oper = ((Button)sender).Content.ToString()[0];
          if (currentNumber.Length == 0 && negateNumber.Length == 0)
@@ -163,7 +164,7 @@ namespace Calculator
          // 소수점만 남아있을 경우
          if (manatissa.Length == 1)
             manatissa = "";
-
+                
          switch (oper)
          {
             case '+':
@@ -299,7 +300,8 @@ namespace Calculator
 
       private void Btn_enter_Click(object sender, RoutedEventArgs e)
       {
-
+         // 연산 전의 방정식을 저장
+         string originEquation = currentEquation;
          string lastOperator = "";
 
          // 현재 연산을 저장
@@ -332,11 +334,17 @@ namespace Calculator
             // 연산 결과 길이가 길면 텍스트 크기를 조절한다.
             AdjustTextSize();
 
-            currentNumber = "";
-            resultScreen.Text = "";
-            currentEquation = "";
-            manatissa = "";
-            floatState = false;
+            // 중간 연산일 경우에는 초기화하지 않음
+            if (((Button)sender).Content.Equals("="))
+            {
+               currentNumber = "";
+               resultScreen.Text = "";
+               currentEquation = "";
+               manatissa = "";
+               floatState = false;
+            }
+            else
+               currentEquation = originEquation;
          }   
       }
    }
