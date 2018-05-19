@@ -300,6 +300,8 @@ namespace Calculator
             currentNumber = "";
             resultScreen.Text = "";
             currentEquation = "";
+            manatissa = "";
+            floatState = false;
          }   
       }
    }

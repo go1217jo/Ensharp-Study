@@ -8,6 +8,7 @@ namespace Calculator
 {
    class Calculation
    {
+      // 연산자에 따라 연산한다
       public double Operate(char oper, double operand1, double operand2)
       {
          switch(oper)
@@ -19,7 +20,6 @@ namespace Calculator
             case 'x':
                return operand1 * operand2;
             case '÷':
-               return operand1 / operand2;
             default:
                return 0.0;
          }
