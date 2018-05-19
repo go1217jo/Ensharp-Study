@@ -135,8 +135,14 @@ namespace Calculator
             manatissa += ((Button)sender).Content;
          // 현재 소수가 아니면
          else
-            currentNumber += ((Button)sender).Content;
+         {
+            // 00으로 입력되는 것을 방지
+            if(!(currentNumber.Length == 0 && ((Button)sender).Content.Equals("0")))
+               currentNumber += ((Button)sender).Content;
+         }
          calculationScreen.Text = outprocessor.InsertComma(currentNumber) + manatissa;
+         if (calculationScreen.Text.Length == 0)
+            calculationScreen.Text = "0";
          
          AdjustTextSize();
       }
@@ -145,7 +151,7 @@ namespace Calculator
       private void Btn_operation_Click(object sender, RoutedEventArgs e)
       {
          // 아무것도 입력된 수가 없으면 화면의 값에 대한 연산
-         if (currentNumber.Length == 0 && negateNumber.Length == 0)
+         if (currentNumber.Length == 0 && negateNumber.Length == 0 && resultScreen.Text.Length == 0)
             currentNumber = calculationScreen.Text;
          
 
