@@ -63,6 +63,26 @@ namespace Calculator
             numberButtons[idx].IsHitTestVisible = true;         
       }
 
+      // 연산 키패드를 누를 수 있도록 전환한다.
+      public void EnableOperationButtons()
+      {
+         for (int idx = 0; idx < operButtons.Count; idx++)
+            operButtons[idx].IsHitTestVisible = true;
+         Btn_enter.IsHitTestVisible = true;
+         Btn_plusMinus.IsHitTestVisible = true;
+         Btn_dot.IsHitTestVisible = true;
+      }
+
+      // 연산 키패드를 누를 수 없도록 한다.
+      public void DisableOperationButtons()
+      {
+         for (int idx = 0; idx < operButtons.Count; idx++)
+            operButtons[idx].IsHitTestVisible = false;
+         Btn_enter.IsHitTestVisible = false;
+         Btn_plusMinus.IsHitTestVisible = false;
+         Btn_dot.IsHitTestVisible = false;
+      }
+
       // 화면에 숫자가 다 출력되도록 텍스트 크기를 조절한다
       public void AdjustTextSize()
       {
@@ -132,6 +152,7 @@ namespace Calculator
       // 숫자 키패트 버튼 중 하나가 눌릴 경우
       private void Btn_number_Click(object sender, RoutedEventArgs e)
       {
+         EnableOperationButtons();
          // 소수이면
          if (floatState)
             manatissa += ((Button)sender).Content;
@@ -206,12 +227,14 @@ namespace Calculator
          EnableNumberButtons();
       }
            
+      // CE버튼
       private void Btn_cancel_Click(object sender, RoutedEventArgs e)
       {
          currentNumber = "";
          manatissa = "";
          negateNumber = "";
          floatState = false;
+         EnableOperationButtons();
          calculationScreen.Text = "0";
          AdjustTextSize();
       }
@@ -227,6 +250,7 @@ namespace Calculator
          resultScreen.Text = "";
          calculationScreen.Text = "0";
          priorOperation = "";
+         EnableOperationButtons();
          AdjustTextSize();
          resultScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
       }
@@ -339,17 +363,15 @@ namespace Calculator
          if (IsDivideByZero())
          {
             Btn_cancel_all_Click(sender, e);
+            DisableOperationButtons();
             calculationScreen.Text = "0으로 못 나눔";
          }
          else
          {
             double result = calculation.ReturnResult(currentEquation);
-            // 실수라면
-            if (((int)(result * 10) % 10) != 0)
-               calculationScreen.Text = result.ToString();
-            else
-               calculationScreen.Text = ((int)result).ToString();
-
+            
+            calculationScreen.Text = result.ToString();
+            
             // 연산 결과 길이가 길면 텍스트 크기를 조절한다.
             AdjustTextSize();
 
