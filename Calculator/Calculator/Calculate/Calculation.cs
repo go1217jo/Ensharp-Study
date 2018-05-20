@@ -48,6 +48,7 @@ namespace Calculator
                      operand2 = numberStack.Pop();
                      operand1 = numberStack.Pop();
                      numberStack.Push(Operate(operStack.Pop(), operand1, operand2));
+                     operStack.Push(splitBySpace[idx][0]);
                   }
                   // 그렇지 않으면 스택에 넣는다
                   else

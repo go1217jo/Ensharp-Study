@@ -87,8 +87,10 @@ namespace Calculator
          {
             for (int idx = 0; idx < numberButtons.Count; idx++)
                numberButtons[idx].IsHitTestVisible = false;
-            calculationScreen.FontSize = Constant.BASIC_FONT_SIZE - increaseRate*2.2;
+            if(increaseRate != 4)
+               calculationScreen.FontSize = Constant.BASIC_FONT_SIZE - increaseRate*2.2;
          }
+         // 최대 출력 글자 수보다 작을 때
          else {
             calculationScreen.FontSize = Constant.BASIC_FONT_SIZE;
             if (!numberButtons[0].IsHitTestVisible)
@@ -150,8 +152,13 @@ namespace Calculator
       // 연산자 버튼 중 하나가 눌릴 경우
       private void Btn_operation_Click(object sender, RoutedEventArgs e)
       {
-         Btn_enter_Click(sender, e);
-
+         // 연산자 누른 뒤 바로 또 연산자를 누를 경우
+         if (currentEquation.Length - 2 >= 0) {
+            char lastChar = currentEquation.Substring(currentEquation.Length - 2).Trim()[0];
+            if (lastChar >= '0' && lastChar <= '9')
+               Btn_enter_Click(sender, e);
+         }
+         
          // 아무것도 입력된 수가 없으면 화면의 값에 대한 연산
          if (currentNumber.Length == 0 && negateNumber.Length == 0 && resultScreen.Text.Length == 0)
             currentNumber = calculationScreen.Text;
@@ -215,6 +222,7 @@ namespace Calculator
          floatState = false;
          resultScreen.Text = "";
          calculationScreen.Text = "0";
+         priorOperation = "";
          AdjustTextSize();
          resultScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
       }
@@ -300,21 +308,20 @@ namespace Calculator
 
       private void Btn_enter_Click(object sender, RoutedEventArgs e)
       {
-         // 연산 전의 방정식을 저장
          string originEquation = currentEquation;
-         string lastOperator = "";
 
-         // 현재 연산을 저장
-         if (currentEquation.Length - 3 >= 0)
-         {
-            lastOperator = currentEquation.Substring(currentEquation.Length - 3);
-            priorOperation = lastOperator + calculationScreen.Text;
-         }
+         // 일반적인 피연산자1 + 연산자 + 피연산자2 수식
+         if (currentNumber.Length != 0)
+            currentEquation += currentNumber;
+         // =만 계속 입력하는 경우
+         else if (currentNumber.Length == 0 && currentEquation.Length == 0)
+            currentEquation = calculationScreen.Text + priorOperation;
+         // 피연산자1 + 연산자 수식인 경우
+         else
+            currentEquation += calculationScreen.Text;
 
-         currentEquation += calculationScreen.Text;
-
-         if (currentNumber.Length == 0)
-            currentEquation += priorOperation;
+         if (currentEquation.Length - 4 >= 0)
+            priorOperation = currentEquation.Substring(currentEquation.Length - 4);
 
          // 0으로 나누는 수식이 있을 경우
          if (IsDivideByZero())
@@ -345,7 +352,7 @@ namespace Calculator
             }
             else
                currentEquation = originEquation;
-         }   
+         }
       }
    }
 }
