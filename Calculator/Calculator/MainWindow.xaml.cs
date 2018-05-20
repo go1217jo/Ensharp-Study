@@ -50,7 +50,7 @@ namespace Calculator
       // 0으로 나누는 수식이 있는지 확인한다.
       public bool IsDivideByZero()
       {
-         if (currentEquation.Contains("÷ 0"))
+         if (currentEquation.Contains("÷ 0") && !floatState)
             return true;
          else
             return false;
@@ -152,13 +152,17 @@ namespace Calculator
       // 연산자 버튼 중 하나가 눌릴 경우
       private void Btn_operation_Click(object sender, RoutedEventArgs e)
       {
-         // 연산자 누른 뒤 바로 또 연산자를 누를 경우
-         if (currentEquation.Length - 2 >= 0) {
-            char lastChar = currentEquation.Substring(currentEquation.Length - 2).Trim()[0];
-            if (lastChar >= '0' && lastChar <= '9')
+         // 연산자 누른 뒤 바로 또 연산자를 누를 경우를 배제
+         if(currentNumber.Length != 0)
+            Btn_enter_Click(sender, e);
+         /*
+         string[] splits = currentEquation.Split(' ');
+         if(splits.Length >= 2)
+         {
+            if (splits[splits.Length - 2][0] >= '0' && splits[splits.Length - 2][0] <= '9')
                Btn_enter_Click(sender, e);
-         }
-         
+         }*/
+                  
          // 아무것도 입력된 수가 없으면 화면의 값에 대한 연산
          if (currentNumber.Length == 0 && negateNumber.Length == 0 && resultScreen.Text.Length == 0)
             currentNumber = calculationScreen.Text;
@@ -311,26 +315,25 @@ namespace Calculator
 
       private void Btn_enter_Click(object sender, RoutedEventArgs e)
       {
-         string originEquation = currentEquation;
+         string originEquation = resultScreen.Text;
+         string[] splits = currentEquation.Split(' ');
 
          // 일반적인 피연산자1 + 연산자 + 피연산자2 수식
          if (currentNumber.Length != 0)
-            currentEquation += currentNumber;
+            currentEquation += currentNumber + manatissa;
          // =만 계속 입력하는 경우
          else if (currentNumber.Length == 0 && currentEquation.Length == 0)
             currentEquation = calculationScreen.Text + priorOperation;
          // 마지막 피연산자가 negate인 경우
-         else if (negateNumber.Length != 0) {
-            string[] splits = currentEquation.Split(' ');
+         else if (negateNumber.Length != 0)
             priorOperation = ' ' + splits[splits.Length - 2] + ' ' + negateNumber;
-         }
          // 피연산자1 + 연산자 수식인 경우
          else
             currentEquation += calculationScreen.Text;
 
          //  연산자 + 피연산자2 부분을 저장해둠
-         if (currentEquation.Length - 4 >= 0 && negateNumber.Length == 0 && !priorOperation.Contains("negate"))
-            priorOperation = currentEquation.Substring(currentEquation.Length - 4);
+         if (splits.Length - 2 >= 0 && negateNumber.Length == 0 && !priorOperation.Contains("negate"))
+            priorOperation = ' ' + splits[splits.Length - 2] + ' ' + calculationScreen.Text;
 
          // 0으로 나누는 수식이 있을 경우
          if (IsDivideByZero())
@@ -360,7 +363,7 @@ namespace Calculator
                floatState = false;
                negateNumber = "";
             }
-            else
+            else 
                currentEquation = originEquation;
          }
       }

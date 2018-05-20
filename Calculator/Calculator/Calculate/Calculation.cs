@@ -43,7 +43,7 @@ namespace Calculator
                if (operStack.Count != 0)
                {
                   // 스택의 Top에 있는 연산자가 우선순위가 높다면 스택에서 연산자를 빼내고 연산함
-                  if (CompareOperationPriority(new char[] { operStack.Peek(), splitBySpace[idx][0] }) == 1)
+                  if (CompareOperationPriority(new char[] { operStack.Peek(), splitBySpace[idx][0] }) >= 0)
                   {
                      operand2 = numberStack.Pop();
                      operand1 = numberStack.Pop();
