@@ -229,6 +229,8 @@ namespace Calculator
 
       private void Btn_plusMinus_Click(object sender, RoutedEventArgs e)
       {
+         string origin = "";
+
          if(currentNumber.Length != 0)
          {
             if (currentNumber[0] == '-')
@@ -239,6 +241,7 @@ namespace Calculator
          }
          else
          {
+            origin = calculationScreen.Text;
             if (!calculationScreen.Text.Equals("0"))
             {
                if (calculationScreen.Text[0] == '-')
@@ -248,7 +251,7 @@ namespace Calculator
             }
             if (negateNumber.Length == 0)
             {
-               negateNumber = "negate(" + calculationScreen.Text + ")";
+               negateNumber = "negate(" + origin + ")";
                negateStartIndex = currentEquation.Length;
                currentEquation += negateNumber;
             }
@@ -316,11 +319,17 @@ namespace Calculator
          // =만 계속 입력하는 경우
          else if (currentNumber.Length == 0 && currentEquation.Length == 0)
             currentEquation = calculationScreen.Text + priorOperation;
+         // 마지막 피연산자가 negate인 경우
+         else if (negateNumber.Length != 0) {
+            string[] splits = currentEquation.Split(' ');
+            priorOperation = ' ' + splits[splits.Length - 2] + ' ' + negateNumber;
+         }
          // 피연산자1 + 연산자 수식인 경우
          else
             currentEquation += calculationScreen.Text;
 
-         if (currentEquation.Length - 4 >= 0)
+         //  연산자 + 피연산자2 부분을 저장해둠
+         if (currentEquation.Length - 4 >= 0 && negateNumber.Length == 0 && !priorOperation.Contains("negate"))
             priorOperation = currentEquation.Substring(currentEquation.Length - 4);
 
          // 0으로 나누는 수식이 있을 경우
@@ -349,6 +358,7 @@ namespace Calculator
                currentEquation = "";
                manatissa = "";
                floatState = false;
+               negateNumber = "";
             }
             else
                currentEquation = originEquation;
