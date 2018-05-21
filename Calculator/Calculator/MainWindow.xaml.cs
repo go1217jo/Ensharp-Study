@@ -39,6 +39,7 @@ namespace Calculator
       public MainWindow()
       {
          InitializeComponent();
+         // 버튼 객체들에 대한 이벤트 초기화
          numberButtons = new List<Button>(new Button[] { Btn_zero, Btn_one, Btn_two, Btn_three, Btn_four, Btn_five, Btn_six, Btn_seven, Btn_eight, Btn_nine });
          operButtons = new List<Button>(new Button[] { Btn_percentage, Btn_root, Btn_square, Btn_one_divide, Btn_divide, Btn_multiply, Btn_minus, Btn_plus });
          for (int idx = 0; idx < numberButtons.Count; idx++)
@@ -118,38 +119,7 @@ namespace Calculator
                EnableNumberButtons();
          }
       }
-      /*
-      // 키보드를 눌러 입력 이벤트를 받는다.
-      private void Pressed_Keyboard(object sender, KeyEventArgs e)
-      {
-         Button parameter = new Button();
-         switch (e.Key) {
-            case Key.NumPad0: parameter.Content = "0";
-               break;
-            case Key.NumPad1: parameter.Content = "1";
-               break;
-            case Key.NumPad2: parameter.Content = "2";
-               break;
-            case Key.NumPad3: parameter.Content = "3";
-               break;
-            case Key.NumPad4: parameter.Content = "4";
-               break;
-            case Key.NumPad5: parameter.Content = "5";
-               break;
-            case Key.NumPad6: parameter.Content = "6";
-               break;
-            case Key.NumPad7: parameter.Content = "7";
-               break;
-            case Key.NumPad8: parameter.Content = "8";
-               break;
-            case Key.NumPad9: parameter.Content = "9";
-               break;
-         }
-
-         Btn_number_Click(parameter, e);
-      }
-      */
-
+      
       // 숫자 키패트 버튼 중 하나가 눌릴 경우
       private void Btn_number_Click(object sender, RoutedEventArgs e)
       {
@@ -177,14 +147,7 @@ namespace Calculator
          // 연산자 누른 뒤 바로 또 연산자를 누를 경우를 배제
          if(currentNumber.Length != 0)
             Btn_enter_Click(sender, e);
-         /*
-         string[] splits = currentEquation.Split(' ');
-         if(splits.Length >= 2)
-         {
-            if (splits[splits.Length - 2][0] >= '0' && splits[splits.Length - 2][0] <= '9')
-               Btn_enter_Click(sender, e);
-         }*/
-                  
+                           
          // 아무것도 입력된 수가 없으면 화면의 값에 대한 연산
          if (currentNumber.Length == 0 && negateNumber.Length == 0 && resultScreen.Text.Length == 0)
             currentNumber = calculationScreen.Text;
@@ -256,6 +219,7 @@ namespace Calculator
          resultScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
       }
 
+      // 플러스마이너스 버튼을 누르면 발생하는 이벤트, negate에 대한 처리
       private void Btn_plusMinus_Click(object sender, RoutedEventArgs e)
       {
          string origin = "";
@@ -369,6 +333,7 @@ namespace Calculator
          }
          else
          {
+            // 연산 결과 반환
             double result = calculation.ReturnResult(currentEquation);
             
             calculationScreen.Text = result.ToString();
