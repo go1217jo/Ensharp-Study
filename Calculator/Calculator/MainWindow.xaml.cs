@@ -371,9 +371,11 @@ namespace Calculator
             double result = calculation.ReturnResult(currentEquation);
             
             calculationScreen.Text = result.ToString();
-            
+
             // 연산 결과 길이가 길면 텍스트 크기를 조절한다.
-            AdjustTextSize();
+            int increaseRate = outprocessor.DeleteComma(calculationScreen.Text).Length - 12;
+            if (increaseRate >= 1)
+               calculationScreen.FontSize = Constant.BASIC_FONT_SIZE - (4.3 - increaseRate * 0.3) * increaseRate;
 
             // 중간 연산일 경우에는 초기화하지 않음
             if (((Button)sender).Content.Equals("="))
