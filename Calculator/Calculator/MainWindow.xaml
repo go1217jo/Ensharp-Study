@@ -13,7 +13,7 @@
          <RowDefinition Height="7*"/>
       </Grid.RowDefinitions>
       <Grid Grid.Row="0">
-         <Button Content="표준" HorizontalContentAlignment="Left" FontSize="24" Background="#DEE0E5" BorderBrush="#DEE0E5"/>
+         <Image Source="image/MenuBar.jpg" Stretch="Fill"/>
       </Grid>
       <Grid Grid.Row="1">
          <Grid ShowGridLines="False">

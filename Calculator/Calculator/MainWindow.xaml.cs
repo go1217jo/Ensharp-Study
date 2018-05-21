@@ -45,12 +45,13 @@ namespace Calculator
             numberButtons[idx].Click += new RoutedEventHandler(Btn_number_Click);
          for (int idx = 0; idx < operButtons.Count; idx++)
             operButtons[idx].Click += new RoutedEventHandler(Btn_operation_Click);
+         this.ResizeMode = ResizeMode.NoResize;
       }
 
       // 0으로 나누는 수식이 있는지 확인한다.
       public bool IsDivideByZero()
       {
-         if (currentEquation.Contains("÷ 0") && !floatState)
+         if (currentEquation.Contains("÷ 0") && !floatState && !priorOperation.Contains("."))
             return true;
          else
             return false;
@@ -389,6 +390,8 @@ namespace Calculator
             }
             else 
                currentEquation = originEquation;
+
+            
          }
       }
    }
