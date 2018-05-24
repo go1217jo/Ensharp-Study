@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace MemberManager
 {
     /// <summary>
-    /// Registration.xaml에 대한 상호 작용 논리
+    /// FindPWbyEmail.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class Registration : Window
+    public partial class FindPWbyEmail : UserControl
     {
-        public Registration()
+        public FindPWbyEmail()
         {
             InitializeComponent();
         }

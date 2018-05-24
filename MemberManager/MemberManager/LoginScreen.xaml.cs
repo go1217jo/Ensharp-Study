@@ -28,7 +28,6 @@ namespace MemberManager
          {
             clickableLabels[idx].AddHandler(MouseMoveEvent, new RoutedEventHandler(Label_MouseUp));
             clickableLabels[idx].AddHandler(MouseLeaveEvent, new RoutedEventHandler(Label_MouseLeave));
-            
          }
       }
 

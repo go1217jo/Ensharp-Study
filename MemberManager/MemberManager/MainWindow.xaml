@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MemberManager"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="600">
-    <Grid x:Name="MainGrid">
-        
-    </Grid>
+   
+   <Grid x:Name="MainGrid">
+   </Grid>
 </Window>

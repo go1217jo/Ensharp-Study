@@ -1,12 +1,98 @@
-﻿<UserControl x:Class="MemberManager.Registration"
+﻿<Window x:Class="MemberManager.Registration"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MemberManager"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
-</UserControl>
+             mc:Ignorable="d"
+        Background="GhostWhite"
+             Title="MainWindow" Height="630" Width="500">
+   <Grid>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="0.8*"/>
+         <RowDefinition Height="1.7*"/>
+         <RowDefinition Height="0.2*"/>
+         <RowDefinition Height="2*"/>
+         <RowDefinition Height="1.8*"/>
+      </Grid.RowDefinitions>
+      <Label Grid.Row="0" Content="회원 가입" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold"/>
+      <Border Grid.Row="1" BorderThickness="0" BorderBrush="LightGray">
+         <Grid>
+            <Grid.RowDefinitions>
+               <RowDefinition Height="1*"/>
+               <RowDefinition Height="1*"/>
+               <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="txt_ID" Grid.Row="0" Text="아이디" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
+            <PasswordBox x:Name="txt_PW" Grid.Row="1" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
+            <Label x:Name="label_PW" Grid.Row="1" Content="비밀번호" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
+            <PasswordBox x:Name="txt_PW_check" Grid.Row="2" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
+            <Label x:Name="label_PW_check" Grid.Row="2" Content="비밀번호 재확인" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
+         </Grid>
+      </Border>
+      <Border Grid.Row="3" BorderThickness="0" BorderBrush="LightGray">
+         <Grid>
+            <Grid.RowDefinitions>
+               <RowDefinition Height="1*"/>
+               <RowDefinition Height="1*"/>
+               <RowDefinition Height="1*"/>
+               <RowDefinition Height="0.8*"/>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="txt_name" Grid.Row="0" Text="이름" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
+            <Grid Grid.Row="1" Margin="40, 0, 40, 0">
+               <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="1*"/>
+                  <ColumnDefinition Width="1*"/>
+               </Grid.ColumnDefinitions>
+               <Border x:Name="man_choice_border" Grid.Column="0" BorderThickness="2" BorderBrush="LightGray" >
+                  <Label x:Name="man_choice" Content="남자" FontSize="18" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="White"/>
+               </Border>
+               <Border x:Name="woman_choice_border" Grid.Column="1" BorderThickness="2" BorderBrush="LightGray">
+                  <Label x:Name="woman_choice" Content="여자" FontSize="18" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="White"/>
+               </Border>
+            </Grid>
+            <Grid Grid.Row="2" Margin="40,0,40,0">
+               <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="1*"/>
+                  <ColumnDefinition Width="1*"/>
+                  <ColumnDefinition Width="1*"/>
+                  <ColumnDefinition Width="1*"/>
+               </Grid.ColumnDefinitions>
+               <Label Grid.Column="0" Content="생일" BorderThickness="2" BorderBrush="LightGray" FontSize="18" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="WhiteSmoke" />
+               <TextBox Grid.Column="1" Text="0000"  FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10" />
+               <ComboBox Grid.Column="2" FontSize="18" Padding="10" />
+               <TextBox Grid.Column="3" FontSize="18" Padding="10" />
+            </Grid>
+            <Label Grid.Row="3" x:Name="birth_alarm" Foreground="OrangeRed" FontSize="15" Margin="40,0,40,0"/>
+         </Grid>
+      </Border>
+      <Grid Grid.Row="4">
+         <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1.5*"/>
+         </Grid.RowDefinitions>
+         <Grid Grid.Row="0" Margin="40,0,40,0">
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="3.2*" />
+               <ColumnDefinition Width="4.5*" />
+               <ColumnDefinition Width="0.8*" />
+               <ColumnDefinition Width="4.5*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" Content="이메일 주소" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="WhiteSmoke" />
+            <TextBox x:Name="txt_email" Text="이메일" Foreground="Gray" Grid.Column="1" VerticalContentAlignment="Center" Padding="5" FontSize="18" />
+            <Label Grid.Column="2" Content="@" VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Center" />
+            <ComboBox x:Name="Cbx_email" Grid.Column="3" VerticalContentAlignment="Center" FontSize="18" Foreground="GhostWhite" Padding="5"/>
+         </Grid>
+         <Grid Grid.Row="1" Margin="40,0,40,0">
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="3*"/>
+               <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" Padding="10" VerticalContentAlignment="Center" FontSize="18" />
+            <Button Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="인증" Background="GhostWhite" FontSize="18" />
+         </Grid>
+         <Button Grid.Row="2" x:Name="Btn_regist" VerticalAlignment="Center" HorizontalAlignment="Center" Background="GhostWhite" Content="가입하기" FontSize="20" Padding="5" />
+      </Grid>
+   </Grid>
+</Window>

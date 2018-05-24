@@ -7,6 +7,17 @@
              mc:Ignorable="d" 
              Background="Beige"
              d:DesignHeight="450" d:DesignWidth="800">
+   <UserControl.Triggers>
+      <EventTrigger RoutedEvent="Loaded">
+         <BeginStoryboard>
+            <Storyboard>
+               <DoubleAnimation
+              Storyboard.TargetProperty="Opacity"
+              From="0.3" To="1.0" Duration="0:0:1"/>
+            </Storyboard>
+         </BeginStoryboard>
+      </EventTrigger>
+   </UserControl.Triggers>
    <Grid>
       <Grid.RowDefinitions>
          <RowDefinition Height="1*"/>
@@ -28,9 +39,9 @@
       </Canvas>
       <Label Grid.Row="1" Content="비밀번호를 찾고자 하는 아이디를 입력해주세요" FontSize="18" Padding="20,10,10,10" VerticalAlignment="Center" />
       <Border Grid.Row="2" BorderThickness="2" Background="GhostWhite" BorderBrush="Gainsboro" Margin="30,20,30,20">
-         <TextBox Margin="100, 32, 100, 32" FontSize="20" Padding="10"/>
+         <TextBox x:Name="txt_ID" Foreground="Gray" Text="찾고자 하는 아이디" Margin="100, 32, 100, 32" FontSize="20" Padding="10"/>
       </Border>
-      <Button Grid.Row="3" Content="다음" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20, 10, 20, 10" FontSize="18" Background="GhostWhite"/>
+      <Button x:Name="Btn_next" Grid.Row="3" Content="다음" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20, 10, 20, 10" FontSize="18" Background="GhostWhite"/>
       <Grid Grid.Row="4">
          <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.5*"/>

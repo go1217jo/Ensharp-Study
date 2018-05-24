@@ -68,5 +68,6 @@ namespace MemberManager
                 txtbox.Foreground = Brushes.Black;
             }
         }
+
     }
 }
