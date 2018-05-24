@@ -42,6 +42,10 @@ namespace MemberManager
          login.findID.AddHandler(MouseDownEvent, new RoutedEventHandler(Label_findID_Click));
          login.findPW.AddHandler(MouseDownEvent, new RoutedEventHandler(Label_findPW_Click));
          login.register.AddHandler(MouseDownEvent, new RoutedEventHandler(Label_register_Click));
+
+         findID.Btn_Back_FindID.Click += Btn_Back_Click;
+         findPW.Btn_Back_FindPW.Click += Btn_Back_Click;
+         findPW.findID_Click.AddHandler(MouseDownEvent, new RoutedEventHandler(MoveToFindID));
       }
 
       private void Label_findID_Click(object sender, RoutedEventArgs e)
@@ -60,6 +64,18 @@ namespace MemberManager
       {
          MainGrid.Children.Clear();
          MainGrid.Children.Add(register);
+      }
+
+      private void Btn_Back_Click(object sender, RoutedEventArgs e)
+      {
+         MainGrid.Children.Clear();
+         MainGrid.Children.Add(login);
+      }
+
+      private void MoveToFindID(object sender, RoutedEventArgs e)
+      {
+         MainGrid.Children.Clear();
+         MainGrid.Children.Add(findID);
       }
    }
 }

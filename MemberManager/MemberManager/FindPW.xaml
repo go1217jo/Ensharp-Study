@@ -5,8 +5,40 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MemberManager"
              mc:Ignorable="d" 
+             Background="Beige"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+   <Grid>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="1*"/>
+         <RowDefinition Height="0.6*"/>
+         <RowDefinition Height="2*"/>
+         <RowDefinition Height="0.9*"/>
+         <RowDefinition Height="1.4*"/>
+      </Grid.RowDefinitions>
+      <Grid Grid.Row="0">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
+         </Grid.ColumnDefinitions>
+         <Label Grid.Column="0" Content="비밀번호 찾기" VerticalAlignment="Bottom" FontSize="20" FontWeight="Bold" Padding="20" />
+         <Button x:Name="Btn_Back_FindPW" Grid.Column="1"  Content="이전" VerticalAlignment="Center" FontSize="18" HorizontalAlignment="Center" Padding="10" Background="GhostWhite"/>
+      </Grid>
+      <Canvas Grid.Row="0">
+      <Line X1="0" X2="800" Y1="70" Y2="70" StrokeThickness="2" Stroke="Gray"/>
+      </Canvas>
+      <Label Grid.Row="1" Content="비밀번호를 찾고자 하는 아이디를 입력해주세요" FontSize="18" Padding="20,10,10,10" VerticalAlignment="Center" />
+      <Border Grid.Row="2" BorderThickness="2" Background="GhostWhite" BorderBrush="Gainsboro" Margin="30,20,30,20">
+         <TextBox Margin="100, 32, 100, 32" FontSize="20" Padding="10"/>
+      </Border>
+      <Button Grid.Row="3" Content="다음" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20, 10, 20, 10" FontSize="18" Background="GhostWhite"/>
+      <Grid Grid.Row="4">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition Width="0.8*"/>
+         </Grid.ColumnDefinitions>
+         <Label Grid.Column="0" Content="아이디가 기억나지 않는다면?" FontSize="16" Padding="20" HorizontalAlignment="Center"/>
+         <Label Grid.Column="1" x:Name="findID_Click" Padding="0,20,0,20" Content="아이디 찾기 바로가기▶" FontSize="16"  HorizontalAlignment="Center" Foreground="red" />
+      </Grid>
+   </Grid>
 </UserControl>

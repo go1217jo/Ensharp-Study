@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MemberManager"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             Background="Beige"
              d:DesignHeight="500" d:DesignWidth="600">
    <Grid>
       <Grid.RowDefinitions>
@@ -13,7 +14,14 @@
          <RowDefinition Height="4*"/>
          
       </Grid.RowDefinitions>
-      <Label Grid.Row="0" Content="아이디 찾기" FontSize="24" FontFamily="Britannic Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      <Grid Grid.Row="0">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="1*"/>
+         </Grid.ColumnDefinitions>
+         <Label Grid.Column="0" Content="아이디 찾기" Margin="120,0,0,0" FontSize="24" FontFamily="Britannic Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+         <Button x:Name="Btn_Back_FindID" Grid.Column="1" Content="이전" Background="GhostWhite" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10"/>
+      </Grid>
       <Grid Grid.Row="1">
          <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -30,11 +38,11 @@
                <ColumnDefinition Width="0.8*" />
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="이메일 주소" VerticalAlignment="Center" FontSize="18" HorizontalAlignment="Center" />
-            <TextBox Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Height="35" FontSize="20" />
+            <TextBox x:Name="txt_email" Text="이메일" Foreground="Gray" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Height="35" FontSize="20" />
             <Label Grid.Column="2" Content="@" VerticalAlignment="Center" FontSize="18" HorizontalAlignment="Center" />
-            <ComboBox Grid.Column="3" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Height="35" FontSize="20" />
+            <ComboBox x:Name="Cbx_email" Grid.Column="3" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Height="35" FontSize="20" />
          </Grid>
-         <Label Content="아이디는 " Grid.Row = "2" FontSize="20" Padding="10" Foreground ="Orange"/>
+         <Label Content="아이디는 " Grid.Row = "2" FontSize="20" Padding="10" Foreground ="OrangeRed"/>
       </Grid>
       <Grid Grid.Row="2">
          <Grid.RowDefinitions>
@@ -58,10 +66,10 @@
                <ColumnDefinition Width="5*"/>
                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="1" VerticalAlignment="Center" Padding="10,0,0,0" Height="35" FontSize="20" />
+            <TextBox x:Name="txt_answer" Grid.Column="1" Text="질문에 대한 답변" Foreground="Gray" VerticalAlignment="Center" Padding="10,0,0,0" Height="35" FontSize="20" />
             <Button Grid.Column="2" Content="입력" VerticalAlignment="Stretch" HorizontalAlignment = "Stretch" FontSize="15" Margin="15" />
          </Grid>
-         <Label Grid.Row="3" Content="아이디는 " FontSize="20" Padding="10" Foreground ="Orange"/>
+         <Label Grid.Row="3" Content="아이디는 " FontSize="20" Padding="10" Foreground ="OrangeRed"/>
       </Grid>
    </Grid>
 </UserControl>

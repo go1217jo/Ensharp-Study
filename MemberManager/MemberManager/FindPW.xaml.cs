@@ -18,11 +18,25 @@ namespace MemberManager
     /// <summary>
     /// FindPW.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class FindPW : UserControl
-    {
-        public FindPW()
-        {
-            InitializeComponent();
-        }
-    }
+   public partial class FindPW : UserControl
+   {
+      public FindPW()
+      {
+         InitializeComponent();
+         findID_Click.AddHandler(MouseMoveEvent, new RoutedEventHandler(Label_MouseUp));
+         findID_Click.AddHandler(MouseLeaveEvent, new RoutedEventHandler(Label_MouseLeave));
+      }
+
+      private void Label_MouseUp(object sender, RoutedEventArgs e)
+      {
+         ((Label)sender).FontWeight = FontWeights.UltraBold;
+         ((Label)sender).FontSize = 18;
+      }
+
+      private void Label_MouseLeave(object sender, RoutedEventArgs e)
+      {
+         ((Label)sender).FontWeight = FontWeights.Regular;
+         ((Label)sender).FontSize = 16;
+      }
+   }
 }

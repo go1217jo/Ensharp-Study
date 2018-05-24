@@ -22,11 +22,19 @@ namespace MemberManager
       public Splash()
       {
          InitializeComponent();
+         SplashMove();
       }
 
       private void Move(object sender, MouseButtonEventArgs e)
       {
          DragMove();
+      }
+
+      private void SplashMove()
+      {
+         
+         new MainWindow().Show();
+         Close();
       }
    }
 }
