@@ -86,13 +86,15 @@
          </Grid>
          <Grid Grid.Row="1" Margin="40,0,40,0">
             <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="3*"/>
+               <ColumnDefinition Width="2*"/>
+               <ColumnDefinition Width="0.8*"/>
                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <TextBox Grid.Column="0" Padding="10" VerticalContentAlignment="Center" FontSize="18" />
-            <Button Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="인증" Background="GhostWhite" FontSize="18" />
+            <Label Grid.Column="1" Padding="10" Background="White" FontSize="18" BorderBrush="LightGray" Content="보내기" HorizontalContentAlignment="Center" BorderThickness="2" />
+            <Button Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="인증" Background="GhostWhite" FontSize="18" />
          </Grid>
-         <Button Grid.Row="2" x:Name="Btn_regist" VerticalAlignment="Center" HorizontalAlignment="Center" Background="GhostWhite" Content="가입하기" FontSize="20" Padding="5" />
+         <Button Grid.Row="2" x:Name="Btn_register" VerticalAlignment="Center" HorizontalAlignment="Center" Background="GhostWhite" Content="가입하기" FontSize="20" Padding="5" />
       </Grid>
    </Grid>
 </Window>

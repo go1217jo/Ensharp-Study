@@ -20,6 +20,9 @@ namespace MemberManager
     /// </summary>
     public partial class Registration : Window
     {
+        // 1이면 남자, 2이면 여자
+        int sex = 0;
+
         public Registration()
         {
             InitializeComponent();
@@ -42,8 +45,11 @@ namespace MemberManager
 
         public void Init()
         {
+            // 콤보박스 아이템 초기화
             InitCbxEmail();
             InitCbxMonth();
+            
+            // 일반 텍스트박스 힌트 이벤트
             txt_email.AddHandler(LostFocusEvent, new RoutedEventHandler(SetDefaultText));
             txt_email.AddHandler(GotFocusEvent, new RoutedEventHandler(SetBlank));
             txt_name.AddHandler(LostFocusEvent, new RoutedEventHandler(SetDefaultText));
@@ -51,10 +57,20 @@ namespace MemberManager
             txt_ID.AddHandler(LostFocusEvent, new RoutedEventHandler(SetDefaultText));
             txt_ID.AddHandler(GotFocusEvent, new RoutedEventHandler(SetBlank));
 
+            // 비밀번호 텍스트박스 힌트 이벤트 
             txt_PW.AddHandler(LostFocusEvent, new RoutedEventHandler(PasswordHintEnable));
             label_PW.AddHandler(MouseDownEvent, new RoutedEventHandler(PasswordHintUnable));
+            label_PW.AddHandler(KeyDownEvent, new RoutedEventHandler(PasswordHintUnable));
             txt_PW_check.AddHandler(LostFocusEvent, new RoutedEventHandler(PasswordHintEnable));
+            label_PW_check.AddHandler(KeyDownEvent, new RoutedEventHandler(PasswordHintUnable));
             label_PW_check.AddHandler(MouseDownEvent, new RoutedEventHandler(PasswordHintUnable));
+
+            // 성별 선택 이벤트
+            man_choice.AddHandler(MouseDownEvent, new RoutedEventHandler(ChoiceSex));
+            woman_choice.AddHandler(MouseDownEvent, new RoutedEventHandler(ChoiceSex));
+
+            // 비밀번호 일치 확인 이벤트
+            txt_PW_check.AddHandler(KeyUpEvent, new RoutedEventHandler(IsEqualPassword));
         }
 
         public void PasswordHintUnable(object sender, RoutedEventArgs e)
@@ -114,6 +130,38 @@ namespace MemberManager
                 txtbox.Text = "";
                 txtbox.Foreground = Brushes.Black;
             }
+        }
+
+        public void ChoiceSex(object sender, RoutedEventArgs e)
+        {
+            Label label = (Label)sender;
+            if(label.Equals(man_choice))
+            {
+                man_choice.Foreground = Brushes.Green;
+                man_choice_border.BorderBrush = Brushes.Green;
+                woman_choice.Foreground = Brushes.Black;
+                woman_choice_border.BorderBrush = Brushes.LightGray;
+            }
+            else
+            {
+                woman_choice.Foreground = Brushes.Green;
+                woman_choice_border.BorderBrush = Brushes.Green;
+                man_choice.Foreground = Brushes.Black;
+                man_choice_border.BorderBrush = Brushes.LightGray;
+            }
+        }
+
+        public void IsEqualPassword(object sender, RoutedEventArgs e)
+        {
+            if (txt_PW_check.Password.Equals(txt_PW.Password))
+                txt_PW_check.Background = Brushes.GreenYellow;
+            else
+                txt_PW_check.Background = Brushes.OrangeRed;
+        }
+
+        public void Btn_register_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
