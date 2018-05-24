@@ -38,7 +38,6 @@ namespace MemberManager
             login = new LoginScreen();
             findID = new FindID();
             findPW = new FindPW();
-            register = new Registration();
 
             login.findID.AddHandler(MouseDownEvent, new RoutedEventHandler(Label_findID_Click));
             login.findPW.AddHandler(MouseDownEvent, new RoutedEventHandler(Label_findPW_Click));
@@ -71,6 +70,7 @@ namespace MemberManager
 
         private void Label_register_Click(object sender, RoutedEventArgs e)
         {
+            register = new Registration();
             register.Show();
         }
 

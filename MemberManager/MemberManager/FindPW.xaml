@@ -13,7 +13,7 @@
             <Storyboard>
                <DoubleAnimation
               Storyboard.TargetProperty="Opacity"
-              From="0.3" To="1.0" Duration="0:0:1"/>
+              From="0.0" To="1.0" Duration="0:0:1.0"/>
             </Storyboard>
          </BeginStoryboard>
       </EventTrigger>

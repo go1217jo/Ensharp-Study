@@ -59,9 +59,9 @@
                   <ColumnDefinition Width="1*"/>
                </Grid.ColumnDefinitions>
                <Label Grid.Column="0" Content="생일" BorderThickness="2" BorderBrush="LightGray" FontSize="18" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="WhiteSmoke" />
-               <TextBox Grid.Column="1" Text="0000"  FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10" />
-               <ComboBox Grid.Column="2" FontSize="18" Padding="10" />
-               <TextBox Grid.Column="3" FontSize="18" Padding="10" />
+               <TextBox Grid.Column="1" Text="0000" MaxLength="4"  FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10" />
+               <ComboBox x:Name="Cbx_month" Grid.Column="2" FontSize="18" Padding="10" />
+               <TextBox Grid.Column="3" MaxLength="2" FontSize="18" Padding="10" />
             </Grid>
             <Label Grid.Row="3" x:Name="birth_alarm" Foreground="OrangeRed" FontSize="15" Margin="40,0,40,0"/>
          </Grid>
@@ -82,7 +82,7 @@
             <Label Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" Content="이메일 주소" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="WhiteSmoke" />
             <TextBox x:Name="txt_email" Text="이메일" Foreground="Gray" Grid.Column="1" VerticalContentAlignment="Center" Padding="5" FontSize="18" />
             <Label Grid.Column="2" Content="@" VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Center" />
-            <ComboBox x:Name="Cbx_email" Grid.Column="3" VerticalContentAlignment="Center" FontSize="18" Foreground="GhostWhite" Padding="5"/>
+            <ComboBox x:Name="Cbx_email" Grid.Column="3" VerticalContentAlignment="Center" FontSize="18" Padding="5"/>
          </Grid>
          <Grid Grid.Row="1" Margin="40,0,40,0">
             <Grid.ColumnDefinitions>
