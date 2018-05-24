@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="MemberManager.LoginScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MemberManager"
+             mc:Ignorable="d" 
+             Background="Beige"
+             d:DesignHeight="500" d:DesignWidth="600">
+   <Grid x:Name="LoginMainGrid">
+      <Grid.RowDefinitions>
+         <RowDefinition Height="2*"/>
+         <RowDefinition Height="1*"/>
+         <RowDefinition Height="1*"/>
+         <RowDefinition Height="1*"/>
+         <RowDefinition Height="1*"/>
+         <RowDefinition Height="2*"/>
+      </Grid.RowDefinitions>
+      <Label Grid.Row="0" Content="En# Study" FontSize="72" FontFamily="Britannic Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      <TextBox Grid.Row="1" x:Name="txtID" HorizontalAlignment="Center" Width="400" Height="50" FontSize="35" Padding="10,0,10,0" />
+      <PasswordBox Grid.Row="2" x:Name="txtPW" HorizontalAlignment="Center" Width="400" Height="50" FontSize="35" PasswordChar="*" Padding="10,0,10,0"/>
+      <Label Grid.Row="3" x:Name="alarmLabel" />
+      <Button Grid.Row="4" x:Name="Btn_Login" Width="400" Height="50" FontSize="35" VerticalAlignment="Top" Content="로그인" Background="GreenYellow" FontFamily="Arial Black" />
+      <Grid Grid.Row="5" VerticalAlignment="Top" Height="40">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.0*"/>
+            <ColumnDefinition Width="1.6*"/>
+            <ColumnDefinition Width="1.6*"/>
+            <ColumnDefinition Width="1.6*"/>
+            <ColumnDefinition Width="1.0*"/>
+         </Grid.ColumnDefinitions>
+         <Label Grid.Column="1" x:Name="findID" Content="아이디 찾기" FontSize="18" HorizontalContentAlignment="Center"/>
+         <Label Grid.Column="2" x:Name="findPW" Content="비밀번호 찾기" FontSize="18" HorizontalContentAlignment="Center"/>
+         <Label Grid.Column="3" x:Name="register" Content="회원가입" FontSize="18" HorizontalContentAlignment="Center"/>
+      </Grid>
+   </Grid>
+</UserControl>
