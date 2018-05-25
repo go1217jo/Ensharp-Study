@@ -110,5 +110,17 @@ namespace MemberManager.Data
 
             return member;
         }
+
+        public string FindIDByEmail(string email)
+        {
+            string query = "SELECT id FROM member WHERE mail = '" + email + "';";
+            reader = SelectQuery(query);
+            string id = null;
+            while(reader.Read())
+                id = reader["id"].ToString();
+            reader.Close();
+
+            return id;
+        }
     }
 }

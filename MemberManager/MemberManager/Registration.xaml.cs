@@ -30,11 +30,7 @@ namespace MemberManager
         string certificationNo = null;
         Mail mail;
 
-        Timer timer;
-        int times = 180;
-
         Data.DAO DB = null;
-
 
         public Registration(Data.DAO DB)
         {
@@ -154,6 +150,11 @@ namespace MemberManager
                 MessageBox.Show("이메일을 입력해주세요.");
                 return;
             }
+            else
+            {
+                if (DB.FindIDByEmail(txt_email.Text) != null)
+                    MessageBox.Show("중복된 이메일입니다.");
+            }
             
             mail.SetToAddress(txt_email.Text + '@' + Cbx_email.SelectedItem.ToString());
             certificationNo = ReturnRandomString();
@@ -162,37 +163,7 @@ namespace MemberManager
             label_SendMail.Content = "발송됨";
             Btn_certificate.IsEnabled = true;
 
-            /*
-            times = 180;
-
-            timer = new System.Timers.Timer();
-            timer.Interval = 1;
-            timer.Elapsed += new ElapsedEventHandler(ShowTimer);
-            timer.Start();
-            */
         }
-
-        /*
-        public void ShowTimer(object sender, ElapsedEventArgs e)
-        {
-            if(times == 180)
-            {
-                label_SendMail.Content = times + "";
-                label_SendMail.Foreground = Brushes.Red;
-                Btn_certificate.IsEnabled = true;
-            }
-            else
-                label_SendMail.Content = --times + "";
-
-            if(times == 0)
-            {
-                MessageBox.Show("인증시간 초과!");
-                label_SendMail.Content = "보내기";
-                label_SendMail.Foreground = Brushes.Black;
-                Btn_certificate.IsEnabled = false;
-                timer.Close();
-            }
-        }*/
 
         public void Btn_Certificate_Click(object sender, RoutedEventArgs e)
         {

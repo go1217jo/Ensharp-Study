@@ -30,15 +30,15 @@ namespace MemberManager
         public MainWindow()
         {
             InitializeComponent();
-            Init();
             DB = new Data.DAO();
+            Init();
             MainGrid.Children.Add(login);
         }
 
         public void Init()
         {
             login = new LoginScreen();
-            findID = new FindID();
+            findID = new FindID(DB);
             findPW = new FindPW();
 
             login.findID.AddHandler(MouseDownEvent, new RoutedEventHandler(Label_findID_Click));
@@ -105,6 +105,13 @@ namespace MemberManager
         private void Btn_Back_Click(object sender, RoutedEventArgs e)
         {
             MainGrid.Children.Clear();
+            Button button = (Button)sender;
+
+            if(button.Equals(findID.Btn_Back_FindID))
+            {
+                findID.txt_email.Text = "이메일";
+                findID.label_id_by_email.Content = "";
+            }
             MainGrid.Children.Add(login);
         }
 

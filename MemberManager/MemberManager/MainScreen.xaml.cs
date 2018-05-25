@@ -27,5 +27,7 @@ namespace MemberManager
             InitializeComponent();
             this.member = member;            
         }
+
+
     }
 }

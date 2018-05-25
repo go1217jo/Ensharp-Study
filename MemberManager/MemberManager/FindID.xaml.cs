@@ -20,14 +20,36 @@ namespace MemberManager
     /// </summary>
     public partial class FindID : UserControl
     {
-        public FindID()
+        Data.DAO DB;
+
+        public FindID(Data.DAO DB)
         {
             InitializeComponent();
+            this.DB = DB;
             InitCbxEmail();
+
             txt_email.AddHandler(LostFocusEvent, new RoutedEventHandler(SetDefaultText));
             txt_email.AddHandler(GotFocusEvent, new RoutedEventHandler(SetBlank));
             txt_answer.AddHandler(LostFocusEvent, new RoutedEventHandler(SetDefaultText));
             txt_answer.AddHandler(GotFocusEvent, new RoutedEventHandler(SetBlank));
+
+            Btn_find.Click += Btn_find_Click;
+        }
+
+        private void Btn_find_Click(object sender, RoutedEventArgs e)
+        {
+            if (txt_email.Text.Length == 0 || txt_email.Text.Equals("이메일"))
+            {
+                MessageBox.Show("이메일을 입력해주세요.");
+                return;
+            }
+
+            string email = txt_email.Text + "@" + Cbx_email.SelectedItem.ToString();
+            string id = DB.FindIDByEmail(email);
+            if (id == null)
+                MessageBox.Show("등록되지 않은 이메일입니다.");
+            else
+                label_id_by_email.Content = "귀하의 아이디는 " + id + " 입니다.";
         }
 
         public void InitCbxEmail()
