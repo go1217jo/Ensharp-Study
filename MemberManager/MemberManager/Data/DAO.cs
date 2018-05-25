@@ -116,11 +116,23 @@ namespace MemberManager.Data
             string query = "SELECT id FROM member WHERE mail = '" + email + "';";
             reader = SelectQuery(query);
             string id = null;
-            while(reader.Read())
+            while (reader.Read())
                 id = reader["id"].ToString();
             reader.Close();
 
             return id;
+        }
+
+        public string FindPasswordByEmail(string email)
+        {
+            string query = "SELECT password FROM member WHERE mail = '" + email + "';";
+            reader = SelectQuery(query);
+            string password = null;
+
+            while(reader.Read())
+                password = reader["password"].ToString();
+            reader.Close();
+            return password;
         }
     }
 }

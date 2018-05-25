@@ -73,7 +73,7 @@
                <ColumnDefinition Width="6*"/>
                <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
-         <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" Padding="10,0,10,0" Height="35" FontSize="20" />
+         <ComboBox Grid.Column="1" x:Name="Cbx_question" VerticalAlignment="Center" HorizontalContentAlignment="Center" Padding="10,0,10,0" Height="35" FontSize="20" />
          </Grid>
          <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -84,7 +84,7 @@
             <TextBox x:Name="txt_answer" Grid.Column="1" Text="질문에 대한 답변" Foreground="Gray" VerticalAlignment="Center" Padding="10,0,0,0" Height="35" FontSize="20" />
             <Button Grid.Column="2" Content="입력" VerticalAlignment="Stretch" HorizontalAlignment = "Stretch" FontSize="15" Margin="15" />
          </Grid>
-         <Label Grid.Row="3" Content="아이디는 " FontSize="20" Padding="10" Foreground ="OrangeRed"/>
+         <Label Grid.Row="3" FontSize="20" Padding="10" Foreground ="OrangeRed"/>
       </Grid>
    </Grid>
 </UserControl>

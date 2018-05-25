@@ -26,7 +26,7 @@ namespace MemberManager
         {
             InitializeComponent();
             this.DB = DB;
-            InitCbxEmail();
+            InitComboBox();
 
             txt_email.AddHandler(LostFocusEvent, new RoutedEventHandler(SetDefaultText));
             txt_email.AddHandler(GotFocusEvent, new RoutedEventHandler(SetBlank));
@@ -52,11 +52,14 @@ namespace MemberManager
                 label_id_by_email.Content = "귀하의 아이디는 " + id + " 입니다.";
         }
 
-        public void InitCbxEmail()
+        public void InitComboBox()
         {
             List<string> items = new List<string>(new string[] { "naver.com", "daum.net", "google.com", "hanmail.net", "nate.com", "sju.kr", "sejong.ac.kr" });
+            List<string> questions = new List<string>(new string[] { "아버지 성함은?", "어머니 성함은?", "가장 기억에 남는 장소는?" });
             Cbx_email.ItemsSource = items;
             Cbx_email.SelectedIndex = 0;
+            Cbx_question.ItemsSource = questions;
+            Cbx_question.SelectedIndex = 0;
         }
 
         public void SetDefaultText(object sender, RoutedEventArgs e)

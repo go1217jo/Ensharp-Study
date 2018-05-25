@@ -17,6 +17,7 @@
          <RowDefinition Height="1*"/>
       </Grid.RowDefinitions>
       <Label Grid.Row="0" Content="이메일 인증" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" />
+      <Button Grid.Row="0" x:Name="Btn_Back" Content="홈으로" FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center" Background="GhostWhite" Padding="10" Margin="20" />
       <Canvas Grid.Row="0">
          <Line X1="0" X2="800" Y1="80" Y2="80" StrokeThickness="2" Stroke="Gray"/>
       </Canvas>
@@ -31,9 +32,9 @@
          <Label Grid.Column="0" Content="이메일 주소" VerticalAlignment="Center" FontSize="18" HorizontalAlignment="Center" />
          <TextBox x:Name="txt_email" Text="이메일" Foreground="Gray" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Height="35" FontSize="20" />
          <Label Grid.Column="2" Content="@" VerticalAlignment="Center" FontSize="18" HorizontalAlignment="Center" />
-         <ComboBox x:Name="Cbx_email" Grid.Column="3" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Height="35" FontSize="20" Foreground="GhostWhite"/>
+         <ComboBox x:Name="Cbx_email" Grid.Column="3" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Height="35" FontSize="20"/>
       </Grid>
-      <Button Grid.Row="2" Content="인증번호 발송" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Center" Padding="15,12,15,12" Background="GhostWhite" Margin="10"/>
+      <Button Grid.Row="2" x:Name="Btn_submit" Content="인증번호 발송" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Center" Padding="15,12,15,12" Background="GhostWhite" Margin="10"/>
       <Grid Grid.Row="3">
          <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.8*"/>
@@ -41,8 +42,8 @@
             <ColumnDefinition Width="2*"/>
          </Grid.ColumnDefinitions>
          <Label Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Content="인증 번호" FontSize="20" />
-         <TextBox Grid.Column="1" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="35" FontSize="20" />
-         <Button Grid.Column="2" Content="인증" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Left" Padding="15,5,15,5" Margin="10" Background="GhostWhite" />
+         <TextBox Grid.Column="1" x:Name="txt_certificate" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="35" FontSize="20" />
+         <Button Grid.Column="2" x:Name="Btn_certificate" Content="인증" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Left" Padding="15,5,15,5" Margin="10" Background="GhostWhite" IsEnabled="False" />
       </Grid>
       <Grid Grid.Row="4">
          <Grid.ColumnDefinitions>
@@ -50,8 +51,8 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2*"/>
          </Grid.ColumnDefinitions>
-         <Label Grid.Column="0" x:Name="remainTime" Foreground="Red" HorizontalAlignment="Right" VerticalAlignment="Top" Height="35" FontSize="20" Content="00:00" />
-         <Button Grid.Column="1" Content="재전송" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10,5,10,5" FontSize="15" Background="GhostWhite" Margin="2"/>
+         <Label Grid.Column="0" x:Name="label_mailStatus" Foreground="Red" HorizontalAlignment="Right" VerticalAlignment="Top" Height="35" FontSize="20" />
+         <Button Grid.Column="1" x:Name="Btn_resubmit" Content="재전송" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10,5,10,5" FontSize="15" Background="GhostWhite" Margin="2" IsEnabled="False"/>
       </Grid>
       <Label x:Name="Label_Show_Password" Grid.Row="5" FontSize="25" HorizontalAlignment="Center" Content="" FontWeight="Bold"/>
    </Grid>

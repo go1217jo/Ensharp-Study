@@ -27,6 +27,11 @@ namespace MemberManager
             this.toAddress = new MailAddress(toMail);
         }
 
+        public string GetToAddress()
+        {
+            return this.toAddress.Address;
+        }
+
         public string SendEmail(string subject, string body)
         {
             smtp = new SmtpClient {
