@@ -26,6 +26,7 @@ namespace MemberManager
         FindPW findPW;
         FindPWbyEmail findPwByEmail;
         Registration register;
+        MainScreen main;
         Data.DAO DB;
         string IDfindingPassword = null;
         
@@ -56,8 +57,6 @@ namespace MemberManager
             findPW.Btn_next.Click += Btn_next_Click;
 
             login.Btn_Login.Click += Btn_Login_Click;
-            
-
         }
 
         private void Btn_Login_Click(object sender, RoutedEventArgs e)
@@ -79,12 +78,18 @@ namespace MemberManager
                 MessageBox.Show("아이디 또는 비밀번호를 확인해주세요.");
             else
             {
-                MainScreen main = new MainScreen(member);
+                main = new MainScreen(member);
                 main.Btn_logout.Click += Btn_logout_Click;
                 main.Btn_modify.Click += Btn_modify_Click;
                 MainGrid.Children.Clear();
                 MainGrid.Children.Add(main);
             }
+        }
+
+        private void Btn_back_info_Click(object sender, RoutedEventArgs e)
+        {
+            MainGrid.Children.Clear();
+            MainGrid.Children.Add(main);
         }
 
         private void Btn_next_Click(object sender, RoutedEventArgs e)
@@ -112,13 +117,18 @@ namespace MemberManager
         private void Btn_logout_Click(object sender, RoutedEventArgs e)
         {
             MainGrid.Children.Clear();
+            login.txtID.Text = "아이디";
+            login.label_PW.Visibility = Visibility.Visible;
+            login.txtPW.Password = "";
             MainGrid.Children.Add(login);
         }
 
         private void Btn_modify_Click(object sender, RoutedEventArgs e)
         {
+            InformationModification modification = new InformationModification(IDfindingPassword, DB);
+            modification.Btn_back_info.Click += Btn_back_info_Click;
             MainGrid.Children.Clear();
-            MainGrid.Children.Add(new InformationModification());
+            MainGrid.Children.Add(modification);
         }
 
         private void Label_findID_Click(object sender, RoutedEventArgs e)

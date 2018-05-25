@@ -55,6 +55,18 @@ namespace MemberManager.Data
             return command.ExecuteReader();
         }
 
+        public void ModifyPassword(string id, string password)
+        {
+            string query = "UPDATE member SET password = '" + password + "' WHERE id='" + id + "';";
+            ExecuteQuery(query);
+        }
+
+        public void ModifyName(string id, string name)
+        {
+            string query = "UPDATE member SET name = '" + name + "' WHERE id='" + id + "';";
+            ExecuteQuery(query);
+        }
+
         // 현재 튜플이 하나만 존재하는지 확인한다.
         public bool IsThereOneValue(MySqlDataReader reader, string attribute)
         {
