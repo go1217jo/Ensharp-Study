@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:MemberManager"
              mc:Ignorable="d"
              Background="Beige"
-             
              d:DesignHeight="500" d:DesignWidth="600">
 
    <UserControl.Triggers>
@@ -73,18 +72,17 @@
                <ColumnDefinition Width="6*"/>
                <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
-         <ComboBox Grid.Column="1" x:Name="Cbx_question" VerticalAlignment="Center" HorizontalContentAlignment="Center" Padding="10,0,10,0" Height="35" FontSize="20" />
+         <ComboBox Grid.Column="1" x:Name="Cbx_question" HorizontalContentAlignment="Center" Margin="0,10,0,10" Padding="10,0,10,0" VerticalContentAlignment="Center" FontSize="20" />
          </Grid>
-         <Grid Grid.Row="2">
+         <Grid Grid.Row="2" Margin="40,0,40,0">
             <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="0.45*"/>
                <ColumnDefinition Width="5*"/>
                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="txt_answer" Grid.Column="1" Text="질문에 대한 답변" Foreground="Gray" VerticalAlignment="Center" Padding="10,0,0,0" Height="35" FontSize="20" />
-            <Button Grid.Column="2" Content="입력" VerticalAlignment="Stretch" HorizontalAlignment = "Stretch" FontSize="15" Margin="15" />
+            <TextBox x:Name="txt_answer" Grid.Column="0" Text="질문에 대한 답변" Foreground="Gray" Padding="10,0,0,0" FontSize="20" Margin="0,10,0,10" />
+            <Button x:Name="Btn_input" Grid.Column="1" Content="입력" VerticalAlignment="Stretch" HorizontalAlignment = "Stretch" FontSize="15" Margin="15" RenderTransformOrigin="0.504,0.5" />
          </Grid>
-         <Label Grid.Row="3" FontSize="20" Padding="10" Foreground ="OrangeRed"/>
+         <Label x:Name="label_id_by_answer" Grid.Row="3" FontSize="20" Padding="10" Foreground ="OrangeRed"/>
       </Grid>
    </Grid>
 </UserControl>

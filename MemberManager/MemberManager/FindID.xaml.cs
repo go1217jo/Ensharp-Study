@@ -34,6 +34,16 @@ namespace MemberManager
             txt_answer.AddHandler(GotFocusEvent, new RoutedEventHandler(SetBlank));
 
             Btn_find.Click += Btn_find_Click;
+            Btn_input.Click += Btn_input_Click;
+        }
+
+        private void Btn_input_Click(object sender, RoutedEventArgs e)
+        {
+            string id = DB.FindIDByAnswer(Cbx_question.SelectedIndex, txt_answer.Text);
+            if (id == null)
+                label_id_by_answer.Content = "일치하는 정보가 없습니다.";
+            else
+                label_id_by_answer.Content = "귀하의 아이디는 " + id + " 입니다.";
         }
 
         private void Btn_find_Click(object sender, RoutedEventArgs e)

@@ -178,8 +178,6 @@
   <ItemGroup>
     <Resource Include="media\image.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NaverAPI\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -53,11 +53,19 @@ namespace MemberManager
             Cbx_month.SelectedIndex = 0;
         }
 
+        public void InitCbxQuestion()
+        {
+            List<string> questions = new List<string>(new string[] { "아버지 성함은?", "어머니 성함은?", "가장 기억에 남는 장소는?" });
+            Cbx_question.ItemsSource = questions;
+            Cbx_question.SelectedIndex = 0;
+        }
+
         public void Init()
         {
             // 콤보박스 아이템 초기화
             InitCbxEmail();
             InitCbxMonth();
+            InitCbxQuestion();
 
             // 일반 텍스트박스 힌트 이벤트
             txt_email.AddHandler(LostFocusEvent, new RoutedEventHandler(SetDefaultText));
@@ -66,6 +74,8 @@ namespace MemberManager
             txt_name.AddHandler(GotFocusEvent, new RoutedEventHandler(SetBlank));
             txt_ID.AddHandler(LostFocusEvent, new RoutedEventHandler(SetDefaultText));
             txt_ID.AddHandler(GotFocusEvent, new RoutedEventHandler(SetBlank));
+            txt_answer.AddHandler(LostFocusEvent, new RoutedEventHandler(SetDefaultText));
+            txt_answer.AddHandler(GotFocusEvent, new RoutedEventHandler(SetBlank));
 
             // 비밀번호 텍스트박스 힌트 이벤트 
             txt_PW.AddHandler(LostFocusEvent, new RoutedEventHandler(PasswordHintEnable));
@@ -219,8 +229,10 @@ namespace MemberManager
                 hint = "이메일";
             else if (txtbox.Equals(txt_name))
                 hint = "이름";
-            else
+            else if (txtbox.Equals(txt_ID))
                 hint = "아이디";
+            else
+                hint = "질문에 대한 답변";
 
             if (txtbox.Text.Length == 0)
             {
@@ -237,8 +249,10 @@ namespace MemberManager
                 hint = "이메일";
             else if (txtbox.Equals(txt_name))
                 hint = "이름";
-            else
+            else if (txtbox.Equals(txt_ID))
                 hint = "아이디";
+            else
+                hint = "질문에 대한 답변";
 
             if (txtbox.Text.Equals(hint))
             {
@@ -337,6 +351,8 @@ namespace MemberManager
                 MessageBox.Show("생년월일 입력을 다시 확인해주세요.");
                 return;
             }
+
+
             // 인증되었는지 확인
             if(!certification)
             {
@@ -346,7 +362,7 @@ namespace MemberManager
 
             string birthDate = txt_year.Text + Cbx_month.SelectedItem.ToString() + txt_day.Text;
             string email = txt_email.Text + "@" + Cbx_email.SelectedItem.ToString();
-            if (DB.InsertMember(txt_ID.Text, txt_PW.Password, txt_name.Text, sex, birthDate, email))
+            if (DB.InsertMember(txt_ID.Text, txt_PW.Password, txt_name.Text, sex, birthDate, email, Cbx_question.SelectedIndex, txt_answer.Text)) ;
             {
                 MessageBox.Show("회원가입 되었습니다.");
                 Close();

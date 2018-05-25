@@ -40,6 +40,7 @@ namespace MemberManager
             MainGrid.Children.Add(login);
         }
 
+        // 이벤트 추가 및 객체 생성
         public void Init()
         {
             login = new LoginScreen();
@@ -59,6 +60,7 @@ namespace MemberManager
             login.Btn_Login.Click += Btn_Login_Click;
         }
 
+        // 로그인 버튼 클릭 시
         private void Btn_Login_Click(object sender, RoutedEventArgs e)
         {
             if (login.txtID.Text.Length == 0 || login.txtID.Text.Equals("아이디"))
@@ -86,6 +88,7 @@ namespace MemberManager
             }
         }
 
+        
         private void Btn_back_info_Click(object sender, RoutedEventArgs e)
         {
             MainGrid.Children.Clear();

@@ -21,7 +21,7 @@
       <PasswordBox Grid.Row="2" x:Name="txtPW" HorizontalAlignment="Center" Width="400" Height="50" FontSize="35" PasswordChar="*" Padding="10,0,10,0"/>
       <Label x:Name="label_PW" Grid.Row="2" Content="비밀번호" Height="50" Width="400" Padding="10,0,10,0" FontSize="35" Foreground="Gray" />
       <Label Grid.Row="3" x:Name="alarmLabel" />
-      <Button Grid.Row="4" x:Name="Btn_Login" Width="400" Height="50" FontSize="35" VerticalAlignment="Top" Content="로그인" Background="GreenYellow" FontFamily="Arial Black" />
+      <Button Grid.Row="4" x:Name="Btn_Login" Width="400" Height="50" FontSize="35" VerticalAlignment="Top" Content="로그인" Background="AntiqueWhite" FontFamily="Arial Black" />
       <Grid Grid.Row="5" VerticalAlignment="Top" Height="40">
          <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.0*"/>
