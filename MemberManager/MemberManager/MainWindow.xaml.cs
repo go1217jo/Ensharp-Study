@@ -25,11 +25,13 @@ namespace MemberManager
         FindID findID;
         FindPW findPW;
         Registration register;
+        DAO.DBHandler DB;
         
         public MainWindow()
         {
             InitializeComponent();
             Init();
+            DB = new DAO.DBHandler();
             MainGrid.Children.Add(login);
         }
 
@@ -70,7 +72,7 @@ namespace MemberManager
 
         private void Label_register_Click(object sender, RoutedEventArgs e)
         {
-            register = new Registration();
+            register = new Registration(DB);
             register.Show();
         }
 

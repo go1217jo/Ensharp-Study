@@ -23,10 +23,10 @@
                <RowDefinition Height="1*"/>
                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <TextBox x:Name="txt_ID" Grid.Row="0" Text="아이디" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
-            <PasswordBox x:Name="txt_PW" Grid.Row="1" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
+            <TextBox x:Name="txt_ID" Grid.Row="0" Text="아이디" MaxLength="16" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
+            <PasswordBox x:Name="txt_PW" Grid.Row="1" Padding="10" MaxLength="18" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
             <Label x:Name="label_PW" Grid.Row="1" Content="비밀번호" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
-            <PasswordBox x:Name="txt_PW_check" Grid.Row="2" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
+            <PasswordBox x:Name="txt_PW_check" Grid.Row="2" MaxLength="18" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
             <Label x:Name="label_PW_check" Grid.Row="2" Content="비밀번호 재확인" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
          </Grid>
       </Border>
@@ -38,7 +38,7 @@
                <RowDefinition Height="1*"/>
                <RowDefinition Height="0.8*"/>
             </Grid.RowDefinitions>
-            <TextBox x:Name="txt_name" Grid.Row="0" Text="이름" Padding="10" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
+            <TextBox x:Name="txt_name" Grid.Row="0" Text="이름" Padding="10" MaxLength="6" FontSize="18" Foreground="Gray" Margin="40,0,40,0" />
             <Grid Grid.Row="1" Margin="40, 0, 40, 0">
                <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="1*"/>
@@ -59,9 +59,9 @@
                   <ColumnDefinition Width="1*"/>
                </Grid.ColumnDefinitions>
                <Label Grid.Column="0" Content="생일" BorderThickness="2" BorderBrush="LightGray" FontSize="18" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="WhiteSmoke" />
-               <TextBox Grid.Column="1" Text="0000" MaxLength="4"  FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10" />
+               <TextBox Grid.Column="1" x:Name="txt_year" Text="0000" MaxLength="4"  FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10" />
                <ComboBox x:Name="Cbx_month" Grid.Column="2" FontSize="18" Padding="10" />
-               <TextBox Grid.Column="3" MaxLength="2" FontSize="18" Padding="10" />
+               <TextBox Grid.Column="3" x:Name="txt_day" MaxLength="2" FontSize="18" Padding="10" />
             </Grid>
             <Label Grid.Row="3" x:Name="birth_alarm" Foreground="OrangeRed" FontSize="15" Margin="40,0,40,0"/>
          </Grid>
@@ -90,9 +90,9 @@
                <ColumnDefinition Width="0.8*"/>
                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" Padding="10" VerticalContentAlignment="Center" FontSize="18" />
-            <Label Grid.Column="1" Padding="10" Background="White" FontSize="18" BorderBrush="LightGray" Content="보내기" HorizontalContentAlignment="Center" BorderThickness="2" />
-            <Button Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="인증" Background="GhostWhite" FontSize="18" />
+            <TextBox Grid.Column="0" x:Name="txt_certificate" Padding="10" MaxLength="8" VerticalContentAlignment="Center" FontSize="18" />
+            <Label Grid.Column="1" x:Name="label_SendMail" Padding="10" Background="White" FontSize="18" BorderBrush="LightGray" Content="보내기" HorizontalContentAlignment="Center" BorderThickness="2" />
+            <Button Grid.Column="2" x:Name="Btn_certificate" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Content="인증" Background="GhostWhite" FontSize="18" />
          </Grid>
          <Button Grid.Row="2" x:Name="Btn_register" VerticalAlignment="Center" HorizontalAlignment="Center" Background="GhostWhite" Content="가입하기" FontSize="20" Padding="5" />
       </Grid>

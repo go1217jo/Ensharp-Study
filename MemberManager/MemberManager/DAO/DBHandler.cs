@@ -10,7 +10,7 @@ namespace MemberManager.DAO
     /// <summary>
     ///  DB를 관리하는 클래스
     /// </summary>
-    class DBHandler
+    public class DBHandler
     {
         MySqlConnection connect = null;
         MySqlCommand command;
@@ -55,6 +55,32 @@ namespace MemberManager.DAO
             return command.ExecuteReader();
         }
 
+        // 현재 튜플이 하나만 존재하는지 확인한다.
+        public bool IsThereOneValue(MySqlDataReader reader, string attribute)
+        {
+            List<string> objects = new List<string>();
 
+            while (reader.Read())
+                objects.Add(reader[attribute].ToString());
+            reader.Close();
+
+            if (objects.Count == 1)
+                return true;
+            else
+                return false;
+        }
+
+        public bool InsertMember(string id, string password, string name, int sex, string birth, string mail)
+        {
+            string query = "INSERT INTO membermanager values('" + id + "', '" + password + "', '" + name + "', " + sex + ", '" + birth + "', '" + mail + "');";
+            return ExecuteQuery(query);
+        }
+
+        public bool IsOverID(string id)
+        {
+            string query = "SELECT id FROM membermanager WHERE id = '" + id + "';";
+            reader = SelectQuery(query);
+            return !IsThereOneValue(reader, "id");
+        }
     }
 }

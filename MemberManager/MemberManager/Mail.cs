@@ -12,7 +12,7 @@ namespace MemberManager
     {
         private MailAddress sendAddress;
         private MailAddress toAddress;
-        private string sendPassword;
+        private string sendPassword = "1q2w3e4r!@";
 
         public Mail(string sendMail)
         {
@@ -38,7 +38,6 @@ namespace MemberManager
                 Subject = subject,
                 Body = body
             };
-
             smtp.Send(message);
 
             if (smtp != null)
