@@ -81,6 +81,9 @@
     <Compile Include="FindPWbyEmail.xaml.cs">
       <DependentUpon>FindPWbyEmail.xaml</DependentUpon>
     </Compile>
+    <Compile Include="InformationModification.xaml.cs">
+      <DependentUpon>InformationModification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
@@ -103,6 +106,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FindPWbyEmail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InformationModification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

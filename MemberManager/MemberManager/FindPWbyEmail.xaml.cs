@@ -23,7 +23,6 @@ namespace MemberManager
         Data.DAO DB;
         Mail mail;
         string certificationNo;
-        bool certification = false;
 
         public FindPWbyEmail(Data.DAO DB)
         {
@@ -116,7 +115,6 @@ namespace MemberManager
             if (txt_certificate.Text.Equals(certificationNo))
             {
                 MessageBox.Show("인증되었습니다!");
-                certification = true;
                 label_mailStatus.Content = "";
                 Btn_certificate.IsEnabled = false;
                 Btn_resubmit.IsEnabled = false;

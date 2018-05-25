@@ -27,6 +27,7 @@ namespace MemberManager
         FindPWbyEmail findPwByEmail;
         Registration register;
         Data.DAO DB;
+        string IDfindingPassword = null;
         
         public MainWindow()
         {
@@ -55,6 +56,7 @@ namespace MemberManager
             findPW.Btn_next.Click += Btn_next_Click;
 
             login.Btn_Login.Click += Btn_Login_Click;
+            
 
         }
 
@@ -77,8 +79,11 @@ namespace MemberManager
                 MessageBox.Show("아이디 또는 비밀번호를 확인해주세요.");
             else
             {
+                MainScreen main = new MainScreen(member);
+                main.Btn_logout.Click += Btn_logout_Click;
+                main.Btn_modify.Click += Btn_modify_Click;
                 MainGrid.Children.Clear();
-                MainGrid.Children.Add(new MainScreen(member));
+                MainGrid.Children.Add(main);
             }
         }
 
@@ -98,6 +103,7 @@ namespace MemberManager
             }
 
             MainGrid.Children.Clear();
+            IDfindingPassword = findPW.txt_ID.Text;
             findPwByEmail = new FindPWbyEmail(DB);
             findPwByEmail.Btn_Back.Click += Btn_Back_Click;
             MainGrid.Children.Add(findPwByEmail);
@@ -111,7 +117,8 @@ namespace MemberManager
 
         private void Btn_modify_Click(object sender, RoutedEventArgs e)
         {
-            MainGrid.
+            MainGrid.Children.Clear();
+            MainGrid.Children.Add(new InformationModification());
         }
 
         private void Label_findID_Click(object sender, RoutedEventArgs e)

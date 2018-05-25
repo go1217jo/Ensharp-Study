@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="MemberManager.InformationModification"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MemberManager"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="600">
+   <Grid>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="0.5*"/>
+         <RowDefinition Height="3*"/>
+         <RowDefinition Height="0.5*"/>
+      </Grid.RowDefinitions>
+      <Label Grid.Row="0" Content="정보 수정" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Center" />
+      <Button Grid.Row="0" Content="이전" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right" Background="GhostWhite" Padding="15,10,15,10" Margin="0,0,20,0" />
+      <Border Grid.Row="1" BorderThickness="3" BorderBrush="Gray" Margin="40,20,40,20">
+         <Grid>
+            <Grid.RowDefinitions>
+               <RowDefinition Height="1*"/>
+               <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" BorderThickness="2" BorderBrush="LightGray" Margin="20,20,20,10">
+               <Grid>
+                  <Grid.RowDefinitions>
+                     <RowDefinition Height="0.8*"/>
+                     <RowDefinition Height="1.2*"/>
+                  </Grid.RowDefinitions>
+                  <Label Grid.Row="0" Content="이름 변경" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                  <TextBox Grid.Row="1" Margin="50,15,50,15" FontSize="20" Padding="10" />
+               </Grid>
+            </Border>
+            <Border Grid.Row="1" BorderThickness="2" BorderBrush="LightGray" Margin="20,20,20,10">
+               <Grid>
+                  <Grid.RowDefinitions>
+                     <RowDefinition Height="0.8*"/>
+                     <RowDefinition Height="1.2*"/>
+                  </Grid.RowDefinitions>
+                  <Label Grid.Row="0" Content="비밀번호 변경" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                  <PasswordBox Grid.Row="1" Margin="50,15,50,15" FontSize="20" Padding="10" />
+               </Grid>
+            </Border>
+         </Grid>
+      </Border>
+      <Button Grid.Row="3" Content="수정" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" Background="GhostWhite" Padding="20,10,20,10"/>
+   </Grid>
+</UserControl>

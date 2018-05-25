@@ -6,6 +6,18 @@
         xmlns:local="clr-namespace:MemberManager"
         mc:Ignorable="d"
         Title="Splash" Height="326" Width="763" Icon="media/SplashImage_2.png" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen" >
+
+   <Window.Triggers>
+      <EventTrigger RoutedEvent="Loaded">
+         <BeginStoryboard>
+            <Storyboard>
+               <DoubleAnimation
+              Storyboard.TargetProperty="Opacity"
+              From="0.0" To="1.0" Duration="0:0:1.0"/>
+            </Storyboard>
+         </BeginStoryboard>
+      </EventTrigger>
+   </Window.Triggers>
    <Window.Background>
       <ImageBrush ImageSource="media/SplashImage_2.png"/>
    </Window.Background>
