@@ -24,6 +24,7 @@ namespace MemberManager
         LoginScreen login;
         FindID findID;
         FindPW findPW;
+        FindPWbyEmail findPwByEmail;
         Registration register;
         Data.DAO DB;
         
@@ -54,6 +55,7 @@ namespace MemberManager
             findPW.Btn_next.Click += Btn_next_Click;
 
             login.Btn_Login.Click += Btn_Login_Click;
+
         }
 
         private void Btn_Login_Click(object sender, RoutedEventArgs e)
@@ -96,15 +98,25 @@ namespace MemberManager
             }
 
             MainGrid.Children.Clear();
-            FindPWbyEmail findPwByEmail = new FindPWbyEmail(DB);
+            findPwByEmail = new FindPWbyEmail(DB);
             findPwByEmail.Btn_Back.Click += Btn_Back_Click;
             MainGrid.Children.Add(findPwByEmail);
+        }
+
+        private void Btn_logout_Click(object sender, RoutedEventArgs e)
+        {
+            MainGrid.Children.Clear();
+            MainGrid.Children.Add(login);
+        }
+
+        private void Btn_modify_Click(object sender, RoutedEventArgs e)
+        {
+            MainGrid.
         }
 
         private void Label_findID_Click(object sender, RoutedEventArgs e)
         {
             MainGrid.Children.Clear();
-            
             MainGrid.Children.Add(findID);
         }
 
@@ -125,11 +137,14 @@ namespace MemberManager
             MainGrid.Children.Clear();
             Button button = (Button)sender;
 
-            if(button.Equals(findID.Btn_Back_FindID))
+            if (button.Equals(findID.Btn_Back_FindID))
             {
                 findID.txt_email.Text = "이메일";
                 findID.label_id_by_email.Content = "";
             }
+            else if (button.Equals(findPW.Btn_Back_FindPW))
+                findPW.txt_ID.Text = "찾고자 하는 아이디";
+
             MainGrid.Children.Add(login);
         }
 

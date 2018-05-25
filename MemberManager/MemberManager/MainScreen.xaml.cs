@@ -25,9 +25,8 @@ namespace MemberManager
         public MainScreen(Data.MemberVO member)
         {
             InitializeComponent();
-            this.member = member;            
-        }
-
-
+            this.member = member;
+            label_welcome.Content = member.Name + "님 환영합니다!";
+        }       
     }
 }
