@@ -43,5 +43,6 @@
          </Grid>
       </Border>
       <Button Grid.Row="3" x:Name="Btn_modification" Content="수정" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Top" Background="GhostWhite" Padding="20,10,20,10"/>
+      <Button Grid.Row="3" x:Name="Btn_delete" Content="탈퇴" FontSize="22" HorizontalAlignment="Right" VerticalAlignment="Top" Background="GhostWhite" Padding="15,10,15,10" Margin="0,0,20,0"/>
    </Grid>
 </UserControl>

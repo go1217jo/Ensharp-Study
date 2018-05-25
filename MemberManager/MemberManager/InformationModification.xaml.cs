@@ -30,6 +30,7 @@ namespace MemberManager
             this.DB = DB;
             this.id = id;
             Btn_modification.Click += Btn_modification_Click;
+            Btn_delete.Click += Btn_delete_Click;
         }
 
         private void Btn_modification_Click(object sender, RoutedEventArgs e)
@@ -47,6 +48,12 @@ namespace MemberManager
             DB.ModifyName(id, txt_name.Text);
             DB.ModifyPassword(id, txt_password.Password);
             MessageBox.Show("수정 되었습니다!");
+        }
+
+        private void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {
+            DB.DeleteMember(id);
+            MessageBox.Show("회원 탈퇴되었습니다.\n로그인 화면으로 돌아가면 탈퇴가 완료됩니다.");
         }
     }
 }

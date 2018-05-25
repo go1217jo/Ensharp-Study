@@ -83,6 +83,7 @@ namespace MemberManager
                 main = new MainScreen(member);
                 main.Btn_logout.Click += Btn_logout_Click;
                 main.Btn_modify.Click += Btn_modify_Click;
+                IDfindingPassword = login.txtID.Text;
                 MainGrid.Children.Clear();
                 MainGrid.Children.Add(main);
             }
@@ -130,6 +131,7 @@ namespace MemberManager
         {
             InformationModification modification = new InformationModification(IDfindingPassword, DB);
             modification.Btn_back_info.Click += Btn_back_info_Click;
+            modification.Btn_delete.Click += Btn_delete_Click;
             MainGrid.Children.Clear();
             MainGrid.Children.Add(modification);
         }
@@ -172,6 +174,15 @@ namespace MemberManager
         {
             MainGrid.Children.Clear();
             MainGrid.Children.Add(findID);
+        }
+
+        private void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {
+            MainGrid.Children.Clear();
+            login.txtID.Text = "아이디";
+            login.label_PW.Visibility = Visibility.Visible;
+            login.txtPW.Password = "";
+            MainGrid.Children.Add(login);
         }
     }
 }

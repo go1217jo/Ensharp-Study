@@ -158,5 +158,11 @@ namespace MemberManager.Data
             reader.Close();
             return id;
         }
+
+        public bool DeleteMember(string id)
+        {
+            string query = "DELETE FROM member WHERE id = '" + id + "';";
+            return ExecuteQuery(query);
+        }
     }
 }
