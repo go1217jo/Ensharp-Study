@@ -28,13 +28,15 @@ namespace MemberManager
         // 이메일 인증 여부
         bool certification = false;
         string certificationNo = null;
+        Mail mail;
 
         Timer timer;
+        int times = 180;
 
-        DAO.DBHandler DB = null;
+        Data.DAO DB = null;
 
 
-        public Registration(DAO.DBHandler DB)
+        public Registration(Data.DAO DB)
         {
             InitializeComponent();
             Init();
@@ -146,7 +148,7 @@ namespace MemberManager
 
         public void SendCheckMail(object sender, RoutedEventArgs e)
         {
-            Mail mail = new Mail("go1217jo@gmail.com");
+            mail = new Mail("go1217jo@gmail.com");
             if (txt_email.Text.Equals("이메일"))
             {
                 MessageBox.Show("이메일을 입력해주세요.");
@@ -157,21 +159,32 @@ namespace MemberManager
             certificationNo = ReturnRandomString();
             mail.SendEmail("En# 스터디 본인확인 이메일입니다.", "인증번호는 " + certificationNo + "입니다.");
 
+            label_SendMail.Content = "발송됨";
+            Btn_certificate.IsEnabled = true;
+
+            /*
+            times = 180;
+
             timer = new System.Timers.Timer();
             timer.Interval = 1;
             timer.Elapsed += new ElapsedEventHandler(ShowTimer);
-            label_SendMail.Content = "3:00";
-            label_SendMail.Foreground = Brushes.Red;
-            Btn_certificate.IsEnabled = true;
             timer.Start();
+            */
         }
 
-        public void ShowTimer(object sender, ElapsedEventArgs e) {
-            string[] time = label_SendMail.Content.ToString().Split(':');
-            int seconds = int.Parse(time[0]) * 60 + int.Parse(time[1]);
-            label_SendMail.Content = (seconds - 1) / 60 + ":" + (seconds - 1) % 60;
+        /*
+        public void ShowTimer(object sender, ElapsedEventArgs e)
+        {
+            if(times == 180)
+            {
+                label_SendMail.Content = times + "";
+                label_SendMail.Foreground = Brushes.Red;
+                Btn_certificate.IsEnabled = true;
+            }
+            else
+                label_SendMail.Content = --times + "";
 
-            if(label_SendMail.Content.Equals("0:0"))
+            if(times == 0)
             {
                 MessageBox.Show("인증시간 초과!");
                 label_SendMail.Content = "보내기";
@@ -179,7 +192,7 @@ namespace MemberManager
                 Btn_certificate.IsEnabled = false;
                 timer.Close();
             }
-        }
+        }*/
 
         public void Btn_Certificate_Click(object sender, RoutedEventArgs e)
         {
@@ -190,7 +203,7 @@ namespace MemberManager
                 label_SendMail.Content = "보내기";
                 label_SendMail.Foreground = Brushes.Black;
                 Btn_certificate.IsEnabled = false;
-                timer.Close();
+                mail.Close();
             }
             else
                 MessageBox.Show("인증 번호를 확인해주세요!");
@@ -310,17 +323,28 @@ namespace MemberManager
         public void Btn_register_Click(object sender, RoutedEventArgs e)
         {
             // 아이디가 제대로 입력되었는지 확인
-            if (!Regex.IsMatch(txt_ID.Text, "^[a-zA-Z0-9]+$") || txt_ID.Text.Length == 0)
+            if (!Regex.IsMatch(txt_ID.Text, "^[a-zA-Z0-9]+$") || txt_ID.Text.Length < 5)
             {
-                MessageBox.Show("아이디를 다시 확인해주세요.(영문자+숫자 조합)");
+                MessageBox.Show("아이디를 다시 확인해주세요.(영문자+숫자 조합, 5글자 이상)");
+                txt_ID.Text = "";
+                txt_ID.Focus();
                 return;
             }
+            else if (DB.IsOverID(txt_ID.Text))
+            {
+                MessageBox.Show("중복된 아이디입니다!");
+                txt_ID.Text = "";
+                txt_ID.Focus();
+                return;
+            }
+
             // 비밀번호가 제대로 입력되었는지 확인
             if (!txt_PW_check.Background.Equals(Brushes.GreenYellow) || txt_PW.Password.Length == 0)
             {
                 MessageBox.Show("비밀번호를 다시 확인해주세요.");
                 return;
             }
+
             // 이름이 제대로 입력되었는지 확인
             if(!Regex.IsMatch(txt_name.Text, "^[가-힣]+$") || txt_name.Text.Length == 0 || txt_name.Text.Equals("이름"))
             {
@@ -329,13 +353,7 @@ namespace MemberManager
                 txt_name.Focus();
                 return;
             }
-            else if(DB.IsOverID(txt_name.Text))
-            {
-                MessageBox.Show("중복된 아이디입니다!");
-                txt_ID.Text = "";
-                txt_ID.Focus();
-                return;
-            }
+            
             // 성별이 제대로 선택되었는지 확인
             if(sex == 0)
             {
@@ -356,8 +374,12 @@ namespace MemberManager
             }
 
             string birthDate = txt_year.Text + Cbx_month.SelectedItem.ToString() + txt_day.Text;
-            string email = txt_email + "@" + Cbx_email.SelectedItem.ToString();
-            DB.InsertMember(txt_ID.Text, txt_PW.Password, txt_name.Text, sex, birthDate, email);
+            string email = txt_email.Text + "@" + Cbx_email.SelectedItem.ToString();
+            if (DB.InsertMember(txt_ID.Text, txt_PW.Password, txt_name.Text, sex, birthDate, email))
+            {
+                MessageBox.Show("회원가입 되었습니다.");
+                Close();
+            }
         }
     }
 }

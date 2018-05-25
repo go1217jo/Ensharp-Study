@@ -14,6 +14,9 @@ namespace MemberManager
         private MailAddress toAddress;
         private string sendPassword = "1q2w3e4r!@";
 
+        SmtpClient smtp;
+        MailMessage message;
+
         public Mail(string sendMail)
         {
             this.sendAddress = new MailAddress(sendMail);
@@ -26,7 +29,7 @@ namespace MemberManager
 
         public string SendEmail(string subject, string body)
         {
-            SmtpClient smtp = new SmtpClient {
+            smtp = new SmtpClient {
                 Host = "smtp.gmail.com",
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
@@ -34,18 +37,21 @@ namespace MemberManager
                 Timeout = 20000
             };
 
-            MailMessage message = new MailMessage(sendAddress, toAddress) {
+            message = new MailMessage(sendAddress, toAddress) {
                 Subject = subject,
                 Body = body
             };
             smtp.Send(message);
 
+            return "send mail ok";
+        }
+
+        public void Close()
+        {
             if (smtp != null)
                 smtp.Dispose();
             if (message != null)
                 message.Dispose();
-
-            return "send mail ok";
         }
     }
 }

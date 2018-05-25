@@ -17,8 +17,9 @@
          <RowDefinition Height="2*"/>
       </Grid.RowDefinitions>
       <Label Grid.Row="0" Content="En# Study" FontSize="72" FontFamily="Britannic Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-      <TextBox Grid.Row="1" x:Name="txtID" HorizontalAlignment="Center" Width="400" Height="50" FontSize="35" Padding="10,0,10,0" />
+      <TextBox Grid.Row="1" x:Name="txtID" HorizontalAlignment="Center" Text="아이디" Foreground="Gray" Width="400" Height="50" FontSize="35" Padding="10,0,10,0" />
       <PasswordBox Grid.Row="2" x:Name="txtPW" HorizontalAlignment="Center" Width="400" Height="50" FontSize="35" PasswordChar="*" Padding="10,0,10,0"/>
+      <Label x:Name="label_PW" Grid.Row="2" Content="비밀번호" Height="50" Width="400" Padding="10,0,10,0" FontSize="35" Foreground="Gray" />
       <Label Grid.Row="3" x:Name="alarmLabel" />
       <Button Grid.Row="4" x:Name="Btn_Login" Width="400" Height="50" FontSize="35" VerticalAlignment="Top" Content="로그인" Background="GreenYellow" FontFamily="Arial Black" />
       <Grid Grid.Row="5" VerticalAlignment="Top" Height="40">

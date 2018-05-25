@@ -25,13 +25,13 @@ namespace MemberManager
         FindID findID;
         FindPW findPW;
         Registration register;
-        DAO.DBHandler DB;
+        Data.DAO DB;
         
         public MainWindow()
         {
             InitializeComponent();
             Init();
-            DB = new DAO.DBHandler();
+            DB = new Data.DAO();
             MainGrid.Children.Add(login);
         }
 
@@ -49,6 +49,32 @@ namespace MemberManager
             findPW.Btn_Back_FindPW.Click += Btn_Back_Click;
             findPW.findID_Click.AddHandler(MouseDownEvent, new RoutedEventHandler(MoveToFindID));
             findPW.Btn_next.Click += Btn_next_Click;
+
+            login.Btn_Login.Click += Btn_Login_Click;
+        }
+
+        private void Btn_Login_Click(object sender, RoutedEventArgs e)
+        {
+            if (login.txtID.Text.Length == 0 || login.txtID.Text.Equals("아이디"))
+            {
+                MessageBox.Show("아이디를 입력해주세요.");
+                return;
+            }
+            if (login.txtPW.Password.Length == 0)
+            {
+                MessageBox.Show("비밀번호를 입력해주세요.");
+                return;
+            }
+
+            Data.MemberVO member = DB.Login(login.txtID.Text, login.txtPW.Password);
+
+            if (member == null)
+                MessageBox.Show("아이디 또는 비밀번호를 확인해주세요.");
+            else
+            {
+                MainGrid.Children.Clear();
+                MainGrid.Children.Add(new MainScreen(member));
+            }
         }
 
         private void Btn_next_Click(object sender, RoutedEventArgs e)

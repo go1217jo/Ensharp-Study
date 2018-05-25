@@ -5,19 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
-namespace MemberManager.DAO
+namespace MemberManager.Data
 {
     /// <summary>
     ///  DB를 관리하는 클래스
     /// </summary>
-    public class DBHandler
+    public class DAO
     {
         MySqlConnection connect = null;
         MySqlCommand command;
         MySqlDataReader reader = null;
 
         // DB 접속
-        public DBHandler()
+        public DAO()
         {
             String databaseConnect = "Server=localhost;Database=membermanager;Uid=root;Pwd=1q2w3e4r!;SslMode=none;Charset=utf8;";
             // connect MySQL
@@ -33,7 +33,7 @@ namespace MemberManager.DAO
                 connect.Close();
         }
 
-        ~DBHandler()
+        ~DAO()
         {
             Close();
         }
@@ -72,15 +72,43 @@ namespace MemberManager.DAO
 
         public bool InsertMember(string id, string password, string name, int sex, string birth, string mail)
         {
-            string query = "INSERT INTO membermanager values('" + id + "', '" + password + "', '" + name + "', " + sex + ", '" + birth + "', '" + mail + "');";
+            string query = "INSERT INTO member values('" + id + "', '" + password + "', '" + name + "', " + sex + ", '" + birth + "', '" + mail + "');";
             return ExecuteQuery(query);
         }
 
         public bool IsOverID(string id)
         {
-            string query = "SELECT id FROM membermanager WHERE id = '" + id + "';";
+            string query = "SELECT id FROM member WHERE id='" + id + "';";
             reader = SelectQuery(query);
-            return !IsThereOneValue(reader, "id");
+            int over = 0;
+            while(reader.Read())
+                over++;
+            reader.Close();
+            if (over == 0)
+                return false;
+            else
+                return true;
+        }
+
+        public MemberVO Login(string id, string password)
+        {
+            string query = "SELECT * FROM member WHERE id = '" + id + "' AND password = '" + password + "';";
+            reader = SelectQuery(query);
+            MemberVO member = null;
+
+            while(reader.Read())
+            {
+                member = new MemberVO();
+                member.ID = reader["id"].ToString();
+                member.Password = reader["password"].ToString();
+                member.Name = reader["name"].ToString();
+                member.Sex = int.Parse(reader["sex"].ToString());
+                member.Birth = reader["birth"].ToString();
+                member.Mail = reader["mail"].ToString();
+            }
+            reader.Close();
+
+            return member;
         }
     }
 }
