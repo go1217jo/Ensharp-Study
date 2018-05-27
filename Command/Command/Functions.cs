@@ -78,7 +78,12 @@ namespace Command
         // 디렉터리 크기 구하기
         public long DirectorySize(DirectoryInfo dInfo, bool includeSubDir)
         {
-            long totalSize = dInfo.EnumerateFiles().Sum(file => file.Length);
+            long totalSize = 0;
+            try
+            {
+                totalSize = dInfo.EnumerateFiles().Sum(file => file.Length);
+            } catch(UnauthorizedAccessException e) { }
+
             if (includeSubDir) totalSize += dInfo.EnumerateDirectories().Sum(dir => DirectorySize(dir, true));
             return totalSize;
         }
@@ -104,24 +109,28 @@ namespace Command
             
             for(int idx = 0; idx < entries.Length; idx++)
             {
-                Console.Write(Directory.GetLastWriteTime(entries[idx]) + "    ");
+                Console.Write(Directory.GetLastWriteTime(entries[idx]).ToString("yyyy-MM-dd tt hh:mm") + "    ");
                 // 해당 경로가 폴더면
                 if(directories.Contains(entries[idx]))
                 {
                     Console.Write(output.PrintFixString("<DIR>", 15, Constant.LEFT));
-                    Console.WriteLine(entries[idx].Substring(currentPath.Length));
-                    directoryByteSize += DirectorySize(new DirectoryInfo(entries[idx]), true);
+                    Console.WriteLine(entries[idx].Substring(currentDirectory.Length + 1));
+                    directoryByteSize += DirectorySize(new DirectoryInfo(entries[idx]), false);
                 }
                 else
                 {
                     // 해당 경로가 파일이면
                     long currentFileSize = new FileInfo(entries[idx]).Length;
                     Console.Write(output.PrintFixString(currentFileSize.ToString(), 14, Constant.RIGHT) + ' ');
-                    Console.WriteLine(entries[idx].Substring(currentPath.Length));
+                    Console.WriteLine(entries[idx].Substring(currentDirectory.Length + 1));
                     fileByteSize += currentFileSize;
                 }
             }
             Console.Write(output.PrintFixString((entries.Length - directories.Length) + "", 16, Constant.RIGHT) + "개 파일");
+            Console.WriteLine(output.PrintFixString(fileByteSize.ToString(), 20, Constant.RIGHT) + " 바이트");
+
+            Console.Write(output.PrintFixString(directories.Length + "", 16, Constant.RIGHT) + "개 디렉터리");
+            Console.WriteLine(output.PrintFixString(directoryByteSize.ToString(), 17, Constant.RIGHT) + " 바이트 남음");
         }
 
     }

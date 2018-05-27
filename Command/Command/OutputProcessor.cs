@@ -40,7 +40,7 @@ namespace Command
                         case Constant.LEFT:
                             toPrint = toPrint + ' ';
                             break;
-                        case Constant.MIDDLE:
+                        case Constant.RIGHT:
                             toPrint = ' ' + toPrint;
                             break;
                     }
