@@ -134,5 +134,23 @@ namespace Command
             Console.WriteLine(output.PrintFixString(directoryByteSize.ToString(), 17, Constant.RIGHT) + " 바이트 남음");
         }
 
+        public void PrintHelp(string parameter)
+        {
+            StreamReader reader;
+            if (parameter.Length == 0)
+                reader = new StreamReader("..\\..\\help\\all.txt", Encoding.Default);
+            else
+            {
+                if(new FileInfo("..\\..\\help\\" + parameter.ToLower() + ".txt").Exists)
+                    reader = new StreamReader("..\\..\\help\\" + parameter.ToLower() + ".txt", Encoding.Default);
+                else
+                {
+                    Console.WriteLine("이 명령은 도움말 유틸리티가 지원하지 않습니다. \"" + parameter + " /?\"를 사용해 보십시오.");
+                    return;
+                }
+            }
+            Console.WriteLine(reader.ReadToEnd());
+            reader.Close();
+        }
     }
 }

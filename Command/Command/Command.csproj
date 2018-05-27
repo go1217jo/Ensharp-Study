@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="Constant.cs" />
     <Compile Include="Functions.cs" />
-    <Compile Include="HelpVO.cs" />
     <Compile Include="MainLoop.cs" />
     <Compile Include="OutputProcessor.cs" />
     <Compile Include="Program.cs" />

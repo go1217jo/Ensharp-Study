@@ -58,6 +58,10 @@ namespace Command
                         case (int)COMMAND.CLS:
                             Console.Clear();
                             break;
+                        case (int)COMMAND.HELP:
+                            if (cmds.Length == 1) functions.PrintHelp("");
+                            else functions.PrintHelp(cmds[1]);
+                            break;
                         case (int)COMMAND.EXIT:
                             return;
                     }
