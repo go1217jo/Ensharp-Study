@@ -1,0 +1,93 @@
+
+오류:  인식할 수 없는 명령입니다.
+
+설명:
+        SC는 서비스 제어 관리자 및 서비스와의 통신에 사용되는
+        명령줄 프로그램입니다.
+사용법:
+        sc <서버> [명령] [서비스 이름] <옵션1> <옵션2>...
+
+
+        <서버> 옵션의 형식은 "\\ServerName"입니다.
+        명령에 대한 자세한 도움말을 보려면 "sc [명령]"을 입력하세요.
+        명령:
+          query-----------서비스 상태를 쿼리하거나 서비스 종류의
+                          상태를 열거합니다.
+          queryex---------서비스의 확장 상태를 쿼리하거나 서비스
+                          종류의 상태를 열거합니다.
+          start-----------서비스를 시작합니다.
+          pause-----------서비스에 PAUSE 제어 요청을 보냅니다.
+          interrogate-----서비스에 INTERROGATE 제어 요청을 보냅니다.
+          continue--------서비스에 CONTINUE 제어 요청을 보냅니다.
+          stop------------서비스에 STOP 요청을 보냅니다.
+          config----------서비스 구성을 변경합니다(지속적).
+          description-----서비스 설명을 변경합니다.
+          failure---------서비스가 실패했을 때 수행할 동작을 변경합니다.
+          failureflag-----서비스의 오류 동작 플래그를 변경합니다.
+          sidtype---------서비스의 서비스 SID 형식을 변경합니다.
+          privs-----------서비스에 필요한 권한을 변경합니다.
+          managedaccount--LSA가 관리하는 대로 서비스 계정 암호를 표시하도록 
+                          서비스를 변경합니다.
+          qc--------------서비스의 구성 정보를 쿼리합니다.
+          qdescription----서비스 설명을 쿼리합니다.
+          qfailure--------서비스가 실패했을 때 수행할 동작을 쿼리합니다.
+          qfailureflag----서비스의 오류 동작 플래그를 쿼리합니다.
+          qsidtype--------서비스의 서비스 SID 형식을 쿼리합니다.
+          qprivs----------서비스에 필요한 권한을 쿼리합니다.
+          qtriggerinfo----서비스의 트리거 매개 변수를 쿼리합니다.
+          qpreferrednode--서비스의 기본 설정 NUMA 노드를 쿼리합니다.
+          qmanagedaccount-서비스에서 LSA가 관리하는 암호로 계정을 사용하는지 
+                          여부를 쿼리합니다.
+          qprotection-----서비스의 프로세스 보호 수준을 쿼리합니다.
+          quserservice----사용자 서비스 템플릿의 로컬 인스턴스를 쿼리합니다.
+          delete----------서비스를 레지스트리에서 삭제합니다.
+          create----------서비스를 만들고 레지스트리에 추가합니다.
+          control---------서비스에 제어를 보냅니다.
+          sdshow----------서비스의 보안 설명자를 표시합니다.
+          sdset-----------서비스의 보안 설명자를 설정합니다.
+          showsid---------임의 이름에 해당되는 서비스 SID 문자열을 표시합니다.
+          triggerinfo-----서비스의 트리거 매개 변수를 구성합니다.
+          preferrednode---서비스의 기본 설정 NUMA 노드를 설정합니다.
+          GetDisplayName--서비스의 DisplayName을 가져옵니다.
+          GetKeyName------서비스의 ServiceKeyName을 가져옵니다.
+          EnumDepend------서비스 종속성을 열거합니다.
+
+        다음 명령에는 서비스 이름이 필요하지 않습니다.
+        sc <서버> <명령> <옵션>
+          boot------------(ok | bad) 마지막 부팅을 마지막으로 성공한 부팅
+                          구성으로 저장할 것인지를 나타냅니다.
+          Lock------------서비스 데이터베이스를 잠급니다.
+          QueryLock-------SCManager 데이터베이스의 LockStatus를 쿼리합니다.
+예:
+        sc start MyService
+
+
+QUERY 및 QUERYEX 옵션:
+        쿼리 명령어 뒤에 서비스 이름이 오면, 해당 서비스의
+        상태가 반환됩니다. 이 경우 다른 옵션은 적용되지
+        않습니다. 쿼리 명령어 뒤에 아무 것도 오지 않거나
+        아래 나열된 옵션 중의 하나가 오면, 서비스가 열거됩니다.
+    type=    열거할 서비스 종류(driver, service, userservice, all)
+             (기본값 = service)
+    state=   열거할 서비스 상태(inactive, all)
+             (기본값 = active)
+    bufsize= 열거할 버퍼 크기(바이트)
+             (기본값 = 4096)
+    ri=      열거하기 시작할 계속 인덱스 번호
+             (기본값 = 0)
+    group=   열거할 서비스 그룹
+             (기본값 = all groups)
+
+구문 예제
+sc query                - 활성 서비스 및 드라이버의 상태 열거
+sc query eventlog       - 이벤트 로그 서비스의 상태 표시
+sc queryex eventlog     - 이벤트 로그 서비스의 세부 상태 표시
+sc query type= driver   - 활성 드라이버만 열거
+sc query type= service  - Win32 서비스만 열거
+sc query state= all     - 모든 서비스 및 드라이버 열거
+sc query bufsize= 50    - 50바이트 버퍼로 열거
+sc query ri= 14         - 계속 인덱스 = 14로 열거
+sc queryex group= ""    - 그룹에 없는 활성 서비스 열거
+sc query type= interact - 모든 인터랙티브 서비스 열거
+sc query type= driver group= NDIS     - 모든 NDIS 드라이버 열거
+

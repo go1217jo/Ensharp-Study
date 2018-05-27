@@ -1,0 +1,18 @@
+시스템 장치를 구성합니다.
+
+직렬 포트:                 MODE COMm[:] [BAUD=b] [PARITY=p] [DATA=d] [STOP=s]
+                                   [to=on|off] [xon=on|off] [odsr=on|off]
+                                   [octs=on|off] [dtr=on|off|hs]
+                                   [rts=on|off|hs|tg] [idsr=on|off]
+
+장치 상태:     MODE [장치] [/STATUS]
+
+인쇄 방향 전환:    MODE LPTn[:]=COMm[:]
+
+코드 페이지 선택:  MODE CON[:] CP SELECT=yyy
+
+코드 페이지 상태:  MODE CON[:] CP [/STATUS]
+
+디스플레이 모드:   MODE CON[:] [COLS=c] [LINES=n]
+
+입력 속도:         MODE CON[:] [RATE=r DELAY=d]

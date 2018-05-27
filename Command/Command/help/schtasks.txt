@@ -1,0 +1,34 @@
+
+SCHTASKS /parameter [인수]
+
+설명:
+    관리자가 로컬 컴퓨터나 원격 컴퓨터에서 예약된 작업을 만들기,
+    삭제, 쿼리, 변경, 실행 또는 끝낼 수 있도록 합니다. 
+
+매개 변수 목록:
+    /Create         예약된 작업을 새로 만듭니다.
+
+    /Delete         예약된 작업을 삭제합니다.
+
+    /Query          모든 예약된 작업을 표시합니다.
+
+    /Change         예약된 작업의 속성을 변경합니다.
+
+    /Run            예약된 작업을 요청 시 실행합니다.
+
+    /End            현재 실행하고 있는 예약된 작업을 중지합니다.
+
+    /ShowSid        예약된 작업 이름에 해당하는 보안 식별자를 표시합니다.
+
+    /?              이 도움말 메시지를 표시합니다.
+
+Examples:
+    SCHTASKS 
+    SCHTASKS /?
+    SCHTASKS /Run /?
+    SCHTASKS /End /?
+    SCHTASKS /Create /?
+    SCHTASKS /Delete /?
+    SCHTASKS /Query  /?
+    SCHTASKS /Change /?
+    SCHTASKS /ShowSid /?

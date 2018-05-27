@@ -1,0 +1,101 @@
+배치 파일에서 조건 처리를 수행합니다.
+
+IF [NOT] ERRORLEVEL 숫자 명령어
+IF [NOT] 문자열1==문자열2 명령어
+IF [NOT] EXIST 파일이름 명령어
+
+  NOT               조건이 거짓이면 명령을 수행하라고 지정합니다.
+
+  ERRORLEVEL 숫자   마지막 프로그램 실행에서 반환된 마침 코드가 
+                    지정된 숫자보다 크거나 같으면, 조건을 참으로 지정합니다.
+
+  문자열1==문자열2  지정된 문자열이 일치하면 조건을 참으로 지정합니다.
+
+  EXIST 파일이름    지정된 파일이름이 있으면 조건을 참으로 지정합니다.
+
+  명령어            조건이 만족되면 실행할 명령을 지정합니다.
+                    지정된 조건이 FALSE인 경우에는
+                    ELSE 키워드 다음에 명령을 수행할
+                    ELSE 명령어가 따릅니다.
+
+ELSE 구문은 IF 명령 다음의 명령줄과 동일한 행에 위치해야 합니다.
+예:
+
+    IF EXIST filename. (
+        del filename.
+    ) ELSE (
+        echo filename. missing.
+    )
+
+Del 명령은 다음 줄에서 시작되어야 하므로 다음 예제는
+작동하지 않습니다.
+
+    IF EXIST filename. del filename. ELSE echo filename. missing
+
+ELSE 명령이 IF 명령의 마지막과 같은 행에 있어야 하므로
+다음 예제도 작동하지 않습니다.
+
+    IF EXIST filename. del filename.
+    ELSE echo filename. missing
+
+한 행에서 모든 내용을 작업하려면 다음과 같이 작성하십시오.
+
+    IF EXIST filename. (del filename.) ELSE echo filename. missing
+
+명령 확장을 사용하면 IF 구문은 다음과 같이 변경됩니다:
+
+    IF [/I] 문자열1 비교연산자 문자열2 명령
+    IF CMDEXTVERSION 숫자 명령
+    IF DEFINED 변수 명령
+
+사용할 수 있는 비교 연산자는 다음과 같습니다:
+
+    EQU - 같음
+    NEQ - 같지 않음
+    LSS - 보다 작은
+    LEQ - 작거나 같음
+    GTR - 보다 큰
+    GEQ - 크거나 같음
+
+대/소문자를 구분하려면 /I 스위치를 사용하십시오.
+/I 스위치는 If 구문의 문자열1==문자열2 형식에도
+사용할 수 있습니다.
+문자열1과 문자열2가 모두 숫자로 되어 있는 경우,
+해당 문자열은 숫자로 변환되어 비교됩니다.
+
+CMDEXTVERSION 조건은 명령 확장과 관련된
+내부 버전 번호에 대하여 비교하는 것을 제외하고는
+ERRORLEVEL과 비슷하게 동작합니다. 처음의 버전 번호는 1이며,
+명령 확장이 증가하면 하나씩 증가합니다.
+명령 확장자를 사용할 수 없다면 CMDEXTVERSION 조건은
+True 값을 가질 수 없습니다.
+
+DEFINED 조건은 환경 변수가 정의되어 있는 경우,
+환경 변수 이름을 가져와 True 값을 반환하는 것을
+제외하고는 EXIST와 비슷하게 동작합니다.
+
+%ERRORLEVEL%에서는 ERRORLEVEL과 같은 이름을 갖는
+환경 변수가 정의되지 않은 경우, ERRORLEVEL의 현재 값을
+문자열로 확장하며, 그렇지 않으면 지정된 값을 대신 제공합니다.
+프로그램을 실행한 후, 다음 예제에서는 ERRORLEVEL 사용을
+설명합니다.
+
+    goto answer%ERRORLEVEL%
+    :answer0
+    echo Program had return code 0
+    :answer1
+    echo Program had return code 1
+
+또한 위의 숫자 비교를 사용할 수 있습니다.
+
+    IF %ERRORLEVEL% LEQ 1 goto okay
+
+CMDCMDLINE과 같은 이름을 갖는 환경 변수가 정의되지 않은 경우,
+CMD.EXE의 모든 프로세스에 앞서 %CMDCMDLINE%을
+CMD.EXE로 전달되는 원래의 명령줄로 확장하며,
+그렇지 않으면 지정된 값을 대신 제공합니다.
+
+%CMDEXTVERSION%에서는 CMDEXTVERSION과 같은
+이름을 갖는 환경 변수가 정의되지 않은 경우,
+CMDEXTVERSION의 현재 값을 문자열로 확장합니다.
+그렇지 않으면, 지정된 값을 대신 제공합니다.

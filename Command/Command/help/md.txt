@@ -1,0 +1,23 @@
+디렉터리를 만듭니다.
+
+MKDIR [드라이브:]경로
+MD [드라이브:]경로
+
+명령 확장을 사용하면 MKDIR은 아래와 같이 바뀝니다.
+
+필요한 경우 MKDIR은 경로 상에 중간 디렉터리를 만듭니다.
+예를 들어, \a가 없다고 가정하면
+
+    mkdir \a\b\c\d
+
+는 확장을 사용하지 않는 경우의
+
+    mkdir \a
+    chdir \a
+    mkdir b
+    chdir b
+    mkdir c
+    chdir c
+    mkdir d
+
+와 같습니다.

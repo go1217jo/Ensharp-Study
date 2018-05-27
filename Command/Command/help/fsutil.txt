@@ -1,0 +1,20 @@
+/?은(는) 잘못된 매개 변수입니다.
+---- 지원되는 명령 ----
+
+8dot3name       8dot3name 관리
+behavior        파일 시스템 동작 제어
+dirty           볼륨 더티 비트 관리
+file            파일 관련 명령
+fsinfo          파일 시스템 정보
+hardlink        하드 링크 관리
+objectid        개체 ID 관리
+quota           할당량 관리
+repair          자동 복구 관리
+reparsepoint    재분석 지점 관리
+resource        트랜잭션 리소스 관리자 관리
+sparse          스파스 파일 제어
+tiering         저장소 계층화 속성 관리
+transaction     트랜잭션 관리
+usn             USN 관리
+volume          볼륨 관리
+wim             투명한 wim 호스팅 관리

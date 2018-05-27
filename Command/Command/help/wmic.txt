@@ -1,0 +1,118 @@
+
+[전역 스위치] <명령>
+
+다음과 같은 전역 스위치를 사용할 수 있습니다.
+/NAMESPACE           별칭을 사용할 네임스페이스의 경로입니다.
+/ROLE                별칭 정의가 포함된 역할의 경로입니다.
+/NODE                별칭을 사용할 서버입니다.
+/IMPLEVEL            클라이언트 가장 수준입니다.
+/AUTHLEVEL           클라이언트 인증 수준입니다.
+/LOCALE              클라이언트가 사용할 언어 ID입니다.
+/PRIVILEGES          모든 권한을 사용하거나 사용하지 않도록 설정합니다.
+/TRACE               디버깅 정보를 STDERR로 출력합니다.
+/RECORD              모든 입력 명령과 출력을 기록합니다.
+/INTERACTIVE         대화형 모드를 설정하거나 원래대로 설정합니다.
+/FAILFAST            FailFast 모드를 설정하거나 원래대로 설정합니다.
+/USER                세션 중에 사용할 사용자입니다.
+/PASSWORD            세션 로그인에 사용할 암호입니다.
+/OUTPUT              출력 리디렉션 모드를 지정합니다.
+/APPEND              출력 리디렉션 모드를 지정합니다.
+/AGGREGATE           집계 모드를 설정하거나 원래대로 설정합니다.
+/AUTHORITY           연결에 대한 <인증 형식>을 지정합니다.
+/?[:<BRIEF|FULL>]    사용법을 표시합니다.
+
+특정 전역 스위치에 대한 자세한 내용을 보려면 '스위치 이름 /?'를 입력하십시오.
+
+
+현재 역할에서 다음과 같은 별칭을 사용할 수 있습니다.
+ALIAS                    - 로컬 시스템에서 사용 가능한 별칭에 대한 액세스
+BASEBOARD                - 기판(마더보드 또는 시스템 보드라고도 함) 관리입니다.
+BIOS                     - BIOS(기본 입출력 서비스) 관리입니다.
+BOOTCONFIG               - 부트 구성 관리입니다.
+CDROM                    - CD-ROM 관리입니다.
+COMPUTERSYSTEM           - 컴퓨터 시스템 관리입니다.
+CPU                      - CPU 관리입니다.
+CSPRODUCT                - SMBIOS의 컴퓨터 시스템 제품 정보입니다. 
+DATAFILE                 - 데이터 파일 관리입니다.  
+DCOMAPP                  - DCOM 응용 프로그램 관리입니다.
+DESKTOP                  - 사용자 데스크톱 관리입니다.
+DESKTOPMONITOR           - 데스크톱 모니터 관리입니다.
+DEVICEMEMORYADDRESS      - 장치 메모리 주소 관리입니다.
+DISKDRIVE                - 실제 디스크 드라이브 관리입니다. 
+DISKQUOTA                - NTFS 볼륨의 디스크 공간 사용입니다.
+DMACHANNEL               - DMA(직접 메모리 액세스) 채널 관리입니다.
+ENVIRONMENT              - 시스템 환경 설정 관리입니다.
+FSDIR                    - 파일 시스템 디렉터리 항목 관리입니다. 
+GROUP                    - 그룹 계정 관리입니다. 
+IDECONTROLLER            - IDE 컨트롤러 관리입니다.  
+IRQ                      - IRQ(인터럽트 요청 라인) 관리입니다. 
+JOB                      - 일정 서비스를 사용하여 예약된 작업에 대한 액세스를 제공합니다. 
+LOADORDER                - 실행 종속성을 정의하는 시스템 서비스 관리입니다. 
+LOGICALDISK              - 로컬 저장 장치 관리입니다.
+LOGON                    - 로그온 세션입니다.  
+MEMCACHE                 - 캐시 메모리 관리입니다.
+MEMORYCHIP               - 메모리 칩 정보입니다.
+MEMPHYSICAL              - 컴퓨터 시스템의 실제 메모리 관리입니다. 
+NETCLIENT                - 네트워크 클라이언트 관리입니다.
+NETLOGIN                 - (특정 사용자의) 네트워크 로그인 정보 관리입니다. 
+NETPROTOCOL              - 프로토콜(및 네트워크 특성) 관리입니다.
+NETUSE                   - 활성 네트워크 연결 관리입니다.
+NIC                      - NIC(네트워크 인터페이스 컨트롤러) 관리입니다.
+NICCONFIG                - 네트워크 어댑터 관리입니다. 
+NTDOMAIN                 - NT 도메인 관리입니다.  
+NTEVENT                  - NT 이벤트 로그에 있는 항목입니다.  
+NTEVENTLOG               - NT 이벤트 로그 파일 관리입니다. 
+ONBOARDDEVICE            - 마더보드(시스템 보드)에 기본 제공된 일반 어댑터 장치 관리입니다.
+OS                       - 설치된 운영 체제 관리입니다. 
+PAGEFILE                 - 가상 메모리 파일 스와핑 관리입니다. 
+PAGEFILESET              - 페이지 파일 설정 관리입니다. 
+PARTITION                - 실제 디스크의 분할 영역 관리입니다.
+PORT                     - I/O 포트 관리입니다.
+PORTCONNECTOR            - 실제 연결 포트 관리입니다.
+PRINTER                  - 프린터 장치 관리입니다. 
+PRINTERCONFIG            - 프린터 장치 구성 관리입니다.  
+PRINTJOB                 - 인쇄 작업 관리입니다. 
+PROCESS                  - 프로세스 관리입니다. 
+PRODUCT                  - 설치 패키지 작업 관리입니다. 
+QFE                      - QFE(quick fix engineering)입니다.  
+QUOTASETTING             - 볼륨의 디스크 할당량 정보를 설정합니다. 
+RDACCOUNT                - 원격 데스크톱 연결 사용 권한 관리입니다.
+RDNIC                    - 특정 네트워크 어댑터의 원격 데스크톱 연결 관리입니다.
+RDPERMISSIONS            - 특정 원격 데스크톱 연결에 대한 사용 권한입니다.
+RDTOGGLE                 - 원격으로 원격 데스크톱 수신기를 켜거나 끕니다.
+RECOVEROS                - 운영 체제에 오류가 있을 때 메모리에서 수집할 정보입니다. 
+REGISTRY                 - 컴퓨터 시스템 레지스트리 관리입니다.
+SCSICONTROLLER           - SCSI 컨트롤러 관리입니다.  
+SERVER                   - 서버 정보 관리입니다. 
+SERVICE                  - 서비스 응용 프로그램 관리입니다. 
+SHADOWCOPY               - 섀도 복사본 관리입니다.
+SHADOWSTORAGE            - 섀도 복사본 저장소 영역 관리입니다.
+SHARE                    - 공유 리소스 관리입니다. 
+SOFTWAREELEMENT          - 시스템에 설치된 소프트웨어 제품의 요소 관리입니다.
+SOFTWAREFEATURE          - SoftwareElement의 소프트웨어 제품 하위 집합 관리입니다. 
+SOUNDDEV                 - 사운드 장치 관리입니다.
+STARTUP                  - 사용자가 컴퓨터 시스템에 로그온할 때 자동으로 실행되는 명령 관리입니다.
+SYSACCOUNT               - 시스템 계정 관리입니다.  
+SYSDRIVER                - 기본 서비스에 대한 시스템 드라이버 관리입니다.
+SYSTEMENCLOSURE          - 실제 시스템 엔클로저 관리입니다.
+SYSTEMSLOT               - 포트, 슬롯, 주변 장치 등을 비롯한 실제 연결점 및 소유 연결점 관리입니다.
+TAPEDRIVE                - 테이프 드라이브 관리입니다.  
+TEMPERATURE              - 온도 센서(전자식 온도계) 데이터 관리입니다.
+TIMEZONE                 - 표준 시간대 데이터 관리입니다. 
+UPS                      - UPS(무정전 전원 공급 장치) 관리입니다. 
+USERACCOUNT              - 사용자 계정 관리입니다.
+VOLTAGE                  - 전압 센서(전자식 전압계) 데이터 관리입니다.
+VOLUME                   - 로컬 저장소 볼륨 관리입니다.
+VOLUMEQUOTASETTING       - 디스크 할당량 설정을 특정 디스크 볼륨에 연결합니다. 
+VOLUMEUSERQUOTA          - 사용자 단위 저장소 볼륨 할당량 관리입니다.
+WMISET                   - WMI 서비스 작업 매개 변수 관리입니다. 
+
+특정 별칭에 대한 자세한 내용을 보려면 '별칭 /?'를 입력하십시오.
+
+CLASS     - 전체 WMI 스키마로 이동합니다.
+PATH      - 전체 WMI 개체 경로로 이동합니다.
+CONTEXT   - 모든 전역 스위치의 상태를 표시합니다.
+QUIT/EXIT - 프로그램을 끝냅니다.
+
+CLASS/PATH/CONTEXT에 대한 자세한 내용을 보려면 (CLASS | PATH | CONTEXT) /?를 입력하십시오.
+
