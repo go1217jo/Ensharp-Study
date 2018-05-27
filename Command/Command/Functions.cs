@@ -51,21 +51,32 @@ namespace Command
                 // 하위 경로의 폴더로 이동
                 else if (!unitPath[idx].Equals("."))
                 {
-                    // 하위 경로에 폴더가 존재하면 이동
-                    List<string> childDirectories = new List<string>(Directory.GetDirectories(movedPath));
+                    // 하위 디렉터리 목록
+                    string[] childDirectories = Directory.GetDirectories(movedPath);
 
-                    // 이동 예정 경로
-                    string temp;
+                    // 하위 경로에 폴더가 존재하면 이동
+                    string temp;  // 이동 예정 경로
                     // 루트 디렉터리면
                     if (movedPath.Equals("C:\\"))
                         temp = movedPath + unitPath[idx];
                     else
+                        // 루트 디렉터리가 아니면 구분자를 붙임
                         temp = movedPath + '\\' + unitPath[idx];
 
                     // 이동 예정 폴더가 현재 폴더 내에 존재한다면 이동
-                    if (childDirectories.Contains(temp))
-                        movedPath = temp;
-                    else
+                    bool exist = false;
+                    StringComparison comp = StringComparison.OrdinalIgnoreCase;  // 대소문자 미구분
+                    for(int child = 0; child < childDirectories.Length; child++)
+                    {
+                        // 같은 것이 존재
+                        if (childDirectories[child].Equals(temp, comp))
+                        {
+                            movedPath = temp;
+                            exist = true;
+                            break;
+                        }
+                    }
+                    if(!exist)
                         return null;
                 }
             }
@@ -76,11 +87,9 @@ namespace Command
         public long DirectorySize(DirectoryInfo dInfo, bool includeSubDir)
         {
             long totalSize = 0;
-            try
-            {
-                totalSize = dInfo.EnumerateFiles().Sum(file => file.Length);
-            } catch(UnauthorizedAccessException e) { }
-
+           
+            totalSize = dInfo.EnumerateFiles().Sum(file => file.Length);
+            
             if (includeSubDir) totalSize += dInfo.EnumerateDirectories().Sum(dir => DirectorySize(dir, true));
             return totalSize;
         }
@@ -89,8 +98,9 @@ namespace Command
         public void FileList(string path, string currentPath)
         {
             string currentDirectory = currentPath;
+            
             // 폴더 바이트 크기
-            long directoryByteSize = 0;
+            long directoryByteSize = DriveInfo.GetDrives()[0].AvailableFreeSpace;
             // 파일 바이트 크기
             long fileByteSize = 0;
 
@@ -113,7 +123,6 @@ namespace Command
                 {
                     Console.Write(output.PrintFixString("<DIR>", 15, Constant.LEFT));
                     Console.WriteLine(entries[idx].Substring(currentDirectory.Length + 1));
-                    directoryByteSize += DirectorySize(new DirectoryInfo(entries[idx]), false);
                 }
                 else
                 {
@@ -125,10 +134,10 @@ namespace Command
                 }
             }
             Console.Write(output.PrintFixString((entries.Length - directories.Length) + "", 16, Constant.RIGHT) + "개 파일");
-            Console.WriteLine(output.PrintFixString(fileByteSize.ToString(), 20, Constant.RIGHT) + " 바이트");
+            Console.WriteLine(output.PrintFixString(output.InsertComma(fileByteSize.ToString()), 20, Constant.RIGHT) + " 바이트");
 
             Console.Write(output.PrintFixString(directories.Length + "", 16, Constant.RIGHT) + "개 디렉터리");
-            Console.WriteLine(output.PrintFixString(directoryByteSize.ToString(), 17, Constant.RIGHT) + " 바이트 남음");
+            Console.WriteLine(output.PrintFixString(output.InsertComma(directoryByteSize.ToString()), 17, Constant.RIGHT) + " 바이트 남음");
         }
 
         public void PrintHelp(string parameter)
