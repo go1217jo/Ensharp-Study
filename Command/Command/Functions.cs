@@ -34,7 +34,7 @@ namespace Command
 
             // 존재하는 절대 경로이면 그대로 반환
             DirectoryInfo directory = new DirectoryInfo(movePath);
-            if (!movePath.Equals("..") && !movePath.Equals(".") && directory.Exists)
+            if (!movePath.Contains("..") && !movePath.Equals(".") && directory.Exists)
                 return directory.FullName;
 
             // 상대경로이거나 존재하지 않는 절대경로인 경우
@@ -56,20 +56,17 @@ namespace Command
 
                     // 이동 예정 경로
                     string temp;
+                    // 루트 디렉터리면
                     if (movedPath.Equals("C:\\"))
                         temp = movedPath + unitPath[idx];
                     else
                         temp = movedPath + '\\' + unitPath[idx];
 
+                    // 이동 예정 폴더가 현재 폴더 내에 존재한다면 이동
                     if (childDirectories.Contains(temp))
                         movedPath = temp;
                     else
-                    {
-                        // 없는 경로라면
-                        Console.WriteLine("\n지정된 경로를 찾을 수 없습니다.\n");
-                        return currentPath;
-                    }
-                    
+                        return null;
                 }
             }
             return movedPath;
@@ -101,7 +98,7 @@ namespace Command
             {
                 currentDirectory = ChangeDirectory(path, currentPath);
                 // 없는 경로
-                if (currentDirectory.Equals(currentPath) && !path.Equals("."))
+                if (currentDirectory == null)
                     return;
             }
 
@@ -151,6 +148,54 @@ namespace Command
             }
             Console.WriteLine(reader.ReadToEnd());
             reader.Close();
+        }
+
+        public void Move(string from, string to, string currentPath)
+        {
+            string[] path = new string[] { from, to };
+            string[] absolutePath = new string[] { "", "" };
+
+            // 파일들의 절대경로를 구함
+            for (int pos = 0; pos < 2; pos++)
+            {
+                string[] splits = path[pos].Split('\\');
+
+                // 파일명만 입력된 경우(현재 폴더 내 파일)
+                if (splits.Length == 1)
+                    absolutePath[pos] = currentPath + '\\' + path[pos];
+                // 다른 경로 내 파일인 경우, 해당 파일의 절대 경로를 구함
+                else
+                {
+                    // 먼저 파일이 존재하는 폴더의 절대 경로를 구함
+                    for(int idx = 0; idx < splits.Length - 1; idx++)
+                        absolutePath[pos] += (splits[idx] + '\\');
+                    // 경로의 마지막에 \\ 제거
+                    absolutePath[pos] = absolutePath[pos].Remove(absolutePath[pos].Length - 1);
+
+                    // 절대경로 반환
+                    absolutePath[pos] = ChangeDirectory(absolutePath[pos], currentPath);
+
+                    // 경로가 존재하지 않는다면
+                    if (absolutePath[pos] == null) {
+                        Console.WriteLine("지정된 파일을 찾을 수 없습니다.");
+                        return;
+                    }
+                    absolutePath[pos] += ('\\' + splits[splits.Length - 1]);
+                }
+            }
+
+            // 복사할 파일 정보 객체
+            FileInfo srcFile = new FileInfo(absolutePath[0]);
+            
+            // 파일이 없는 경우 종료
+            if (!srcFile.Exists)
+            {
+                Console.WriteLine("지정된 파일을 찾을 수 없습니다.");
+                return;
+            }
+
+            Directory.Move(absolutePath[0], absolutePath[1]);
+            Console.WriteLine("        1개의 파일을 이동하였습니다.");
         }
     }
 }
