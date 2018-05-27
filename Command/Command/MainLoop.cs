@@ -43,6 +43,7 @@ namespace Command
                 // 명령어 목록 존재 확인
                 if(cmdList.Contains(command))
                 {
+                    string secondParam;
                     switch (cmdList.IndexOf(command))
                     {
                         case (int)COMMAND.CMD:
@@ -62,12 +63,21 @@ namespace Command
                         case (int)COMMAND.CLS:
                             Console.Clear();
                             break;
+                        case (int)COMMAND.COPY:
+                            // 인수 개수에 대한 예외처리
+                            secondParam = Exception.ArgumentCountException(cmds);
+                            if (secondParam != null)
+                                functions.Copy(cmds[1], secondParam, currentPath);
+                            break;
                         case (int)COMMAND.HELP:
                             if (cmds.Length == 1) functions.PrintHelp("");
                             else functions.PrintHelp(cmds[1]);
                             break;
                         case (int)COMMAND.MOVE:
-                            functions.Move(cmds[1], cmds[2], currentPath);
+                            // 인수 개수에 대한 예외처리
+                            secondParam = Exception.ArgumentCountException(cmds);
+                            if(secondParam != null)
+                                functions.Move(cmds[1], secondParam, currentPath);
                             break;
                         case (int)COMMAND.EXIT:
                             return;

@@ -150,52 +150,107 @@ namespace Command
             reader.Close();
         }
 
-        public void Move(string from, string to, string currentPath)
+        // 입력된 경로의 절대경로를 반환한다.
+        public string GetAbsolutePath(string path, string currentPath)
         {
-            string[] path = new string[] { from, to };
-            string[] absolutePath = new string[] { "", "" };
+            string absolutePath = "";
+            string[] splits = path.Split('\\');
 
-            // 파일들의 절대경로를 구함
-            for (int pos = 0; pos < 2; pos++)
+            // 파일명만 입력된 경우(현재 폴더 내 파일)
+            if (splits.Length == 1)
+                absolutePath = currentPath + '\\' + path;
+            // 다른 경로 내 파일인 경우, 해당 파일의 절대 경로를 구함
+            else
             {
-                string[] splits = path[pos].Split('\\');
+                // 먼저 파일이 존재하는 폴더의 절대 경로를 구함
+                for (int idx = 0; idx < splits.Length - 1; idx++)
+                    absolutePath += (splits[idx] + '\\');
+                // 경로의 마지막에 \\ 제거
+                absolutePath = absolutePath.Remove(absolutePath.Length - 1);
 
-                // 파일명만 입력된 경우(현재 폴더 내 파일)
-                if (splits.Length == 1)
-                    absolutePath[pos] = currentPath + '\\' + path[pos];
-                // 다른 경로 내 파일인 경우, 해당 파일의 절대 경로를 구함
-                else
+                // 절대경로 반환
+                absolutePath = ChangeDirectory(absolutePath, currentPath);
+
+                // 경로가 존재하지 않는다면
+                if (absolutePath == null)
                 {
-                    // 먼저 파일이 존재하는 폴더의 절대 경로를 구함
-                    for(int idx = 0; idx < splits.Length - 1; idx++)
-                        absolutePath[pos] += (splits[idx] + '\\');
-                    // 경로의 마지막에 \\ 제거
-                    absolutePath[pos] = absolutePath[pos].Remove(absolutePath[pos].Length - 1);
-
-                    // 절대경로 반환
-                    absolutePath[pos] = ChangeDirectory(absolutePath[pos], currentPath);
-
-                    // 경로가 존재하지 않는다면
-                    if (absolutePath[pos] == null) {
-                        Console.WriteLine("지정된 파일을 찾을 수 없습니다.");
-                        return;
-                    }
-                    absolutePath[pos] += ('\\' + splits[splits.Length - 1]);
+                    Console.WriteLine("지정된 파일을 찾을 수 없습니다.");
+                    return null;
                 }
+                absolutePath += ('\\' + splits[splits.Length - 1]);
             }
+            return absolutePath;
+        }
 
-            // 복사할 파일 정보 객체
-            FileInfo srcFile = new FileInfo(absolutePath[0]);
+        // src에서 dest로 파일을 이동한다.
+        public void Move(string src, string dest, string currentPath)
+        {
+            // 절대 경로 얻기
+            string fromPath = GetAbsolutePath(src, currentPath);
+            string toPath = GetAbsolutePath(dest, currentPath);
             
             // 파일이 없는 경우 종료
-            if (!srcFile.Exists)
+            if (fromPath == null || toPath == null || Exception.NotExistFileException(fromPath))
             {
                 Console.WriteLine("지정된 파일을 찾을 수 없습니다.");
                 return;
             }
 
-            Directory.Move(absolutePath[0], absolutePath[1]);
+            Directory.Move(fromPath, toPath);
             Console.WriteLine("        1개의 파일을 이동하였습니다.");
+        }
+
+        
+
+        public void Copy(string src, string dest, string currentPath)
+        {
+            string fromPath = GetAbsolutePath(src, currentPath);
+            string toPath = GetAbsolutePath(dest, currentPath);
+
+            // 파일이 없는 경우 종료
+            if (fromPath == null || toPath == null || Exception.NotExistFileException(fromPath))
+            {
+                Console.WriteLine("지정된 파일을 찾을 수 없습니다.");
+                return;
+            }
+
+            // 복사하려는 파일의 경로 폴더가 존재하지 않으면 생성
+            string targetPath = toPath.Remove(toPath.LastIndexOf('\\'));
+            if (Directory.Exists(targetPath))
+                Directory.CreateDirectory(targetPath);
+            
+            // 동등한 파일을 복사 시도할 때
+            if(fromPath.Equals(toPath))
+            {
+                Console.WriteLine("같은 파일로 복사할 수 없습니다.");
+                Console.WriteLine("        0개 파일이 복사되었습니다.");
+                return;
+            }
+
+            if(new FileInfo(toPath).Exists)
+            {
+                // 덮어씌운다는 질문에 대해 올바른 대답을 할 때까지 반복
+                bool right = false;
+                while (!right)
+                {
+                    Console.Write(toPath.Substring(toPath.LastIndexOf('\\') + 1) + "을(를) 덮어쓰시겠습니까? (Yes/No/All): ");
+                    string answer = Console.ReadLine().ToLower();
+                    switch (answer[0])
+                    {
+                        case 'y':
+                            right = true;
+                            break;
+                        case 'n':
+                            Console.WriteLine("        0개 파일이 복사되었습니다.");
+                            return;
+                        case 'a':
+                            right = true;
+                            break;
+                    }
+                }
+            }
+            File.Copy(fromPath, toPath, true);
+            Console.WriteLine("        1개 파일이 복사되었습니다.");
         }
     }
 }
