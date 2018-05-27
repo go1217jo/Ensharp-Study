@@ -87,7 +87,8 @@ namespace Command
             if (includeSubDir) totalSize += dInfo.EnumerateDirectories().Sum(dir => DirectorySize(dir, true));
             return totalSize;
         }
-
+        
+        // 파일 목록 출력
         public void FileList(string path, string currentPath)
         {
             string currentDirectory = currentPath;

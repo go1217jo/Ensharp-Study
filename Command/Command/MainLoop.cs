@@ -55,6 +55,9 @@ namespace Command
                             if (cmds.Length == 1) functions.FileList("", currentPath);
                             else functions.FileList(cmds[1], currentPath);
                             break;
+                        case (int)COMMAND.CLS:
+                            Console.Clear();
+                            break;
                         case (int)COMMAND.EXIT:
                             return;
                     }
