@@ -51,13 +51,9 @@ namespace Command
                             functions.VersionInfomation();
                             break;
                         case (int)COMMAND.CD:
-                            if (input.Length == 2)
-                                Console.WriteLine(currentPath);
-                            else {
-                                string movedPath = functions.ChangeDirectory(input.Substring(2), currentPath);  // 이동된 경로를 구하면
-                                if (movedPath != null) currentPath = movedPath;  // 없는 경로가 아니라면
-                                else Console.WriteLine("지정된 경로를 찾을 수 없습니다."); // 없는 경로라면
-                            }
+                            string movedPath = functions.ChangeDirectory(input.Substring(2), currentPath);  // 이동된 경로를 구하면
+                            if (movedPath != null) currentPath = movedPath;  // 없는 경로가 아니라면
+                            else Console.WriteLine("지정된 경로를 찾을 수 없습니다."); // 없는 경로라면
                             break;
                         case (int)COMMAND.DIR:
                             if (cmds.Length == 1) functions.FileList("", currentPath);

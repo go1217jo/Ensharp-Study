@@ -25,7 +25,7 @@ namespace Command
         {
             Console.WriteLine("Microsoft Windows [Version 10.0.16299.431]\n(c) 2017 Microsoft Corporation.All rights reserved.");
         }
-              
+                           
         public string ChangeDirectory(string movePath, string currentPath)
         {
             // 이동된 결과 경로
@@ -42,11 +42,11 @@ namespace Command
 
             // UNC 경로 예외처리
             if (Exception.UNCPathException(movePath))
-                return null;
+                return currentPath;
 
             // 존재하는 절대 경로이면 그대로 반환
             DirectoryInfo directory = new DirectoryInfo(movePath);
-            if (!movePath.Contains("..") && !movePath.Equals(".") && directory.Exists)
+            if (!movePath.Contains("..") && !movePath.Contains(".") && directory.Exists)
                 return directory.FullName;
 
             // 상대경로이거나 존재하지 않는 절대경로인 경우
@@ -238,20 +238,86 @@ namespace Command
         {
             // 절대 경로 얻기
             string fromPath = GetAbsolutePath(src, currentPath);
+            if (fromPath == null) return;
             string toPath = GetAbsolutePath(dest, currentPath);
-            
-            // 파일이 없는 경우 종료
-            if (fromPath == null || toPath == null || Exception.NotExistFileException(fromPath))
+            if (toPath == null) return;
+
+            // 한 개의 파일만 이동하는 경우
+            if (!src.Contains("*"))
             {
-                Console.WriteLine("지정된 파일을 찾을 수 없습니다.");
-                return;
+                DirectoryInfo fromPathInfo = new DirectoryInfo(fromPath);
+                DirectoryInfo toPathInfo = new DirectoryInfo(toPath);
+
+                // 원본 경로의 폴더가 존재하지 않는다면
+                if (fromPathInfo.Attributes.HasFlag(FileAttributes.Directory) && !fromPathInfo.Exists)
+                {
+                    Console.WriteLine("지정된 파일을 찾을 수 없습니다.");
+                    return;
+                }
+
+                // fromPath가 폴더인 경우
+                if (fromPathInfo.Attributes.HasFlag(FileAttributes.Directory))
+                {
+                    // toPath가 존재하면
+                    if (toPathInfo.Exists)
+                    {
+                        // toPath가 폴더이면
+                        if (toPathInfo.Attributes.HasFlag(FileAttributes.Directory))
+                        {
+                            string[] fromSplit = fromPath.Split('\\');
+                            toPath = toPathInfo.FullName + '\\' + fromSplit[fromSplit.Length - 1];
+                            toPathInfo = new DirectoryInfo(toPath);  // 바뀐 디렉터리 정보
+                            if(toPathInfo.Exists)
+                            {
+                                // 덮어쓰지 않는다면
+                                if (Overwrite(toPathInfo.FullName) == Constant.NO)
+                                {
+                                    Console.WriteLine("        0개의 디렉터리을 이동하였습니다.");
+                                    return;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // toPath가 파일이면
+                            if (Overwrite(toPathInfo.FullName) == Constant.NO)
+                            {
+                                Console.WriteLine("        0개의 디렉터리을 이동하였습니다.");
+                                return;
+                            }
+                            else
+                                // 덮어쓰기면 해당 파일을 삭제하고 파일명으로 폴더이름을 함
+                                File.Delete(toPathInfo.FullName);
+                        }
+                    }
+                    Directory.Move(fromPath, toPath);
+                    Console.WriteLine("        1개의 디렉터리을 이동하였습니다.");
+                }
+                // fromPath가 파일인 경우
+                else
+                {
+                    // toPath가 폴더인 경우 그 안에 이동
+                    if(toPathInfo.Attributes.HasFlag(FileAttributes.Directory))
+                    {
+                        string[] fromSplit = fromPath.Split('\\');
+                        toPath = toPathInfo.FullName + '\\' + fromSplit[fromSplit.Length - 1];
+                        toPathInfo = new DirectoryInfo(toPath);  // 바뀐 디렉터리 정보
+                        if (toPathInfo.Exists)
+                        {
+                            // 덮어쓰지 않는다면
+                            if (Overwrite(toPathInfo.FullName) == Constant.NO)
+                            {
+                                Console.WriteLine("        0개의 파일을 이동하였습니다.");
+                                return;
+                            }
+                        }
+                    }
+
+                    Directory.Move(fromPath, toPath);
+                    Console.WriteLine("        1개의 파일을 이동하였습니다.");
+                }
             }
-
-            Directory.Move(fromPath, toPath);
-            Console.WriteLine("        1개의 파일을 이동하였습니다.");
         }
-
-        
 
         public void Copy(string src, string dest, string currentPath)
         {
@@ -280,28 +346,28 @@ namespace Command
 
             if(new FileInfo(toPath).Exists)
             {
-                // 덮어씌운다는 질문에 대해 올바른 대답을 할 때까지 반복
-                bool right = false;
-                while (!right)
-                {
-                    Console.Write(toPath.Substring(toPath.LastIndexOf('\\') + 1) + "을(를) 덮어쓰시겠습니까? (Yes/No/All): ");
-                    string answer = Console.ReadLine().ToLower();
-                    switch (answer[0])
-                    {
-                        case 'y':
-                            right = true;
-                            break;
-                        case 'n':
-                            Console.WriteLine("        0개 파일이 복사되었습니다.");
-                            return;
-                        case 'a':
-                            right = true;
-                            break;
-                    }
-                }
+                if (Overwrite(toPath) == Constant.NO)
+                    return;
             }
             File.Copy(fromPath, toPath, true);
             Console.WriteLine("        1개 파일이 복사되었습니다.");
+        }
+
+        // 덮어쓰기
+        public int Overwrite(string toPath)
+        {
+            // 덮어씌운다는 질문에 대해 올바른 대답을 할 때까지 반복
+            while (true)
+            {
+                Console.Write(toPath.Substring(toPath.LastIndexOf('\\') + 1) + "을(를) 덮어쓰시겠습니까? (Yes/No/All): ");
+                string answer = Console.ReadLine().ToLower();
+                switch (answer[0])
+                {
+                    case 'y': return Constant.YES;
+                    case 'n': return Constant.NO;
+                    case 'a': return Constant.ALL;
+                }
+            }
         }
     }
 }
