@@ -11,7 +11,6 @@ namespace Command
         static void Main(string[] args)
         {
             MainLoop main = new MainLoop();
-
             main.Loop();
         }
     }

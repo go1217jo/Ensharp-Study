@@ -50,11 +50,14 @@ namespace Command
                             functions.VersionInfomation();
                             break;
                         case (int)COMMAND.CD:
-                            string movedPath = functions.ChangeDirectory(cmds[1], currentPath);
-                            // 없는 경로가 아니라면
-                            if (movedPath != null) currentPath = movedPath;
-                            // 없는 경로라면
-                            else Console.WriteLine("지정된 경로를 찾을 수 없습니다.");
+                            int paramPos = input.IndexOf(' ') + 1;  // 인수의 시작 인덱스
+                            if (paramPos >= input.Length || paramPos == 0)
+                                Console.WriteLine(currentPath);
+                            else {
+                                string movedPath = functions.ChangeDirectory(input.Substring(paramPos), currentPath);  // 이동된 경로를 구하면
+                                if (movedPath != null) currentPath = movedPath;  // 없는 경로가 아니라면
+                                else Console.WriteLine("지정된 경로를 찾을 수 없습니다."); // 없는 경로라면
+                            }
                             break;
                         case (int)COMMAND.DIR:
                             if (cmds.Length == 1) functions.FileList("", currentPath);
@@ -81,14 +84,12 @@ namespace Command
                             break;
                         case (int)COMMAND.EXIT:
                             return;
-                        default:
-                            Console.WriteLine("\'" + command + "\'은(는) 내부 또는 외부 명령, 실행할 수 있는 프로그램, 또는 배치 파일이 아닙니다.");
-                            break;
                     }
                 }
+                else
+                    Console.WriteLine("\'" + command + "\'은(는) 내부 또는 외부 명령, 실행할 수 있는 프로그램, 또는 배치 파일이 아닙니다.");
+
             }
         }
-
-
     }
 }

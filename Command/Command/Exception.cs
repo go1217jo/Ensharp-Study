@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Command
@@ -33,6 +34,18 @@ namespace Command
 
             // 파일의 존재 여부 반환, 있으면 false
             return !srcFile.Exists;
+        }
+
+        public static bool UNCPathException(string relativePath)
+        {
+            // UNC 경로 형식일 경우
+            if (Regex.IsMatch(relativePath, @"^[\\][\\]"))
+            {
+                Console.WriteLine("CMD에서 현재 디렉터리로 UNC 경로를 지원하지 않습니다.");
+                return true;
+            }
+            else
+                return false;
         }
     }
 }

@@ -30,6 +30,16 @@ namespace Command
         {
             // 이동된 결과 경로
             string movedPath = currentPath;
+            
+            if(movePath.Length == 0)
+            {
+                Console.WriteLine(currentPath);
+                return currentPath;
+            }
+
+            // UNC 경로 예외처리
+            if (Exception.UNCPathException(movePath))
+                return null;
 
             // 존재하는 절대 경로이면 그대로 반환
             DirectoryInfo directory = new DirectoryInfo(movePath);
@@ -41,6 +51,10 @@ namespace Command
 
             for (int idx = 0; idx < unitPath.Length; idx++)
             {
+                // ...(.이 3 이상인 경우 무시된 경로가 되도록 한다.
+                if (unitPath[idx].Contains("..."))
+                    unitPath[idx] = ".";
+
                 // path == .. 이면 상위 디렉터리
                 if (unitPath[idx].Equals(".."))
                 {
@@ -70,7 +84,7 @@ namespace Command
                         // 같은 것이 존재
                         if (childDirectories[child].Equals(temp, comp))
                         {
-                            movedPath = temp;
+                            movedPath = childDirectories[child];
                             exist = true;
                             break;
                         }
@@ -109,11 +123,12 @@ namespace Command
             // volumelabel 출력
             string volumeName = drive.VolumeLabel;
             if (volumeName == "")
-                Console.WriteLine("{0}드라이브의 볼륨에는 이름이 없습니다.", drive.Name[0]);
+                Console.WriteLine(" {0}드라이브의 볼륨에는 이름이 없습니다.", drive.Name[0]);
             else
-                Console.WriteLine("이름: {0}", volumeName);
+                Console.WriteLine(" 이름: {0}", volumeName);
 
-            Console.WriteLine("볼륨 일련 번호: {0}\n", GetVolumeNumber(drive.Name));
+            Console.WriteLine(" 볼륨 일련 번호: {0}\n", GetVolumeNumber(drive.Name));
+
 
             if(path.Length != 0)
             {
@@ -124,6 +139,8 @@ namespace Command
                     return;
             }
 
+            Console.WriteLine(" {0} 디렉터리\n", currentDirectory);
+
             string[] entries = Directory.GetFileSystemEntries(currentDirectory);
             string[] directories = Directory.GetDirectories(currentDirectory);
             
@@ -131,8 +148,8 @@ namespace Command
             {
                 // System file이나 folder면 생략
                 DirectoryInfo information = new DirectoryInfo(entries[idx]);
-               // if (information.Attributes.HasFlag(FileAttributes.NotContentIndexed) | information.Attributes.HasFlag(FileAttributes.Hidden))
-                //    continue;
+                if (information.Attributes.HasFlag(FileAttributes.NotContentIndexed) | information.Attributes.HasFlag(FileAttributes.Hidden))
+                    continue;
 
                 Console.Write(Directory.GetLastWriteTime(entries[idx]).ToString("yyyy-MM-dd tt hh:mm") + "    ");
                 // 해당 경로가 폴더면
@@ -146,7 +163,7 @@ namespace Command
                 {
                     // 해당 경로가 파일이면
                     long currentFileSize = new FileInfo(entries[idx]).Length;
-                    Console.Write(output.PrintFixString(currentFileSize.ToString(), 14, Constant.RIGHT) + ' ');
+                    Console.Write(output.PrintFixString(output.InsertComma(currentFileSize.ToString()), 14, Constant.RIGHT) + ' ');
                     Console.WriteLine(entries[idx].Substring(currentDirectory.Length + 1));
                     fileByteSize += currentFileSize;
                     fileCount++;
