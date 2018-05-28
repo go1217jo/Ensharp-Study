@@ -39,6 +39,7 @@ namespace Command
 
                 // 입력된 명령어
                 command = cmds[0].ToLower();
+                command = command.TrimEnd('.');
 
                 // 명령어 목록 존재 확인
                 if(cmdList.Contains(command))
@@ -50,11 +51,10 @@ namespace Command
                             functions.VersionInfomation();
                             break;
                         case (int)COMMAND.CD:
-                            int paramPos = input.IndexOf(' ') + 1;  // 인수의 시작 인덱스
-                            if (paramPos >= input.Length || paramPos == 0)
+                            if (input.Length == 2)
                                 Console.WriteLine(currentPath);
                             else {
-                                string movedPath = functions.ChangeDirectory(input.Substring(paramPos), currentPath);  // 이동된 경로를 구하면
+                                string movedPath = functions.ChangeDirectory(input.Substring(2), currentPath);  // 이동된 경로를 구하면
                                 if (movedPath != null) currentPath = movedPath;  // 없는 경로가 아니라면
                                 else Console.WriteLine("지정된 경로를 찾을 수 없습니다."); // 없는 경로라면
                             }

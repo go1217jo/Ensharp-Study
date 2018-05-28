@@ -30,6 +30,9 @@ namespace Command
         {
             // 이동된 결과 경로
             string movedPath = currentPath;
+
+            // 앞의 공백 제거
+            movePath = movePath.TrimStart(' ');
             
             if(movePath.Length == 0)
             {
