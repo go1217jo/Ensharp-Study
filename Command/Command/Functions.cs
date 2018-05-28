@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Management;
 
 namespace Command
 {
@@ -81,19 +82,42 @@ namespace Command
             return movedPath;
         }
 
+        // 볼륨 일련 번호를 얻기
+        public string GetVolumeNumber(string driveName)
+        {
+            ManagementObject manageObject = new ManagementObject("win32_logicaldisk.deviceid=\"" + driveName[0] + ":\"");
+            manageObject.Get();
+
+            string serial = manageObject["VolumeSerialNumber"].ToString();
+            return serial.Remove(4) + '-' + serial.Substring(4);
+        }
+
         // 파일 목록 출력
         public void FileList(string path, string currentPath)
         {
             string currentDirectory = currentPath;
             int directoryCount = 0, fileCount = 0;
-            
-            // 폴더 바이트 크기
-            long directoryByteSize = DriveInfo.GetDrives()[0].AvailableFreeSpace;
+
+            // 기본 드라이브
+            DriveInfo drive = DriveInfo.GetDrives()[0];
+
+            // 드라이브의 남은 용량
+            long directoryByteSize = drive.AvailableFreeSpace;
             // 파일 바이트 크기
             long fileByteSize = 0;
 
+            // volumelabel 출력
+            string volumeName = drive.VolumeLabel;
+            if (volumeName == "")
+                Console.WriteLine("{0}드라이브의 볼륨에는 이름이 없습니다.", drive.Name[0]);
+            else
+                Console.WriteLine("이름: {0}", volumeName);
+
+            Console.WriteLine("볼륨 일련 번호: {0}\n", GetVolumeNumber(drive.Name));
+
             if(path.Length != 0)
             {
+                // 절대경로를 구함
                 currentDirectory = ChangeDirectory(path, currentPath);
                 // 없는 경로
                 if (currentDirectory == null)
@@ -107,8 +131,8 @@ namespace Command
             {
                 // System file이나 folder면 생략
                 DirectoryInfo information = new DirectoryInfo(entries[idx]);
-                if (information.Attributes.HasFlag(FileAttributes.NotContentIndexed) | information.Attributes.HasFlag(FileAttributes.Hidden))
-                    continue;
+               // if (information.Attributes.HasFlag(FileAttributes.NotContentIndexed) | information.Attributes.HasFlag(FileAttributes.Hidden))
+                //    continue;
 
                 Console.Write(Directory.GetLastWriteTime(entries[idx]).ToString("yyyy-MM-dd tt hh:mm") + "    ");
                 // 해당 경로가 폴더면
