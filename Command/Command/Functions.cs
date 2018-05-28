@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 
 namespace Command
 {
@@ -83,21 +81,11 @@ namespace Command
             return movedPath;
         }
 
-        // 디렉터리 크기 구하기
-        public long DirectorySize(DirectoryInfo dInfo, bool includeSubDir)
-        {
-            long totalSize = 0;
-           
-            totalSize = dInfo.EnumerateFiles().Sum(file => file.Length);
-            
-            if (includeSubDir) totalSize += dInfo.EnumerateDirectories().Sum(dir => DirectorySize(dir, true));
-            return totalSize;
-        }
-        
         // 파일 목록 출력
         public void FileList(string path, string currentPath)
         {
             string currentDirectory = currentPath;
+            int directoryCount = 0, fileCount = 0;
             
             // 폴더 바이트 크기
             long directoryByteSize = DriveInfo.GetDrives()[0].AvailableFreeSpace;
@@ -117,12 +105,18 @@ namespace Command
             
             for(int idx = 0; idx < entries.Length; idx++)
             {
+                // System file이나 folder면 생략
+                DirectoryInfo information = new DirectoryInfo(entries[idx]);
+                if (information.Attributes.HasFlag(FileAttributes.NotContentIndexed) | information.Attributes.HasFlag(FileAttributes.Hidden))
+                    continue;
+
                 Console.Write(Directory.GetLastWriteTime(entries[idx]).ToString("yyyy-MM-dd tt hh:mm") + "    ");
                 // 해당 경로가 폴더면
                 if(directories.Contains(entries[idx]))
                 {
                     Console.Write(output.PrintFixString("<DIR>", 15, Constant.LEFT));
                     Console.WriteLine(entries[idx].Substring(currentDirectory.Length + 1));
+                    directoryCount++;
                 }
                 else
                 {
@@ -131,18 +125,22 @@ namespace Command
                     Console.Write(output.PrintFixString(currentFileSize.ToString(), 14, Constant.RIGHT) + ' ');
                     Console.WriteLine(entries[idx].Substring(currentDirectory.Length + 1));
                     fileByteSize += currentFileSize;
+                    fileCount++;
                 }
             }
-            Console.Write(output.PrintFixString((entries.Length - directories.Length) + "", 16, Constant.RIGHT) + "개 파일");
+            // 파일과 디렉터리에 대한 개수와 크기 출력
+            Console.Write(output.PrintFixString(fileCount + "", 16, Constant.RIGHT) + "개 파일");
             Console.WriteLine(output.PrintFixString(output.InsertComma(fileByteSize.ToString()), 20, Constant.RIGHT) + " 바이트");
 
-            Console.Write(output.PrintFixString(directories.Length + "", 16, Constant.RIGHT) + "개 디렉터리");
+            Console.Write(output.PrintFixString(directoryCount + "", 16, Constant.RIGHT) + "개 디렉터리");
             Console.WriteLine(output.PrintFixString(output.InsertComma(directoryByteSize.ToString()), 17, Constant.RIGHT) + " 바이트 남음");
         }
 
+        // 도움말 출력
         public void PrintHelp(string parameter)
         {
             StreamReader reader;
+            // 인수가 없다면 전체 요약 출력
             if (parameter.Length == 0)
                 reader = new StreamReader("..\\..\\help\\all.txt", Encoding.Default);
             else
