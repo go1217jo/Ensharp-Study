@@ -7,6 +7,9 @@ using System.Management;
 
 namespace Command
 {
+    /// <summary>
+    ///  cmd에서 지원하는 각종 명령어들을 정의한다.
+    /// </summary>
     class Functions
     {
         OutputProcessor output;
@@ -16,16 +19,27 @@ namespace Command
             this.output = output;
         }
 
+        // 지원하는 명령어 리스트를 반환한다.
         public List<string> GetCmdList()
         {
             return new List<string>(new string[] { "cmd", "cd", "dir", "cls", "help", "copy", "move", "exit"});
         }
 
+        /// <summary>
+        /// 윈도우 버전 정보를 출력한다,
+        /// </summary>
         public void VersionInfomation()
         {
-            Console.WriteLine("Microsoft Windows [Version 10.0.16299.431]\n(c) 2017 Microsoft Corporation.All rights reserved.");
+            OperatingSystem system = Environment.OSVersion;
+            Console.WriteLine("Microsoft Windows [Version " + "10.0.16299.431" + "]\n(c) 2017 Microsoft Corporation.All rights reserved.");
         }
                            
+        /// <summary>
+        ///  이동하고자 하는 해당 경로의 절대 경로 문자열을 반환
+        /// </summary>
+        /// <param name="movePath"> 이동하고자 하는 경로 </param>
+        /// <param name="currentPath"> 현재 있는 경로 </param>
+        /// <returns> 변환된 절대 경로 </returns>
         public string ChangeDirectory(string movePath, string currentPath)
         {
             // 이동된 결과 경로
@@ -99,7 +113,11 @@ namespace Command
             return movedPath;
         }
 
-        // 볼륨 일련 번호를 얻기
+        /// <summary>
+        ///  볼륨일련번호 얻기
+        /// </summary>
+        /// <param name="driveName"> 드라이브 이름 </param>
+        /// <returns> 볼륨 일련번호 </returns>
         public string GetVolumeNumber(string driveName)
         {
             ManagementObject manageObject = new ManagementObject("win32_logicaldisk.deviceid=\"" + driveName[0] + ":\"");

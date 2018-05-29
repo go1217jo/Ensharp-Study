@@ -7,6 +7,9 @@ using System.IO;
 
 namespace Command
 {
+    /// <summary>
+    ///  출력에 대한 처리를 하는 클래스
+    /// </summary>
     class OutputProcessor
     {
         public void PrintCurrentPath(string currentPath)

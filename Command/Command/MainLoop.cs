@@ -7,11 +7,15 @@ using System.IO;
 
 namespace Command
 {
+    /// <summary>
+    ///  프로그램 내 main loop를 정의한다.
+    /// </summary>
     class MainLoop
     {
         OutputProcessor output;
         Functions functions;
         List<string> cmdList;
+        // 현재 있는 경로
         string currentPath;
         enum COMMAND { CMD=0, CD, DIR, CLS, HELP, COPY, MOVE, EXIT };
 
@@ -23,7 +27,10 @@ namespace Command
             functions = new Functions(output);
             cmdList = functions.GetCmdList();
         }
-                  
+        
+        /// <summary>
+        ///  프로그램 실행 중 계속 실행되는 main loop
+        /// </summary>
         public void Loop()
         {
             functions.VersionInfomation();
@@ -35,6 +42,7 @@ namespace Command
             {
                 output.PrintCurrentPath(currentPath);
                 input = Console.ReadLine();
+                // /는 \와 동일한 기능
                 input = input.Replace('/', '\\');
                 cmds = input.Split(' ');
 

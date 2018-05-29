@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Command
 {
+    /// <summary>
+    ///  다양한 예외에 대한 처리를 한다.
+    /// </summary>
     class Exception
     {
         // 인수 개수에 따른 예외처리
@@ -27,6 +30,7 @@ namespace Command
             }
         }
 
+        // 파일이 존재하지 않으면 true
         public static bool NotExistFileException(string absolutePath)
         {
             // 파일 정보 객체
@@ -36,6 +40,7 @@ namespace Command
             return !srcFile.Exists;
         }
 
+        // unc경로 형식일 경우 true
         public static bool UNCPathException(string relativePath)
         {
             // UNC 경로 형식일 경우
