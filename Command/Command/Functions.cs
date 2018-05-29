@@ -13,10 +13,13 @@ namespace Command
     class Functions
     {
         OutputProcessor output;
+        StringComparison comp;
 
         public Functions(OutputProcessor output)
         {
             this.output = output;
+            // 대소문자 미구분자
+            comp = StringComparison.OrdinalIgnoreCase;  
         }
 
         // 지원하는 명령어 리스트를 반환한다.
@@ -75,7 +78,7 @@ namespace Command
                 // path == .. 이면 상위 디렉터리
                 if (unitPath[idx].Equals(".."))
                 {
-                    if(!movedPath.Equals("C:\\"))
+                    if(!IsRootDirectory(movedPath))
                         movedPath = Directory.GetParent(movedPath).FullName;
                 }
                 // 하위 경로의 폴더로 이동
@@ -87,7 +90,7 @@ namespace Command
                     // 하위 경로에 폴더가 존재하면 이동
                     string temp;  // 이동 예정 경로
                     // 루트 디렉터리면
-                    if (movedPath.Equals("C:\\"))
+                    if(IsRootDirectory(movedPath))
                         temp = movedPath + unitPath[idx];
                     else
                         // 루트 디렉터리가 아니면 구분자를 붙임
@@ -95,7 +98,7 @@ namespace Command
 
                     // 이동 예정 폴더가 현재 폴더 내에 존재한다면 이동
                     bool exist = false;
-                    StringComparison comp = StringComparison.OrdinalIgnoreCase;  // 대소문자 미구분
+                    
                     for(int child = 0; child < childDirectories.Length; child++)
                     {
                         // 같은 것이 존재
@@ -128,6 +131,33 @@ namespace Command
         }
 
         /// <summary>
+        /// dir 입력할 때 .과 .. 출력
+        /// </summary>
+        /// <param name="currentPath"> 현재 경로</param>
+        public void DirRoot(string currentPath)
+        {
+            string currentLastModifiedDate = new DirectoryInfo(currentPath).LastWriteTime.ToString("yyyy-MM-dd tt hh:mm" + "    ");
+            string parentLastModifiedDate = new DirectoryInfo(currentPath).Parent.LastWriteTime.ToString("yyyy-MM-dd tt hh:mm" + "    ");
+            Console.Write(currentLastModifiedDate);
+            Console.Write(output.PrintFixString("<DIR>", 15, Constant.LEFT));
+            Console.WriteLine(".");
+            Console.Write(parentLastModifiedDate);
+            Console.Write(output.PrintFixString("<DIR>", 15, Constant.LEFT));
+            Console.WriteLine("..");
+        }
+
+        // 루트 디렉터리면 true 반환
+        public bool IsRootDirectory(string path)
+        {
+            foreach(DriveInfo drive in DriveInfo.GetDrives())
+            {
+                if (drive.Name.Equals(path, comp))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// dir 명령어가 입력되었을 때, currentPath의 파일 및 폴더 목록이 출력된다.
         /// </summary>
         /// <param name="path"> 이동 경로 </param>
@@ -135,25 +165,26 @@ namespace Command
         public void FileList(string path, string currentPath)
         {
             string currentDirectory = currentPath;
-            int directoryCount = 0, fileCount = 0;
+            int directoryCount = 0, fileCount = 0, driveIndex = 0;
 
             // 기본 드라이브
-            DriveInfo drive = DriveInfo.GetDrives()[0];
+            DriveInfo[] drive = DriveInfo.GetDrives();
+            if (currentPath[0].Equals('D') || currentPath[0].Equals('d'))
+                driveIndex = 1;
 
             // 드라이브의 남은 용량
-            long directoryByteSize = drive.AvailableFreeSpace;
+            long directoryByteSize = drive[driveIndex].AvailableFreeSpace;
             // 파일 바이트 크기
             long fileByteSize = 0;
 
             // volumelabel 출력
-            string volumeName = drive.VolumeLabel;
+            string volumeName = drive[driveIndex].VolumeLabel;
             if (volumeName == "")
-                Console.WriteLine(" {0}드라이브의 볼륨에는 이름이 없습니다.", drive.Name[0]);
+                Console.WriteLine(" {0}드라이브의 볼륨에는 이름이 없습니다.", drive[driveIndex].Name[0]);
             else
                 Console.WriteLine(" 이름: {0}", volumeName);
 
-            Console.WriteLine(" 볼륨 일련 번호: {0}\n", GetVolumeNumber(drive.Name));
-
+            Console.WriteLine(" 볼륨 일련 번호: {0}\n", GetVolumeNumber(drive[driveIndex].Name));
 
             if(path.Length != 0)
             {
@@ -168,7 +199,14 @@ namespace Command
 
             string[] entries = Directory.GetFileSystemEntries(currentDirectory);
             string[] directories = Directory.GetDirectories(currentDirectory);
-            
+
+            // 루트 경로가 아니면
+            if(!IsRootDirectory(currentDirectory)) { 
+                // .과 ..을 출력
+                DirRoot(currentDirectory);
+                directoryCount += 2;
+            }
+
             for(int idx = 0; idx < entries.Length; idx++)
             {
                 // System file이나 folder면 생략
@@ -181,7 +219,8 @@ namespace Command
                 if(directories.Contains(entries[idx]))
                 {
                     Console.Write(output.PrintFixString("<DIR>", 15, Constant.LEFT));
-                    Console.WriteLine(entries[idx].Substring(currentDirectory.Length + 1));
+                    // 폴더명을 출력, 현재 폴더가 루트인 경우 폴더명 뒤에 \가 포함되므로 따로 경우를 다룬다.
+                    Console.WriteLine(entries[idx].Substring(currentDirectory.Length + (IsRootDirectory(currentDirectory) ? 0 : 1)));
                     directoryCount++;
                 }
                 else
@@ -189,7 +228,8 @@ namespace Command
                     // 해당 경로가 파일이면
                     long currentFileSize = new FileInfo(entries[idx]).Length;
                     Console.Write(output.PrintFixString(output.InsertComma(currentFileSize.ToString()), 14, Constant.RIGHT) + ' ');
-                    Console.WriteLine(entries[idx].Substring(currentDirectory.Length + 1));
+                    // 파일명을 출력, 현재 폴더가 루트인 경우 폴더명 뒤에 \가 포함되므로 따로 경우를 다룬다.
+                    Console.WriteLine(entries[idx].Substring(currentDirectory.Length + (IsRootDirectory(currentDirectory) ? 0 : 1)));
                     fileByteSize += currentFileSize;
                     fileCount++;
                 }
@@ -310,8 +350,7 @@ namespace Command
                             if(toPathInfo.Exists)
                             {
                                 // 덮어쓰지 않는다면
-                                if (Overwrite(toPathInfo.FullName) == Constant.NO)
-                                {
+                                if (Overwrite(toPathInfo.FullName) == Constant.NO) {
                                     Console.WriteLine("        0개의 디렉터리을 이동하였습니다.");
                                     return;
                                 }
@@ -320,8 +359,7 @@ namespace Command
                         else
                         {
                             // toPath가 파일이면
-                            if (Overwrite(toPathInfo.FullName) == Constant.NO)
-                            {
+                            if (Overwrite(toPathInfo.FullName) == Constant.NO) {
                                 Console.WriteLine("        0개의 디렉터리을 이동하였습니다.");
                                 return;
                             }
