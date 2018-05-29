@@ -109,7 +109,11 @@ namespace Command
             return serial.Remove(4) + '-' + serial.Substring(4);
         }
 
-        // 파일 목록 출력
+        /// <summary>
+        /// dir 명령어가 입력되었을 때, currentPath의 파일 및 폴더 목록이 출력된다.
+        /// </summary>
+        /// <param name="path"> 이동 경로 </param>
+        /// <param name="currentPath"> 현재 있는 경로 </param>
         public void FileList(string path, string currentPath)
         {
             string currentDirectory = currentPath;
@@ -180,15 +184,22 @@ namespace Command
             Console.WriteLine(output.PrintFixString(output.InsertComma(directoryByteSize.ToString()), 17, Constant.RIGHT) + " 바이트 남음");
         }
 
-        // 도움말 출력
+        /// <summary>
+        /// 도움말을 출력하며, 인수가 주어지면 그에 해당하는 상세 도움말이 출력된다.
+        /// </summary>
+        /// <param name="parameter"> 상세보기할 명령어 </param>
         public void PrintHelp(string parameter)
         {
             StreamReader reader;
+            // 앞의 공백 제거
+            parameter = parameter.TrimStart(' ');
+
             // 인수가 없다면 전체 요약 출력
             if (parameter.Length == 0)
                 reader = new StreamReader("..\\..\\help\\all.txt", Encoding.Default);
             else
             {
+                // 인수에 해당하는 도움말 텍스트 파일을 출력
                 if(new FileInfo("..\\..\\help\\" + parameter.ToLower() + ".txt").Exists)
                     reader = new StreamReader("..\\..\\help\\" + parameter.ToLower() + ".txt", Encoding.Default);
                 else
@@ -201,7 +212,12 @@ namespace Command
             reader.Close();
         }
 
-        // 입력된 경로의 절대경로를 반환한다.
+        /// <summary>
+        /// 입력된 경로의 절대경로를 반환한다.
+        /// </summary>
+        /// <param name="path"> 절대경로로 변경하고자 하는 경로 문자열 </param>
+        /// <param name="currentPath"> 현재 있는 경로 </param>
+        /// <returns> 변환된 절대 경로 </returns>
         public string GetAbsolutePath(string path, string currentPath)
         {
             string absolutePath = "";
@@ -233,7 +249,13 @@ namespace Command
             return absolutePath;
         }
 
-        // src에서 dest로 파일을 이동한다.
+        /// <summary>
+        /// src에서 dest로 파일을 이동한다.
+        /// 파일에서 파일 이동(이름변경), 파일을 폴더 안으로 이동, 폴더를 폴더 안으로 이동 지원
+        /// </summary>
+        /// <param name="src"> 원본 파일 및 폴더 </param>
+        /// <param name="dest"> 이동 대상 </param>
+        /// <param name="currentPath"> 현재 있는 경로 </param>
         public void Move(string src, string dest, string currentPath)
         {
             // 절대 경로 얻기
@@ -297,7 +319,7 @@ namespace Command
                 else
                 {
                     // toPath가 폴더인 경우 그 안에 이동
-                    if(toPathInfo.Attributes.HasFlag(FileAttributes.Directory))
+                    if(toPathInfo.Attributes.HasFlag(FileAttributes.Directory) && toPathInfo.Exists)
                     {
                         string[] fromSplit = fromPath.Split('\\');
                         toPath = toPathInfo.FullName + '\\' + fromSplit[fromSplit.Length - 1];
@@ -312,13 +334,19 @@ namespace Command
                             }
                         }
                     }
-
                     Directory.Move(fromPath, toPath);
                     Console.WriteLine("        1개의 파일을 이동하였습니다.");
                 }
             }
         }
 
+        /// <summary>
+        /// src에서 dest로 복사
+        /// 파일에서 파일 복사 지원
+        /// </summary>
+        /// <param name="src"> 원본 파일 </param>
+        /// <param name="dest"> 복사하고자 하는 경로 및 파일 </param>
+        /// <param name="currentPath"> 현재 있는 경로 </param>
         public void Copy(string src, string dest, string currentPath)
         {
             string fromPath = GetAbsolutePath(src, currentPath);
@@ -353,7 +381,11 @@ namespace Command
             Console.WriteLine("        1개 파일이 복사되었습니다.");
         }
 
-        // 덮어쓰기
+        /// <summary>
+        /// 덮어쓰기의 여부를 묻는다
+        /// </summary>
+        /// <param name="toPath"> target path </param>
+        /// <returns> 대답을 반환 </returns>
         public int Overwrite(string toPath)
         {
             // 덮어씌운다는 질문에 대해 올바른 대답을 할 때까지 반복

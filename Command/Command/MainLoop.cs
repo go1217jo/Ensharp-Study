@@ -56,8 +56,7 @@ namespace Command
                             else Console.WriteLine("지정된 경로를 찾을 수 없습니다."); // 없는 경로라면
                             break;
                         case (int)COMMAND.DIR:
-                            if (cmds.Length == 1) functions.FileList("", currentPath);
-                            else functions.FileList(cmds[1], currentPath);
+                            functions.FileList(input.Substring(3), currentPath);
                             break;
                         case (int)COMMAND.CLS:
                             Console.Clear();
@@ -69,8 +68,7 @@ namespace Command
                                 functions.Copy(cmds[1], secondParam, currentPath);
                             break;
                         case (int)COMMAND.HELP:
-                            if (cmds.Length == 1) functions.PrintHelp("");
-                            else functions.PrintHelp(cmds[1]);
+                            functions.PrintHelp(input.Substring(4));
                             break;
                         case (int)COMMAND.MOVE:
                             // 인수 개수에 대한 예외처리
