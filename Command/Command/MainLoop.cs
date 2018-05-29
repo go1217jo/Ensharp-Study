@@ -35,6 +35,7 @@ namespace Command
             {
                 output.PrintCurrentPath(currentPath);
                 input = Console.ReadLine();
+                input = input.Replace('/', '\\');
                 cmds = input.Split(' ');
 
                 // 입력된 명령어
