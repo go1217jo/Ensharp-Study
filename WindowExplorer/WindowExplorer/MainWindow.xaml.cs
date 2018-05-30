@@ -20,9 +20,12 @@ namespace WindowExplorer
     /// </summary>
     public partial class MainWindow : Window
     {
+        TreeView.FileSystemViewModel viewModel;
+
         public MainWindow()
         {
             InitializeComponent();
+            viewModel = new TreeView.FileSystemViewModel(this);
         }
     }
 }

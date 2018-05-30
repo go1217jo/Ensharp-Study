@@ -4,31 +4,40 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WindowExplorer"
-        xmlns:c="clr-namespace:WindowExplorer.TreeView"
+        
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-   <Window.Resources>
-      <c:FileSystemViewModel x:Key="ViewModel"/>
-   </Window.Resources>   
+        Title="MainWindow" Height="600" Width="800">
    
     <Grid>
-       <!-- {Binding Drives} : Drives라는 Binding 객체를 만든다 -->
-      <TreeView x:Name="fileTreeView" ItemsSource="{Binding Drives}" >
-         <TreeView.ItemContainerStyle>
-            <Style TargetType="{x:Type TreeViewItem}">
-               <!-- Set property of Directory Item VM -->
-               <!-- 확장 버튼 -->
-               <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-            </Style>
-         </TreeView.ItemContainerStyle>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="25"/>
+         <RowDefinition Height="30"/>
+         <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid Grid.Row="0" Name="MenuGrid">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="56"/>
+            <ColumnDefinition Width="56"/>
+            <ColumnDefinition Width="56"/>
+            <ColumnDefinition Width="56"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="30"/>
+         </Grid.ColumnDefinitions>
+         <Label Grid.Column="0" Content="파일" Background="Blue" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+         <Label Grid.Column="1" Content="홈" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+         <Label Grid.Column="2" Content="공유" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+         <Label Grid.Column="3" Content="보기" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+      </Grid>
+      <Grid Name="PathGrid">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="2*"/>
+         </Grid.ColumnDefinitions>
+      </Grid>
+      <TreeView Name="DirectoryTreeView" Grid.Row="2" >
          
-         <TreeView.ItemTemplate>
-            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-               <StackPanel Orientation="Horizontal">
-                  <Image Width="15" Margin="3" Source="{Binding Type}"/>
-               </StackPanel>
-            </HierarchicalDataTemplate>
-         </TreeView.ItemTemplate>
       </TreeView>
     </Grid>
 </Window>   
