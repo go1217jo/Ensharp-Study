@@ -1,0 +1,34 @@
+﻿<Window x:Class="WindowExplorer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WindowExplorer"
+        xmlns:c="clr-namespace:WindowExplorer.TreeView"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+   <Window.Resources>
+      <c:FileSystemViewModel x:Key="ViewModel"/>
+   </Window.Resources>   
+   
+    <Grid>
+       <!-- {Binding Drives} : Drives라는 Binding 객체를 만든다 -->
+      <TreeView x:Name="fileTreeView" ItemsSource="{Binding Drives}" >
+         <TreeView.ItemContainerStyle>
+            <Style TargetType="{x:Type TreeViewItem}">
+               <!-- Set property of Directory Item VM -->
+               <!-- 확장 버튼 -->
+               <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+            </Style>
+         </TreeView.ItemContainerStyle>
+         
+         <TreeView.ItemTemplate>
+            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+               <StackPanel Orientation="Horizontal">
+                  <Image Width="15" Margin="3" Source="{Binding Type}"/>
+               </StackPanel>
+            </HierarchicalDataTemplate>
+         </TreeView.ItemTemplate>
+      </TreeView>
+    </Grid>
+</Window>   
