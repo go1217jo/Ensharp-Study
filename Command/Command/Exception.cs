@@ -52,5 +52,17 @@ namespace Command
             else
                 return false;
         }
+
+        /// <summary>
+        /// cd 공백 없이 바로 뒤 \이 붙으면 명령어를 인식함
+        /// </summary>
+        /// <param name="input"> 가공된 입력문자열 (앞뒤 공백이 제거된) </param>
+        /// <returns></returns>
+        public static string ChangeDirectoryException(string input)
+        {
+            if(Regex.IsMatch(input, @"^[c][d][\\]"))
+                input = input.Insert(2, " ");
+            return input;
+        }
     }
 }
