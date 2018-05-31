@@ -45,7 +45,8 @@
   <ItemGroup>
     <Compile Include="Constant.cs" />
     <Compile Include="Exception.cs" />
-    <Compile Include="Functions.cs" />
+    <Compile Include="Function\SubFunctions.cs" />
+    <Compile Include="Function\MainFunctions.cs" />
     <Compile Include="MainLoop.cs" />
     <Compile Include="OutputProcessor.cs" />
     <Compile Include="Program.cs" />

@@ -4,28 +4,31 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Management;
+using Command.Function;
 
 namespace Command
 {
     /// <summary>
     ///  cmd에서 지원하는 각종 명령어들을 정의한다.
     /// </summary>
-    class Functions
+    class MainFunctions
     {
         OutputProcessor output;
         StringComparison comp;
+        SubFunctions sub;
 
-        public Functions(OutputProcessor output)
+        public MainFunctions(OutputProcessor output)
         {
             this.output = output;
             // 대소문자 미구분자
-            comp = StringComparison.OrdinalIgnoreCase;  
+            comp = StringComparison.OrdinalIgnoreCase;
+            sub = new SubFunctions(output);
         }
 
         // 지원하는 명령어 리스트를 반환한다.
         public List<string> GetCmdList()
         {
-            return new List<string>(new string[] { "cmd", "cd", "dir", "cls", "help", "copy", "move", "exit"});
+            return new List<string>(new string[] { "cmd", "cd", "dir", "cls", "help", "copy", "move", "mkdir", "rmdir", "exit"});
         }
 
         /// <summary>
@@ -36,7 +39,7 @@ namespace Command
             OperatingSystem system = Environment.OSVersion;
             Console.WriteLine("Microsoft Windows [Version " + "10.0.16299.431" + "]\n(c) 2017 Microsoft Corporation.All rights reserved.");
         }
-                           
+
         /// <summary>
         ///  이동하고자 하는 해당 경로의 절대 경로 문자열을 반환
         /// </summary>
@@ -63,7 +66,7 @@ namespace Command
 
             // 존재하는 절대 경로이면 그대로 반환
             DirectoryInfo directory = new DirectoryInfo(movePath);
-            if (!movePath.Contains("..") && !movePath.Contains(".") && directory.Exists)
+            if (!movePath.Contains("..") && !movePath.Contains(".\\") && !movePath.Equals(".") && directory.Exists)
                 return directory.FullName;
 
             // 상대경로이거나 존재하지 않는 절대경로인 경우
@@ -71,14 +74,16 @@ namespace Command
 
             for (int idx = 0; idx < unitPath.Length; idx++)
             {
+                if (unitPath[idx].Length == 0)
+                    continue;
                 // ...(.이 3 이상인 경우 무시된 경로가 되도록 한다.
                 if (unitPath[idx].Contains("..."))
                     unitPath[idx] = ".";
-
+                
                 // path == .. 이면 상위 디렉터리
                 if (unitPath[idx].Equals(".."))
                 {
-                    if(!IsRootDirectory(movedPath))
+                    if(!sub.IsRootDirectory(movedPath))
                         movedPath = Directory.GetParent(movedPath).FullName;
                 }
                 // 하위 경로의 폴더로 이동
@@ -90,7 +95,7 @@ namespace Command
                     // 하위 경로에 폴더가 존재하면 이동
                     string temp;  // 이동 예정 경로
                     // 루트 디렉터리면
-                    if(IsRootDirectory(movedPath))
+                    if(sub.IsRootDirectory(movedPath))
                         temp = movedPath + unitPath[idx];
                     else
                         // 루트 디렉터리가 아니면 구분자를 붙임
@@ -114,47 +119,6 @@ namespace Command
                 }
             }
             return movedPath;
-        }
-
-        /// <summary>
-        ///  볼륨일련번호 얻기
-        /// </summary>
-        /// <param name="driveName"> 드라이브 이름 </param>
-        /// <returns> 볼륨 일련번호 </returns>
-        public string GetVolumeNumber(string driveName)
-        {
-            ManagementObject manageObject = new ManagementObject("win32_logicaldisk.deviceid=\"" + driveName[0] + ":\"");
-            manageObject.Get();
-
-            string serial = manageObject["VolumeSerialNumber"].ToString();
-            return serial.Remove(4) + '-' + serial.Substring(4);
-        }
-
-        /// <summary>
-        /// dir 입력할 때 .과 .. 출력
-        /// </summary>
-        /// <param name="currentPath"> 현재 경로</param>
-        public void DirRoot(string currentPath)
-        {
-            string currentLastModifiedDate = new DirectoryInfo(currentPath).LastWriteTime.ToString("yyyy-MM-dd tt hh:mm" + "    ");
-            string parentLastModifiedDate = new DirectoryInfo(currentPath).Parent.LastWriteTime.ToString("yyyy-MM-dd tt hh:mm" + "    ");
-            Console.Write(currentLastModifiedDate);
-            Console.Write(output.PrintFixString("<DIR>", 15, Constant.LEFT));
-            Console.WriteLine(".");
-            Console.Write(parentLastModifiedDate);
-            Console.Write(output.PrintFixString("<DIR>", 15, Constant.LEFT));
-            Console.WriteLine("..");
-        }
-
-        // 루트 디렉터리면 true 반환
-        public bool IsRootDirectory(string path)
-        {
-            foreach(DriveInfo drive in DriveInfo.GetDrives())
-            {
-                if (drive.Name.Equals(path, comp))
-                    return true;
-            }
-            return false;
         }
 
         /// <summary>
@@ -184,7 +148,7 @@ namespace Command
             else
                 Console.WriteLine(" 이름: {0}", volumeName);
 
-            Console.WriteLine(" 볼륨 일련 번호: {0}\n", GetVolumeNumber(drive[driveIndex].Name));
+            Console.WriteLine(" 볼륨 일련 번호: {0}\n", sub.GetVolumeNumber(drive[driveIndex].Name));
 
             if(path.Length != 0)
             {
@@ -201,9 +165,9 @@ namespace Command
             string[] directories = Directory.GetDirectories(currentDirectory);
 
             // 루트 경로가 아니면
-            if(!IsRootDirectory(currentDirectory)) { 
+            if(!sub.IsRootDirectory(currentDirectory)) { 
                 // .과 ..을 출력
-                DirRoot(currentDirectory);
+                sub.DirRoot(currentDirectory);
                 directoryCount += 2;
             }
 
@@ -220,7 +184,7 @@ namespace Command
                 {
                     Console.Write(output.PrintFixString("<DIR>", 15, Constant.LEFT));
                     // 폴더명을 출력, 현재 폴더가 루트인 경우 폴더명 뒤에 \가 포함되므로 따로 경우를 다룬다.
-                    Console.WriteLine(entries[idx].Substring(currentDirectory.Length + (IsRootDirectory(currentDirectory) ? 0 : 1)));
+                    Console.WriteLine(entries[idx].Substring(currentDirectory.Length + (sub.IsRootDirectory(currentDirectory) ? 0 : 1)));
                     directoryCount++;
                 }
                 else
@@ -229,7 +193,7 @@ namespace Command
                     long currentFileSize = new FileInfo(entries[idx]).Length;
                     Console.Write(output.PrintFixString(output.InsertComma(currentFileSize.ToString()), 14, Constant.RIGHT) + ' ');
                     // 파일명을 출력, 현재 폴더가 루트인 경우 폴더명 뒤에 \가 포함되므로 따로 경우를 다룬다.
-                    Console.WriteLine(entries[idx].Substring(currentDirectory.Length + (IsRootDirectory(currentDirectory) ? 0 : 1)));
+                    Console.WriteLine(entries[idx].Substring(currentDirectory.Length + (sub.IsRootDirectory(currentDirectory) ? 0 : 1)));
                     fileByteSize += currentFileSize;
                     fileCount++;
                 }
@@ -350,7 +314,7 @@ namespace Command
                             if(toPathInfo.Exists)
                             {
                                 // 덮어쓰지 않는다면
-                                if (Overwrite(toPathInfo.FullName) == Constant.NO) {
+                                if (sub.Overwrite(toPathInfo.FullName) == Constant.NO) {
                                     Console.WriteLine("        0개의 디렉터리을 이동하였습니다.");
                                     return;
                                 }
@@ -359,7 +323,7 @@ namespace Command
                         else
                         {
                             // toPath가 파일이면
-                            if (Overwrite(toPathInfo.FullName) == Constant.NO) {
+                            if (sub.Overwrite(toPathInfo.FullName) == Constant.NO) {
                                 Console.WriteLine("        0개의 디렉터리을 이동하였습니다.");
                                 return;
                             }
@@ -383,7 +347,7 @@ namespace Command
                         if (toPathInfo.Exists)
                         {
                             // 덮어쓰지 않는다면
-                            if (Overwrite(toPathInfo.FullName) == Constant.NO)
+                            if (sub.Overwrite(toPathInfo.FullName) == Constant.NO)
                             {
                                 Console.WriteLine("        0개의 파일을 이동하였습니다.");
                                 return;
@@ -417,7 +381,7 @@ namespace Command
 
             // 복사하려는 파일의 경로 폴더가 존재하지 않으면 생성
             string targetPath = toPath.Remove(toPath.LastIndexOf('\\'));
-            if (Directory.Exists(targetPath))
+            if (!Directory.Exists(targetPath))
                 Directory.CreateDirectory(targetPath);
             
             // 동등한 파일을 복사 시도할 때
@@ -428,34 +392,23 @@ namespace Command
                 return;
             }
 
+            // 복사될 파일명이 존재하는지 검사
             if(new FileInfo(toPath).Exists)
             {
-                if (Overwrite(toPath) == Constant.NO)
+                if (sub.Overwrite(toPath) == Constant.NO)
                     return;
             }
+
+            // toPath가 폴더 경로이면 fromPath의 파일명과 같은 이름으로 폴더 내에 복사
+            if(new DirectoryInfo(toPath).Attributes.HasFlag(FileAttributes.Directory))
+            {
+                string filename = sub.GetFileName(fromPath);
+                if (filename != null)
+                    toPath = Path.Combine(toPath, filename);
+            }
+
             File.Copy(fromPath, toPath, true);
             Console.WriteLine("        1개 파일이 복사되었습니다.");
-        }
-
-        /// <summary>
-        /// 덮어쓰기의 여부를 묻는다
-        /// </summary>
-        /// <param name="toPath"> target path </param>
-        /// <returns> 대답을 반환 </returns>
-        public int Overwrite(string toPath)
-        {
-            // 덮어씌운다는 질문에 대해 올바른 대답을 할 때까지 반복
-            while (true)
-            {
-                Console.Write(toPath.Substring(toPath.LastIndexOf('\\') + 1) + "을(를) 덮어쓰시겠습니까? (Yes/No/All): ");
-                string answer = Console.ReadLine().ToLower();
-                switch (answer[0])
-                {
-                    case 'y': return Constant.YES;
-                    case 'n': return Constant.NO;
-                    case 'a': return Constant.ALL;
-                }
-            }
         }
     }
 }

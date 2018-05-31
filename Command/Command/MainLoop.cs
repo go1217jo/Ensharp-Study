@@ -13,18 +13,18 @@ namespace Command
     class MainLoop
     {
         OutputProcessor output;
-        Functions functions;
+        MainFunctions functions;
         List<string> cmdList;
         // 현재 있는 경로
         string currentPath;
-        enum COMMAND { CMD=0, CD, DIR, CLS, HELP, COPY, MOVE, EXIT };
+        enum COMMAND { CMD=0, CD, DIR, CLS, HELP, COPY, MOVE, MKDIR, RMDIR, EXIT };
 
         public MainLoop()
         {
             string homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             output = new OutputProcessor();
             currentPath = homeDirectory;
-            functions = new Functions(output);
+            functions = new MainFunctions(output);
             cmdList = functions.GetCmdList();
         }
 
@@ -68,6 +68,17 @@ namespace Command
                     Console.WriteLine("\'" + command + "\'은(는) 내부 또는 외부 명령, 실행할 수 있는 프로그램, 또는 배치 파일이 아닙니다.");
                     continue;
                 }
+                else
+                {
+                    string modifiedPath = Exception.NotSupportedPathException(input.Substring(command.Length));
+                    if (modifiedPath == null)
+                    {
+                        Console.WriteLine("파일 이름, 디렉터리 이름 또는 볼륨 레이블 구문이 잘못되었습니다.");
+                        continue;
+                    }
+                    else if (modifiedPath.Equals("."))
+                        input = command + " .";
+                }
 
                 string secondParam;
                 switch (cmdList.IndexOf(command))
@@ -88,7 +99,7 @@ namespace Command
                         break;
                     case (int)COMMAND.COPY:
                         // 인수 개수에 대한 예외처리
-                        secondParam = Exception.ArgumentCountException(cmds);
+                        secondParam = Exception.ArgumentCountException(cmds, currentPath);
                         if (secondParam != null)
                             functions.Copy(cmds[1], secondParam, currentPath);
                         break;
@@ -97,7 +108,7 @@ namespace Command
                         break;
                     case (int)COMMAND.MOVE:
                         // 인수 개수에 대한 예외처리
-                        secondParam = Exception.ArgumentCountException(cmds);
+                        secondParam = Exception.ArgumentCountException(cmds, currentPath);
                         if(secondParam != null)
                             functions.Move(cmds[1], secondParam, currentPath);
                         break;
