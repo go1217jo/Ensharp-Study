@@ -42,6 +42,11 @@ namespace WindowExplorer.FileSystem
             return directoriesList;
         }
 
+        /// <summary>
+        /// 디렉터리 이름 목록을 반환한다.
+        /// </summary>
+        /// <param name="directories"> DirectoryInfo 객체 배열 </param>
+        /// <returns>디렉터리 이름 목록</returns>
         public List<string> GetDirectoryNameList(List<DirectoryInfo> directories)
         {
             List<string> nameList = new List<string>();

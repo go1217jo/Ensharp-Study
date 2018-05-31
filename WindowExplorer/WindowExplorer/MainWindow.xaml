@@ -6,9 +6,36 @@
         xmlns:local="clr-namespace:WindowExplorer"
         
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
-   
-    <Grid>
+        Title="MainWindow" Height="600" Width="900">
+
+   <Window.Resources>
+      <Style TargetType="{x:Type local:ResizablePanel}">
+         <Setter Property="Template" >
+            <Setter.Value>
+               <ControlTemplate TargetType="{x:Type local:ResizablePanel}">
+                  <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="5"/>
+                     </Grid.ColumnDefinitions>
+                     <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />  
+                        <RowDefinition Height="5" />
+                     </Grid.RowDefinitions>
+
+                     <ContentPresenter Grid.Row="0" Grid.Column="1" Content="{TemplateBinding Content}" />
+                     <local:Resizer Cursor="SizeWE" Background="LightGray" Width="3"  
+                                              Grid.Row="0" Grid.Column="2" ThumbDirection="Right"/>
+                  </Grid>
+               </ControlTemplate>
+            </Setter.Value>
+         </Setter>
+      </Style>
+   </Window.Resources>
+
+   <Grid>
       <Grid.RowDefinitions>
          <RowDefinition Height="25"/>
          <RowDefinition Height="30"/>
@@ -29,15 +56,26 @@
          <Label Grid.Column="2" Content="공유" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
          <Label Grid.Column="3" Content="보기" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
       </Grid>
-      <Grid Name="PathGrid">
+      <Grid Grid.Row="1" Name="PathGrid">
          <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="2*"/>
          </Grid.ColumnDefinitions>
       </Grid>
-      <TreeView Name="DirectoryTreeView" Grid.Row="2" >
+      <Grid Grid.Row="2" Name="MainGrid">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+         </Grid.ColumnDefinitions>
+         <local:ResizablePanel MinWidth="100" Width="250" MaxWidth="400" Grid.Column="0" HorizontalAlignment="Left">
+            <TreeView Name="DirectoryTreeView">
+
+            </TreeView>
+         </local:ResizablePanel>
          
-      </TreeView>
+      </Grid>
+      
     </Grid>
+      
 </Window>   
