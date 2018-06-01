@@ -31,7 +31,15 @@ namespace WindowExplorer.FileSystem
         public List<DirectoryInfo> GetDirectoryList(string parentPath)
         {
             List<DirectoryInfo> directoriesList = new List<DirectoryInfo>();
-            string[] entries = Directory.GetFileSystemEntries(parentPath);
+            string[] entries = null;
+            try
+            {
+                entries = Directory.GetFileSystemEntries(parentPath);
+            }
+            catch (UnauthorizedAccessException e) { }
+
+            if (entries == null)
+                return null;
 
             foreach (string entry in entries)
             {

@@ -68,7 +68,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*" />
          </Grid.ColumnDefinitions>
-         <local:ResizablePanel MinWidth="100" Width="250" MaxWidth="400" Grid.Column="0" HorizontalAlignment="Left">
+         <local:ResizablePanel MinWidth="100" Width="250" MaxWidth="450" Grid.Column="0" HorizontalAlignment="Left">
             <TreeView Name="DirectoryTreeView">
 
             </TreeView>

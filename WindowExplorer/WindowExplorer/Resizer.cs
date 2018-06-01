@@ -64,6 +64,8 @@ namespace WindowExplorer
         {
             double deltaHorizontal = Math.Min(-e.HorizontalChange, designerItem.ActualWidth - designerItem.MinWidth);
             designerItem.Width -= deltaHorizontal;
+            if (designerItem.Width > 440)
+                designerItem.Width = 440;
             return deltaHorizontal;
         }
 

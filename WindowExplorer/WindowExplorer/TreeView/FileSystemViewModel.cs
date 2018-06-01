@@ -8,6 +8,11 @@ using System.IO;
 using System.Windows.Controls;
 using System.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Forms;
+using System.Windows;
+using System.Security.AccessControl;
+using System.Security.Principal;
+using System.Windows.Media;
 
 namespace WindowExplorer.TreeView
 {
@@ -33,14 +38,14 @@ namespace WindowExplorer.TreeView
         {
             StackPanel root = new StackPanel();
             Image image = new Image();
-            Label name = new Label();
+            System.Windows.Controls.Label name = new System.Windows.Controls.Label();
 
             image.Source = new BitmapImage(new Uri("pack://application:,,/Images/drive.png"));
             image.Width = 18;
             image.Height = 18;
             name.Content = driveName;
 
-            root.Orientation = Orientation.Horizontal;
+            root.Orientation = System.Windows.Controls.Orientation.Horizontal;
             root.Children.Add(image);
             root.Children.Add(name);
 
@@ -55,11 +60,13 @@ namespace WindowExplorer.TreeView
             // 루트 디렉터리에 드라이브 이름을 넣는다
             DriveInfo[] drives = DriveInfo.GetDrives();
             for (int idx = 0; idx < drives.Length; idx++) {
+
                 TreeViewItem rootItem = new TreeViewItem();
                 StackPanel root = GetTreeRootNode(drives[idx].Name);
                 rootItem.Header = root;
                 // 드라이브 하위 폴더를 추가
                 AddChildrenTree(rootItem, drives[idx].Name);
+                rootItem.Expanded += TreeViewExpandEvent;
                 rootTrees.Add(rootItem);
             }
             // 트리 초기화
@@ -73,15 +80,23 @@ namespace WindowExplorer.TreeView
         /// <param name="parentPath"> 현재 노드 경로 </param>
         public void AddChildrenTree(TreeViewItem parentNode, string parentPath)
         {
-            List<DirectoryInfo> infors = folderHandler.GetDirectoryList(parentPath);
-            List<string> foldernames = folderHandler.GetDirectoryNameList(infors);
+            // 이미 자식 노드가 추가 되어있으면 함수를 실행하지 않는다.
+            if (parentNode.ItemsSource != null)
+                return;
 
-            for (int idx = 0; idx < infors.Count; idx++) { 
+            List<DirectoryInfo> infors = folderHandler.GetDirectoryList(parentPath);
+            if (infors == null)
+                return;
+            List<string> foldernames = folderHandler.GetDirectoryNameList(infors);
+            List<TreeViewItem> childNodes = new List<TreeViewItem>();
+
+            for (int idx = 0; idx < infors.Count; idx++) {
+                TreeViewItem nodeItem = new TreeViewItem();
                 StackPanel node = new StackPanel();
                 Image image = new Image();
                 image.Width = 18;
                 image.Height = 18;
-                Label foldername = new Label();
+                System.Windows.Controls.Label foldername = new System.Windows.Controls.Label();
 
                 // 숨김 폴더인지 아닌지에 따라 아이콘 이미지를 다르게 함
                 if (infors[idx].Attributes.HasFlag(FileAttributes.Hidden))
@@ -90,12 +105,83 @@ namespace WindowExplorer.TreeView
                     image.Source = new BitmapImage(new Uri("pack://application:,,/Images/closeFolder.png"));
 
                 foldername.Content = foldernames[idx];
-                node.Orientation = Orientation.Horizontal;
+                node.Orientation = System.Windows.Controls.Orientation.Horizontal;
                 node.Children.Add(image);
                 node.Children.Add(foldername);
 
-                parentNode.Items.Add(node);
+                nodeItem.Header = node;
+                nodeItem.Expanded += TreeViewExpandEvent;
+                childNodes.Add(nodeItem);
             }
+            parentNode.ItemsSource = childNodes;
+        }
+
+        /// <summary>
+        /// 현재 트리를 확장하면 실행되는 이벤트 메서드
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void TreeViewExpandEvent(object sender, RoutedEventArgs e)
+        {
+            TreeViewItem nodeItem = (TreeViewItem)sender;
+            
+            string path = GetFullPath(nodeItem).TrimEnd('\\');
+
+            List<TreeViewItem> childNodes = (List<TreeViewItem>)nodeItem.ItemsSource;
+            if (childNodes == null)
+                return;
+            for (int idx = 0; idx < childNodes.Count; idx++)
+            {
+                string childPath = path + '\\' + ((System.Windows.Controls.Label)(((StackPanel)(childNodes[idx].Header)).Children[1])).Content;
+                DirectoryInfo info = new DirectoryInfo(childPath);
+                if (childNodes[idx].ItemsSource != null)
+                    continue;
+                // 불러올 수 없는 폴더가 아니면
+                if(!info.Attributes.HasFlag(FileAttributes.NotContentIndexed))
+                    AddChildrenTree(childNodes[idx], childPath);
+            }
+            // 트리 갱신
+            window.DirectoryTreeView.ItemsSource = rootTrees;
+        }
+
+        public string GetFullPath(TreeViewItem nodeItem)
+        {
+            string fullPath = "";
+            TreeViewItem parentItem = nodeItem;
+            while(parentItem != null)
+            {
+                StackPanel header = new StackPanel();
+                header = (StackPanel)parentItem.Header;
+                fullPath = "\\" + ((System.Windows.Controls.Label)header.Children[1]).Content + fullPath;
+
+                parentItem = (TreeViewItem)GetSelectedTreeViewItemParent(parentItem);
+            }
+            return fullPath.TrimStart(new char[] { '\\', ' ' });
+        }
+
+        public ItemsControl GetSelectedTreeViewItemParent(TreeViewItem item)
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(item);
+            if (parent == null)
+                return null;
+            while (parent != null && !(parent is TreeViewItem))
+                parent = VisualTreeHelper.GetParent(parent);
+
+            return parent as ItemsControl;
+        }
+
+        public void SetFolderAuthority(string path)
+        {
+            DirectorySecurity directorySecurity = Directory.GetAccessControl(path);
+            directorySecurity.AddAccessRule(new FileSystemAccessRule(
+                new NTAccount("yeongjoon"), FileSystemRights.ListDirectory,
+                InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
+                PropagationFlags.None, AccessControlType.Allow));
+            directorySecurity.AddAccessRule(new FileSystemAccessRule(
+                new NTAccount("yeongjoon"), FileSystemRights.Traverse,
+                InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
+                PropagationFlags.None, AccessControlType.Allow));
+            Directory.SetAccessControl(path, directorySecurity);
         }
     }
 }
