@@ -75,7 +75,7 @@ namespace Command
             path = path.Trim().ToLower();
             if (Regex.IsMatch(path, @"^[c][d]"))
                 return null;
-            else if (Regex.IsMatch(path, @"^[c:]"))
+            else if (Regex.IsMatch(path, @"^[c][::]") && !path.Contains("c:\\"))
                 return ".";
             else
                 return path;

@@ -254,19 +254,25 @@ namespace Command
                 // 먼저 파일이 존재하는 폴더의 절대 경로를 구함
                 for (int idx = 0; idx < splits.Length - 1; idx++)
                     absolutePath += (splits[idx] + '\\');
-                // 경로의 마지막에 \\ 제거
-                absolutePath = absolutePath.Remove(absolutePath.Length - 1);
 
-                // 절대경로 반환
-                absolutePath = ChangeDirectory(absolutePath, currentPath);
-
-                // 경로가 존재하지 않는다면
-                if (absolutePath == null)
+                // 경로의 마지막에 \\ 제거, 루트 디렉터리인 경우 제외
+                if (!sub.IsRootDirectory(absolutePath))
                 {
-                    Console.WriteLine("지정된 파일을 찾을 수 없습니다.");
-                    return null;
+                    absolutePath = absolutePath.Remove(absolutePath.Length - 1);
+
+                    // 절대경로 반환
+                    absolutePath = ChangeDirectory(absolutePath, currentPath);
+
+                    // 경로가 존재하지 않는다면
+                    if (absolutePath == null)
+                    {
+                        Console.WriteLine("지정된 파일을 찾을 수 없습니다.");
+                        return null;
+                    }
+                    absolutePath += ('\\' + splits[splits.Length - 1]);
                 }
-                absolutePath += ('\\' + splits[splits.Length - 1]);
+                else
+                    absolutePath = path;
             }
             return absolutePath;
         }
@@ -343,17 +349,20 @@ namespace Command
                     {
                         string[] fromSplit = fromPath.Split('\\');
                         toPath = toPathInfo.FullName + '\\' + fromSplit[fromSplit.Length - 1];
-                        toPathInfo = new DirectoryInfo(toPath);  // 바뀐 디렉터리 정보
-                        if (toPathInfo.Exists)
-                        {
-                            // 덮어쓰지 않는다면
-                            if (sub.Overwrite(toPathInfo.FullName) == Constant.NO)
-                            {
-                                Console.WriteLine("        0개의 파일을 이동하였습니다.");
-                                return;
-                            }
-                        }
                     }
+                    FileInfo toPathFileInfo = new FileInfo(toPath);  // 파일 정보
+                    if (toPathFileInfo.Exists)
+                    {
+                        // 덮어쓰지 않는다면
+                        if (sub.Overwrite(toPathFileInfo.FullName) == Constant.NO)
+                        {
+                            Console.WriteLine("        0개의 파일을 이동하였습니다.");
+                            return;
+                        }
+                        else
+                            File.Delete(toPathFileInfo.FullName);
+                    }
+
                     Directory.Move(fromPath, toPath);
                     Console.WriteLine("        1개의 파일을 이동하였습니다.");
                 }
@@ -400,7 +409,8 @@ namespace Command
             }
 
             // toPath가 폴더 경로이면 fromPath의 파일명과 같은 이름으로 폴더 내에 복사
-            if(new DirectoryInfo(toPath).Attributes.HasFlag(FileAttributes.Directory))
+            DirectoryInfo toPathInfo = new DirectoryInfo(toPath);
+            if(toPathInfo.Attributes.HasFlag(FileAttributes.Directory) && toPathInfo.Exists)
             {
                 string filename = sub.GetFileName(fromPath);
                 if (filename != null)
