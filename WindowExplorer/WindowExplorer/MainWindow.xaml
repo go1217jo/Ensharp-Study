@@ -69,11 +69,11 @@
             <ColumnDefinition Width="*" />
          </Grid.ColumnDefinitions>
          <local:ResizablePanel MinWidth="100" Width="250" MaxWidth="450" Grid.Column="0" HorizontalAlignment="Left">
-            <TreeView Name="DirectoryTreeView">
-
-            </TreeView>
+            <TreeView Name="DirectoryTreeView" />
          </local:ResizablePanel>
-         
+         <StackPanel Name="filePanel">
+            
+         </StackPanel>
       </Grid>
       
     </Grid>

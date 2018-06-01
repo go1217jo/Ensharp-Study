@@ -81,7 +81,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Constant.cs" />
+    <Compile Include="FileSystem\FileIconView.cs" />
     <Compile Include="FileSystem\FolderHandler.cs" />
+    <Compile Include="LoadIcon\IconListManager.cs" />
+    <Compile Include="LoadIcon\IconReader.cs" />
+    <Compile Include="LoadIcon\Shell32.cs" />
+    <Compile Include="LoadIcon\User32.cs" />
     <Compile Include="ResizablePanel.cs" />
     <Compile Include="Resizer.cs" />
     <Compile Include="TreeView\FileSystemViewModel.cs" />

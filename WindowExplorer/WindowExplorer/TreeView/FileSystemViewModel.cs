@@ -170,6 +170,11 @@ namespace WindowExplorer.TreeView
             return parent as ItemsControl;
         }
 
+        public void TreeNodeChoiceEvent(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         public void SetFolderAuthority(string path)
         {
             DirectorySecurity directorySecurity = Directory.GetAccessControl(path);

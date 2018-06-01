@@ -62,5 +62,32 @@ namespace WindowExplorer.FileSystem
                 nameList.Add(info.Name);
             return nameList;
         }
+
+        /// <summary>
+        /// 파일 및 디렉터리 목록을 반환
+        /// </summary>
+        /// <param name="parentPath"> 이 경로 밑의 폴더 목록을 반환 </param>
+        /// <returns> 파일 및 디렉터리 목록 </returns>
+        public List<DirectoryInfo> GetFileSystemList(string parentPath)
+        {
+            List<DirectoryInfo> filesList = new List<DirectoryInfo>();
+            string[] entries = null;
+            try
+            {
+                entries = Directory.GetFileSystemEntries(parentPath);
+            }
+            catch (UnauthorizedAccessException e) { }
+
+            if (entries == null)
+                return null;
+
+            foreach (string entry in entries)
+            {
+                DirectoryInfo info = new DirectoryInfo(entry);
+                if(!info.Attributes.HasFlag(FileAttributes.NotContentIndexed))
+                    filesList.Add(info);
+            }
+            return filesList;
+        }
     }
 }
