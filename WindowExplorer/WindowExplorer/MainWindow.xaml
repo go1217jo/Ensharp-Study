@@ -65,15 +65,18 @@
       </Grid>
       <Grid Grid.Row="2" Name="MainGrid">
          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
          </Grid.ColumnDefinitions>
-         <local:ResizablePanel MinWidth="100" Width="250" MaxWidth="450" Grid.Column="0" HorizontalAlignment="Left">
+         <local:ResizablePanel x:Name="ResizableTree" MinWidth="100" Width="250" MaxWidth="400" Grid.Column="0" HorizontalAlignment="Left">
             <TreeView Name="DirectoryTreeView" />
          </local:ResizablePanel>
-         <StackPanel Name="filePanel">
-            
-         </StackPanel>
+
+         <ScrollViewer Grid.Column="1">
+            <StackPanel Name="filePanel" >
+            </StackPanel>
+         </ScrollViewer>
+
       </Grid>
       
     </Grid>

@@ -23,40 +23,69 @@ namespace WindowExplorer.FileSystem
         /// System.Drawing.Icon을 이용하여 아이콘을 추출하는 함수
         public ImageSource getIcon(string filename)
         {
-            ImageSource icon;
+            ImageSource icon = null;
             // 파일이 존재하면
-            if (new FileInfo(filename).Exists)
-                return null;
-            using (System.Drawing.Icon sysicon = System.Drawing.Icon.ExtractAssociatedIcon(filename))
+            FileInfo fileInfo = new FileInfo(filename);
+            if (fileInfo.Exists && !fileInfo.Attributes.HasFlag(FileAttributes.Hidden))
             {
-                icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
-                            sysicon.Handle,
-                            System.Windows.Int32Rect.Empty,
-                            System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+                using (System.Drawing.Icon sysicon = System.Drawing.Icon.ExtractAssociatedIcon(filename))
+                {
+                    icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
+                                sysicon.Handle,
+                                System.Windows.Int32Rect.Empty,
+                                System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+                }
+            }
+            else
+            {
+                DirectoryInfo directoryInfo = new DirectoryInfo(filename);
+                if (directoryInfo.Attributes.HasFlag(FileAttributes.Directory))
+                {
+                    // 숨김 폴더인지 아닌지에 따라 아이콘 이미지를 다르게 함
+                    if (directoryInfo.Attributes.HasFlag(FileAttributes.Hidden))
+                        icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Images/hiddenFolder.png"));
+                    else
+                        icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Images/closeFolder.png"));
+                }
             }
             return icon;
         }
 
         public void SetFileViewPanel(string path)
         {
-            List<DirectoryInfo> infors = folderHandler.GetDirectoryList(path);
-            filePanel.Children.Clear();
+            List<DirectoryInfo> infors = folderHandler.GetFileSystemList(path);
+            List<string> nameList = folderHandler.GetDirectoryNameList(infors);
 
-            for (int idx = 0; idx < infors.Count; idx += 5)
+            filePanel.Children.Clear();
+            int columnCount = (int)filePanel.ActualWidth / 80;
+
+            for (int idx = 0; idx < infors.Count; idx += columnCount)
             {
                 StackPanel panel = new StackPanel();
-                for(int pos = idx; pos < idx + 5; pos++)
+                panel.Orientation = Orientation.Horizontal;
+
+                for(int pos = idx; pos < idx + columnCount; pos++)
                 {
                     if (pos == infors.Count)
                         break;
+                    StackPanel file = new StackPanel();
+                    file.Orientation = Orientation.Vertical;
                     Image image = new Image();
+                    image.Margin = new System.Windows.Thickness(0, 20, 20, 20);
                     image.Source = getIcon(infors[pos].FullName);
-                    image.Width = 32;
-                    image.Height = 32;
-                    panel.Children.Add(image);
+                    image.Width = 64;
+                    image.Height = 64;
+                    Label filename = new Label();
+                    filename.Content = nameList[pos];
+
+                    file.Children.Add(image);
+                    file.Children.Add(filename);
+
+                    panel.Children.Add(file);
                 }
                 filePanel.Children.Add(panel);
             }
         }
+
     }
 }

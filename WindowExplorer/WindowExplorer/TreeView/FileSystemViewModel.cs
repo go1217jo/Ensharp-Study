@@ -13,6 +13,7 @@ using System.Windows;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Windows.Media;
+using System.Windows.Input;
 
 namespace WindowExplorer.TreeView
 {
@@ -21,12 +22,14 @@ namespace WindowExplorer.TreeView
         FileSystem.FolderHandler folderHandler = new FileSystem.FolderHandler();
         MainWindow window;
         List<TreeViewItem> rootTrees;
+        FileSystem.FileIconView iconView;
 
         public FileSystemViewModel(MainWindow window)
         {
             this.window = window;
             rootTrees = new List<TreeViewItem>();
             InitTree();
+            iconView = new FileSystem.FileIconView(window);
         }
 
         /// <summary>
@@ -63,7 +66,9 @@ namespace WindowExplorer.TreeView
 
                 TreeViewItem rootItem = new TreeViewItem();
                 StackPanel root = GetTreeRootNode(drives[idx].Name);
+                root.MouseLeftButtonDown += SetFileViewEvent;
                 rootItem.Header = root;
+
                 // 드라이브 하위 폴더를 추가
                 AddChildrenTree(rootItem, drives[idx].Name);
                 rootItem.Expanded += TreeViewExpandEvent;
@@ -108,6 +113,7 @@ namespace WindowExplorer.TreeView
                 node.Orientation = System.Windows.Controls.Orientation.Horizontal;
                 node.Children.Add(image);
                 node.Children.Add(foldername);
+                node.MouseLeftButtonDown += SetFileViewEvent;
 
                 nodeItem.Header = node;
                 nodeItem.Expanded += TreeViewExpandEvent;
@@ -156,6 +162,7 @@ namespace WindowExplorer.TreeView
 
                 parentItem = (TreeViewItem)GetSelectedTreeViewItemParent(parentItem);
             }
+            fullPath = fullPath.Replace("\\\\", "\\");
             return fullPath.TrimStart(new char[] { '\\', ' ' });
         }
 
@@ -170,9 +177,11 @@ namespace WindowExplorer.TreeView
             return parent as ItemsControl;
         }
 
-        public void TreeNodeChoiceEvent(object sender, RoutedEventArgs e)
+        public void SetFileViewEvent(object sender, RoutedEventArgs e)
         {
-
+            StackPanel item = (StackPanel)sender;
+            TreeViewItem node = (TreeViewItem)item.Parent;
+            iconView.SetFileViewPanel(GetFullPath(node));
         }
 
         public void SetFolderAuthority(string path)

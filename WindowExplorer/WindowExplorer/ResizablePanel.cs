@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
+
 namespace WindowExplorer
 {
     public class ResizablePanel : ContentControl
