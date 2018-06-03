@@ -8,7 +8,6 @@ using System.IO;
 using System.Windows.Controls;
 using System.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Forms;
 using System.Windows;
 using System.Security.AccessControl;
 using System.Security.Principal;
@@ -23,13 +22,16 @@ namespace WindowExplorer.TreeView
         MainWindow window;
         List<TreeViewItem> rootTrees;
         FileSystem.FileIconView iconView;
+        FileSystem.PathManager pathManger;
 
         public FileSystemViewModel(MainWindow window)
         {
             this.window = window;
+            this.window.txt_path.KeyDown += ChangeDirectoryEvent;
             rootTrees = new List<TreeViewItem>();
             InitTree();
             iconView = new FileSystem.FileIconView(window);
+            pathManger = new FileSystem.PathManager(window);
         }
 
         /// <summary>
@@ -183,19 +185,14 @@ namespace WindowExplorer.TreeView
             TreeViewItem node = (TreeViewItem)item.Parent;
             iconView.SetFileViewPanel(GetFullPath(node));
         }
-
-        public void SetFolderAuthority(string path)
+        
+        public void ChangeDirectoryEvent(object sender, KeyEventArgs e)
         {
-            DirectorySecurity directorySecurity = Directory.GetAccessControl(path);
-            directorySecurity.AddAccessRule(new FileSystemAccessRule(
-                new NTAccount("yeongjoon"), FileSystemRights.ListDirectory,
-                InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
-                PropagationFlags.None, AccessControlType.Allow));
-            directorySecurity.AddAccessRule(new FileSystemAccessRule(
-                new NTAccount("yeongjoon"), FileSystemRights.Traverse,
-                InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
-                PropagationFlags.None, AccessControlType.Allow));
-            Directory.SetAccessControl(path, directorySecurity);
+            // 엔터가 입력되었을 때 텍스트박스에 입력된 경로로 이동           
+            if(e.Key == Key.Enter)
+            {
+                pathManger.ChangeDirectory(window.txt_path.Text);
+            }
         }
     }
 }

@@ -82,8 +82,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Constant.cs" />
+    <Compile Include="FileSystem\Exception.cs" />
     <Compile Include="FileSystem\FileIconView.cs" />
     <Compile Include="FileSystem\FolderHandler.cs" />
+    <Compile Include="FileSystem\PathManager.cs" />
+    <Compile Include="FileSystem\ProgramHandler.cs" />
     <Compile Include="ResizablePanel.cs" />
     <Compile Include="Resizer.cs" />
     <Compile Include="TreeView\FileSystemViewModel.cs" />

@@ -38,7 +38,7 @@
    <Grid>
       <Grid.RowDefinitions>
          <RowDefinition Height="25"/>
-         <RowDefinition Height="30"/>
+         <RowDefinition Height="40"/>
          <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
       <Grid Grid.Row="0" Name="MenuGrid">
@@ -56,19 +56,26 @@
          <Label Grid.Column="2" Content="공유" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
          <Label Grid.Column="3" Content="보기" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
       </Grid>
-      <Grid Grid.Row="1" Name="PathGrid">
+      <Grid Grid.Row="1" Name="PathGrid" Margin="0,0,0,10">
          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.75*"/>
+            <ColumnDefinition Width="0.75*"/>
+            <ColumnDefinition Width="4.8*"/>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="0.3*" />
          </Grid.ColumnDefinitions>
+         <Button Grid.Column="0" Name="Btn_Back" Content="뒤로"/>
+         <Button Grid.Column="1" Name="Btn_Front" Content="앞으로"/>
+         <TextBox Grid.Column="2" Name="txt_path" Margin="10,0,10,0" Padding="5" />
+         <TextBox Grid.Column="3" Name="txt_search" Margin="5,0,5,0" Padding="5" />
+         <Button Grid.Column="4" Name="Btn_search" Content="검색" Background="Blue" Foreground="White"/>
       </Grid>
       <Grid Grid.Row="2" Name="MainGrid">
          <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2*"/>
          </Grid.ColumnDefinitions>
-         <local:ResizablePanel x:Name="ResizableTree" MinWidth="100" Width="250" MaxWidth="400" Grid.Column="0" HorizontalAlignment="Left">
+         <local:ResizablePanel x:Name="ResizableTree" MinWidth="60" Width="200" MaxWidth="400" Grid.Column="0" HorizontalAlignment="Left">
             <TreeView Name="DirectoryTreeView" />
          </local:ResizablePanel>
 

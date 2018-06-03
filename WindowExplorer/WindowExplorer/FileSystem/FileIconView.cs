@@ -12,13 +12,18 @@ namespace WindowExplorer.FileSystem
 {
     class FileIconView
     {
+        // 처음 클릭시간 저장
+        DateTime mouseLastClick = DateTime.Now.AddSeconds(-1);
+
         FolderHandler folderHandler;
         StackPanel filePanel;
+        ProgramHandler programHandler;
 
         public FileIconView(MainWindow window)
         {
             folderHandler = new FolderHandler();
             filePanel = window.filePanel;
+            programHandler = new ProgramHandler();
         }
 
         /// System.Drawing.Icon을 이용하여 아이콘을 추출하는 함수
@@ -74,6 +79,7 @@ namespace WindowExplorer.FileSystem
                     file.MouseDown += IconClickEvent;
                     file.MouseMove += IconMouseOverEvent;
                     file.MouseLeave += IconMoveLeaveEvent;
+                    file.MouseLeftButtonDown += IconDoubleClickEvent;
 
                     Image image = new Image();
                     image.Margin = new System.Windows.Thickness(0, 20, 20, 20);
@@ -132,7 +138,19 @@ namespace WindowExplorer.FileSystem
             StackPanel panel = (StackPanel)sender;
             if (panel.Background != Brushes.LightSkyBlue)
                 panel.Background = Brushes.White;
+        }
 
+        // 아이콘 더블 클릭 시 프로그램 실행
+        private void IconDoubleClickEvent(object sender, RoutedEventArgs e)
+        {
+            if (((DateTime.Now - mouseLastClick).Seconds < 1) && ((DateTime.Now - mouseLastClick).Milliseconds < 200))
+            {
+                
+
+                mouseLastClick = DateTime.Now.AddSeconds(-1);
+            }
+            else
+                mouseLastClick = DateTime.Now;
         }
     }
 }
