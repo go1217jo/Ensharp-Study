@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Controls;
+using System.Windows;
 
 namespace WindowExplorer.FileSystem
 {
@@ -70,6 +71,10 @@ namespace WindowExplorer.FileSystem
                         break;
                     StackPanel file = new StackPanel();
                     file.Orientation = Orientation.Vertical;
+                    file.MouseDown += IconClickEvent;
+                    file.MouseMove += IconMouseOverEvent;
+                    file.MouseLeave += IconMoveLeaveEvent;
+
                     Image image = new Image();
                     image.Margin = new System.Windows.Thickness(0, 20, 20, 20);
                     image.Source = getIcon(infors[pos].FullName);
@@ -86,6 +91,7 @@ namespace WindowExplorer.FileSystem
                 filePanel.Children.Add(panel);
             }
         }
+
         private string AdjustTextLength(string filename)
         {
             int pos = 0;
@@ -96,6 +102,37 @@ namespace WindowExplorer.FileSystem
                 pos += 10;
             }
             return filename;
+        }
+
+        private void IconClickEvent(object sender, RoutedEventArgs e)
+        {
+            StackPanel panel = (StackPanel)sender;
+            // 아이콘들이 나타나는 파일 StackPanel
+            StackPanel filePanel = (StackPanel)(((StackPanel)(panel.Parent)).Parent);
+
+            for (int i = 0; i < filePanel.Children.Count; i++)
+            {
+                StackPanel rowPanel = (StackPanel)(filePanel.Children[i]);
+                for(int j=0;j<rowPanel.Children.Count; j++)
+                    ((StackPanel)rowPanel.Children[j]).Background = Brushes.White;
+            }
+
+            panel.Background = Brushes.LightSkyBlue;
+        }
+
+        private void IconMouseOverEvent(object sender, RoutedEventArgs e)
+        {
+            StackPanel panel = (StackPanel)sender;
+            if(panel.Background != Brushes.LightSkyBlue)
+                panel.Background = Brushes.AliceBlue;
+        }
+
+        private void IconMoveLeaveEvent(object sender, RoutedEventArgs e)
+        {
+            StackPanel panel = (StackPanel)sender;
+            if (panel.Background != Brushes.LightSkyBlue)
+                panel.Background = Brushes.White;
+
         }
     }
 }
