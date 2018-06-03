@@ -18,12 +18,15 @@ namespace WindowExplorer.FileSystem
         FolderHandler folderHandler;
         StackPanel filePanel;
         ProgramHandler programHandler;
+        MainWindow window;
 
         public FileIconView(MainWindow window)
         {
             folderHandler = new FolderHandler();
+            this.window = window;
             filePanel = window.filePanel;
             programHandler = new ProgramHandler();
+            
         }
 
         /// System.Drawing.Icon을 이용하여 아이콘을 추출하는 함수
@@ -145,12 +148,16 @@ namespace WindowExplorer.FileSystem
                 panel.Background = Brushes.White;
         }
 
-        // 아이콘 더블 클릭 시 프로그램 실행
+        // 아이콘 더블 클릭 시 프로그램 실행 또는 폴더 열기
         private void IconDoubleClickEvent(object sender, RoutedEventArgs e)
         {
             if (((DateTime.Now - mouseLastClick).Seconds < 1) && ((DateTime.Now - mouseLastClick).Milliseconds < 200))
             {
+                Label filename = (Label)(((StackPanel)sender).Children[1]);
                 
+                string path = window.txt_path.Text + "\\" + ((string)filename.Content).Replace("\n", "");
+                path = path.Replace("\\\\", "\\");
+                programHandler.ExecuteProgram(path);
 
                 mouseLastClick = DateTime.Now.AddSeconds(-1);
             }

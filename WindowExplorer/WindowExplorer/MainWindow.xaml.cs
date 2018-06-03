@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 
 namespace WindowExplorer
 {
@@ -21,6 +22,7 @@ namespace WindowExplorer
         public MainWindow()
         {
             InitializeComponent();
+            txt_path.Text = "C:\\";
             viewModel = new TreeView.FileSystemViewModel(this);
         }
     }

@@ -183,7 +183,9 @@ namespace WindowExplorer.TreeView
         {
             StackPanel item = (StackPanel)sender;
             TreeViewItem node = (TreeViewItem)item.Parent;
-            iconView.SetFileViewPanel(GetFullPath(node));
+            string path = GetFullPath(node);
+            iconView.SetFileViewPanel(path);
+            window.txt_path.Text = path;
         }
         
         public void ChangeDirectoryEvent(object sender, KeyEventArgs e)

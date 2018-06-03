@@ -45,14 +45,16 @@ namespace WindowExplorer.FileSystem
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();
             string programName = ProgramByExtension(new DirectoryInfo(filePath).Extension);
+            startInfo.FileName = filePath;
+            /*
             if (programName == null)
                 startInfo.FileName = filePath;
             else
             {
                 startInfo.FileName = programName;
                 startInfo.Arguments = filePath;
-            }
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            }*/
+            
             process.StartInfo = startInfo;
             process.EnableRaisingEvents = true;
             process.Exited += new EventHandler(ProcessExited);
