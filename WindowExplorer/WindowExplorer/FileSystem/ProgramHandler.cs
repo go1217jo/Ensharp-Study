@@ -10,13 +10,10 @@ namespace WindowExplorer.FileSystem
 {
     class ProgramHandler
     {
-        Process process;
         Dictionary<string, string> programPath;
-
 
         public ProgramHandler()
         {
-            process = new Process();
             programPath = new Dictionary<string, string>();
             programPath.Add("pdf", "C:\\Program Files (x86)\\Adobe\\Acrobat Reader DC\\Reader\\AcroRd32.exe");
             programPath.Add("txt", "C:\\Windows\\System32\\notepad.exe");
@@ -43,18 +40,11 @@ namespace WindowExplorer.FileSystem
 
         public void ExecuteProgram(string filePath)
         {
+            Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             string programName = ProgramByExtension(new DirectoryInfo(filePath).Extension);
             startInfo.FileName = filePath;
-            /*
-            if (programName == null)
-                startInfo.FileName = filePath;
-            else
-            {
-                startInfo.FileName = programName;
-                startInfo.Arguments = filePath;
-            }*/
-            
+                        
             process.StartInfo = startInfo;
             process.EnableRaisingEvents = true;
             process.Exited += new EventHandler(ProcessExited);
@@ -63,8 +53,8 @@ namespace WindowExplorer.FileSystem
 
         public void ProcessExited(object source, EventArgs e)
         {
-            process.WaitForExit(1000);
-            process.Dispose();
+            ((Process)source).WaitForExit(1000);
+            ((Process)source).Dispose();
         }
     }
 }
