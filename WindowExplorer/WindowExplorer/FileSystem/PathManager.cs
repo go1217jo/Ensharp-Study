@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows;
 
 namespace WindowExplorer.FileSystem
 {
@@ -13,12 +15,21 @@ namespace WindowExplorer.FileSystem
         MainWindow window;
         StringComparison comp;
 
+        // 뒤로가기를 가능하게 하는 스택
+        Stack<string> backPathStack;
+        // 앞으로 가기를 가능하게 하는 스택
+        Stack<string> frontPathStack;
+
         public PathManager(MainWindow window)
         {
             this.window = window;
             currentPath = "C:\\";
+
             // 대소문자 미구분자
             comp = StringComparison.OrdinalIgnoreCase;
+
+            backPathStack = new Stack<string>();
+            frontPathStack = new Stack<string>();
         }
 
         public string ProcessInput(string input)
@@ -78,8 +89,9 @@ namespace WindowExplorer.FileSystem
             DirectoryInfo directory = new DirectoryInfo(movePath);
             if (!movePath.Contains("..") && !movePath.Contains(".\\") && !movePath.Equals(".") && directory.Exists)
             {
-                currentPath = directory.FullName;
-                window.txt_path.Text = directory.FullName;
+                movePath = movePath.Replace("c:\\", "C:\\");
+                movePath = movePath.Replace("d:\\", "D:\\");
+                MovePath(movePath);
                 return true;
             }
 
@@ -135,9 +147,38 @@ namespace WindowExplorer.FileSystem
                     }
                 }
             }
+            MovePath(movedPath);
+            return true;
+        }
+        
+        public string GetCurrentPath()
+        {
+            return currentPath;
+        }
+        
+        public void MovePath(string movedPath)
+        {
             currentPath = movedPath;
             window.txt_path.Text = movedPath;
-            return true;
+            backPathStack.Push(movedPath);
+        }
+
+        public void GoToBack()
+        {
+            if (backPathStack.Count == 0)
+                return;
+            frontPathStack.Push(currentPath);
+            currentPath = backPathStack.Pop();
+            window.txt_path.Text = currentPath;
+        }
+
+        public void GoToFront()
+        {
+            if (frontPathStack.Count == 0)
+                return;
+            backPathStack.Push(currentPath);
+            currentPath = frontPathStack.Pop();
+            window.txt_path.Text = currentPath;
         }
     }
 }

@@ -18,18 +18,19 @@ namespace WindowExplorer.FileSystem
         FolderHandler folderHandler;
         StackPanel filePanel;
         ProgramHandler programHandler;
+        PathManager pathManager;
         MainWindow window;
 
         // 클릭 이벤트와 더블 클릭 이벤트 중첩 방지
         int clickCount = 0;
 
-        public FileIconView(MainWindow window)
+        public FileIconView(MainWindow window, PathManager pathManager)
         {
             folderHandler = new FolderHandler();
             this.window = window;
             filePanel = window.filePanel;
             programHandler = new ProgramHandler();
-            
+            this.pathManager = pathManager;
         }
 
         /// System.Drawing.Icon을 이용하여 아이콘을 추출하는 함수
@@ -132,6 +133,8 @@ namespace WindowExplorer.FileSystem
             StackPanel panel = (StackPanel)sender;
             // 아이콘들이 나타나는 파일 StackPanel
             StackPanel filePanel = (StackPanel)(((StackPanel)(panel.Parent)).Parent);
+            if (filePanel == null)
+                return;
 
             for (int i = 0; i < filePanel.Children.Count; i++)
             {
@@ -170,7 +173,7 @@ namespace WindowExplorer.FileSystem
                 // 경로가 폴더 경로이면
                 if (new DirectoryInfo(path).Attributes.HasFlag(FileAttributes.Directory))
                 {
-                    window.txt_path.Text = path;
+                    pathManager.MovePath(path);
                     SetFileViewPanel(path);
                 }
                 else

@@ -22,16 +22,19 @@ namespace WindowExplorer.TreeView
         MainWindow window;
         List<TreeViewItem> rootTrees;
         FileSystem.FileIconView iconView;
-        FileSystem.PathManager pathManger;
+        FileSystem.PathManager pathManager;
 
         public FileSystemViewModel(MainWindow window)
         {
             this.window = window;
             this.window.txt_path.KeyDown += ChangeDirectoryEvent;
+            this.window.txt_path.LostFocus += TextPathLostFocusEvent;
             rootTrees = new List<TreeViewItem>();
             InitTree();
-            iconView = new FileSystem.FileIconView(window);
-            pathManger = new FileSystem.PathManager(window);
+            pathManager = new FileSystem.PathManager(window);
+            iconView = new FileSystem.FileIconView(window, pathManager);
+            window.Btn_Back.MouseUp += GoToBackEvent;
+            window.Btn_Front.MouseUp += GoToFrontEvent;
         }
 
         /// <summary>
@@ -184,18 +187,35 @@ namespace WindowExplorer.TreeView
             StackPanel item = (StackPanel)sender;
             TreeViewItem node = (TreeViewItem)item.Parent;
             string path = GetFullPath(node);
+            pathManager.ChangeDirectory(path);
             iconView.SetFileViewPanel(path);
-            window.txt_path.Text = path;
         }
-        
+                        
         public void ChangeDirectoryEvent(object sender, KeyEventArgs e)
         {
             // 엔터가 입력되었을 때 텍스트박스에 입력된 경로로 이동           
             if(e.Key == Key.Enter)
             {
-                if( pathManger.ChangeDirectory(window.txt_path.Text))
+                if( pathManager.ChangeDirectory(window.txt_path.Text))
                     iconView.SetFileViewPanel(window.txt_path.Text);
             }
+        }
+
+        public void TextPathLostFocusEvent(object sender, RoutedEventArgs e)
+        {
+            window.txt_path.Text = pathManager.GetCurrentPath();
+        }
+
+        public void GoToBackEvent(object sender, RoutedEventArgs e)
+        {
+            pathManager.GoToBack();
+            iconView.SetFileViewPanel(pathManager.GetCurrentPath());
+        }
+
+        public void GoToFrontEvent(object sender, RoutedEventArgs e)
+        {
+            pathManager.GoToFront();
+            iconView.SetFileViewPanel(pathManager.GetCurrentPath());
         }
     }
 }
