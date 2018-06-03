@@ -18,7 +18,8 @@ namespace WindowExplorer.FileSystem
         /// <returns>  디렉터리이면서 탐색기에 나타나지 않는 폴더가 아니면 true를 그렇지 않으면 false </returns>
         public bool IsDirectory(DirectoryInfo info)
         {
-            if (info.Attributes.HasFlag(FileAttributes.Directory) && !info.Attributes.HasFlag(FileAttributes.NotContentIndexed))
+            if (info.Attributes.HasFlag(FileAttributes.Directory) && !info.Attributes.HasFlag(FileAttributes.NotContentIndexed)
+                && !info.Attributes.HasFlag(FileAttributes.System))
                 return true;
             return false;
         }
@@ -30,23 +31,15 @@ namespace WindowExplorer.FileSystem
         /// <returns> 디렉터리 목록 </returns>
         public List<DirectoryInfo> GetDirectoryList(string parentPath)
         {
+            List<DirectoryInfo> fileSystemList = GetFileSystemList(parentPath);
             List<DirectoryInfo> directoriesList = new List<DirectoryInfo>();
-            string[] entries = null;
-            try
-            {
-                entries = Directory.GetFileSystemEntries(parentPath);
-            }
-            catch (UnauthorizedAccessException e) { }
 
-            if (entries == null)
-                return null;
-
-            foreach (string entry in entries)
+            for (int idx = 0; idx < fileSystemList.Count; idx++)
             {
-                DirectoryInfo info = new DirectoryInfo(entry);
-                if (IsDirectory(info))
-                    directoriesList.Add(info);
+                if(IsDirectory(fileSystemList[idx]))
+                    directoriesList.Add(fileSystemList[idx]);
             }
+            
             return directoriesList;
         }
 
@@ -72,11 +65,9 @@ namespace WindowExplorer.FileSystem
         {
             List<DirectoryInfo> filesList = new List<DirectoryInfo>();
             string[] entries = null;
-            try
-            {
-                entries = Directory.GetFileSystemEntries(parentPath);
-            }
-            catch (UnauthorizedAccessException e) { }
+
+            // try-catch를 사용했던 부분
+            entries = Directory.GetFileSystemEntries(parentPath);
 
             if (entries == null)
                 return null;
@@ -84,8 +75,9 @@ namespace WindowExplorer.FileSystem
             foreach (string entry in entries)
             {
                 DirectoryInfo info = new DirectoryInfo(entry);
-                if(!info.Attributes.HasFlag(FileAttributes.NotContentIndexed))
-                    filesList.Add(info);
+                if (info.Attributes.HasFlag(FileAttributes.NotContentIndexed) | info.Attributes.HasFlag(FileAttributes.System) )
+                    continue;
+                filesList.Add(info);
             }
             return filesList;
         }
