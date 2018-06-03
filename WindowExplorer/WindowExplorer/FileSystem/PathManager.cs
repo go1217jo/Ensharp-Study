@@ -162,7 +162,10 @@ namespace WindowExplorer.FileSystem
             if(backPathStack.Count == 0)
                 window.Btn_Back.Source = new BitmapImage(new Uri("pack://application:,,/icons/left_arrow.png"));
             if (currentPath.Equals(movedPath))
+            {
+                window.txt_path.Text = movedPath;
                 return;
+            }
             backPathStack.Push(currentPath);
             currentPath = movedPath;
             window.txt_path.Text = movedPath;
