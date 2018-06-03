@@ -20,6 +20,9 @@ namespace WindowExplorer.FileSystem
         ProgramHandler programHandler;
         MainWindow window;
 
+        // 클릭 이벤트와 더블 클릭 이벤트 중첩 방지
+        int clickCount = 0;
+
         public FileIconView(MainWindow window)
         {
             folderHandler = new FolderHandler();
@@ -120,6 +123,12 @@ namespace WindowExplorer.FileSystem
 
         private void IconClickEvent(object sender, RoutedEventArgs e)
         {
+            if (clickCount > 1)
+            {
+                clickCount = 0;
+                return;
+            }
+            
             StackPanel panel = (StackPanel)sender;
             // 아이콘들이 나타나는 파일 StackPanel
             StackPanel filePanel = (StackPanel)(((StackPanel)(panel.Parent)).Parent);
@@ -154,12 +163,23 @@ namespace WindowExplorer.FileSystem
             if (((DateTime.Now - mouseLastClick).Seconds < 1) && ((DateTime.Now - mouseLastClick).Milliseconds < 200))
             {
                 Label filename = (Label)(((StackPanel)sender).Children[1]);
-                
+
                 string path = window.txt_path.Text + "\\" + ((string)filename.Content).Replace("\n", "");
                 path = path.Replace("\\\\", "\\");
-                programHandler.ExecuteProgram(path);
+
+                // 경로가 폴더 경로이면
+                if (new DirectoryInfo(path).Attributes.HasFlag(FileAttributes.Directory))
+                {
+                    window.txt_path.Text = path;
+                    SetFileViewPanel(path);
+                }
+                else
+                    // 폴더가 아니면 실행
+                    programHandler.ExecuteProgram(path);
+                
 
                 mouseLastClick = DateTime.Now.AddSeconds(-1);
+                clickCount = 2;
             }
             else
                 mouseLastClick = DateTime.Now;
