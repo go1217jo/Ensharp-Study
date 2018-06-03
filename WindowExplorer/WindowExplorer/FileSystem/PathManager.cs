@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace WindowExplorer.FileSystem
 {
@@ -158,27 +159,45 @@ namespace WindowExplorer.FileSystem
         
         public void MovePath(string movedPath)
         {
+            if(backPathStack.Count == 0)
+                window.Btn_Back.Source = new BitmapImage(new Uri("pack://application:,,/icons/left_arrow.png"));
+            if (currentPath.Equals(movedPath))
+                return;
+            backPathStack.Push(currentPath);
             currentPath = movedPath;
             window.txt_path.Text = movedPath;
-            backPathStack.Push(movedPath);
         }
 
         public void GoToBack()
         {
             if (backPathStack.Count == 0)
                 return;
+            window.Btn_Back.Source = new BitmapImage(new Uri("pack://application:,,/icons/mouseover_left_arrow.png"));
+            if(frontPathStack.Count == 0)
+                window.Btn_Front.Source = new BitmapImage(new Uri("pack://application:,,/icons/right_arrow.png"));
             frontPathStack.Push(currentPath);
             currentPath = backPathStack.Pop();
             window.txt_path.Text = currentPath;
+            if (backPathStack.Count == 0)
+                window.Btn_Back.Source = new BitmapImage(new Uri("pack://application:,,/icons/block_left_arrow.png"));
+            else
+                window.Btn_Back.Source = new BitmapImage(new Uri("pack://application:,,/icons/left_arrow.png"));
         }
 
         public void GoToFront()
         {
             if (frontPathStack.Count == 0)
                 return;
+            window.Btn_Front.Source = new BitmapImage(new Uri("pack://application:,,/icons/mouseover_right_arrow.png"));
+            if(backPathStack.Count == 0)
+                window.Btn_Back.Source = new BitmapImage(new Uri("pack://application:,,/icons/left_arrow.png"));
             backPathStack.Push(currentPath);
             currentPath = frontPathStack.Pop();
             window.txt_path.Text = currentPath;
+            if (frontPathStack.Count == 0)
+                window.Btn_Front.Source = new BitmapImage(new Uri("pack://application:,,/icons/block_right_arrow.png"));
+            else
+                window.Btn_Front.Source = new BitmapImage(new Uri("pack://application:,,/icons/right_arrow.png"));
         }
     }
 }

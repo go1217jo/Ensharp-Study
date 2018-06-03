@@ -135,14 +135,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\hiddenFolder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\closeFolder.png" />
-    <Resource Include="Images\drive.png" />
-    <Resource Include="Images\openFolder.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.6.1%28x86 및 x64%29</ProductName>
@@ -155,8 +147,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\LeftArrow.png" />
-    <Resource Include="Images\RightArrow.png" />
+    <Resource Include="icons\block_left_arrow.png" />
+    <Resource Include="icons\block_right_arrow.png" />
+    <Resource Include="icons\closeFolder.png" />
+    <Resource Include="icons\drive.png" />
+    <Resource Include="icons\hiddenFolder.png" />
+    <Resource Include="icons\left_arrow.png" />
+    <Resource Include="icons\mouseover_left_arrow.png" />
+    <Resource Include="icons\mouseover_right_arrow.png" />
+    <Resource Include="icons\openFolder.png" />
+    <Resource Include="icons\right_arrow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

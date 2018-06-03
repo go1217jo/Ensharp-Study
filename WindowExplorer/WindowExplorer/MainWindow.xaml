@@ -64,8 +64,8 @@
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="0.5*" />
          </Grid.ColumnDefinitions>
-         <Image Grid.Column="0" Name="Btn_Back" Source="images/LeftArrow.png"/>
-         <Image Grid.Column="1" Name="Btn_Front" Source="images/RightArrow.png"/>
+         <Image Grid.Column="0" Name="Btn_Back" Source="icons/block_left_arrow.png"/>
+         <Image Grid.Column="1" Name="Btn_Front" Source="icons/block_right_arrow.png"/>
          <TextBox Grid.Column="2" Name="txt_path" Margin="10,0,10,0" Padding="5" />
          <TextBox Grid.Column="3" Name="txt_search" Margin="5,0,5,0" Padding="5" />
          <Button Grid.Column="4" Name="Btn_search" Content="검색" Background="Blue" Foreground="White"/>

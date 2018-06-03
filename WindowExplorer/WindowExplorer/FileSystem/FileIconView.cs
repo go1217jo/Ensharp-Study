@@ -56,9 +56,9 @@ namespace WindowExplorer.FileSystem
                 {
                     // 숨김 폴더인지 아닌지에 따라 아이콘 이미지를 다르게 함
                     if (directoryInfo.Attributes.HasFlag(FileAttributes.Hidden))
-                        icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Images/hiddenFolder.png"));
+                        icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/icons/hiddenFolder.png"));
                     else
-                        icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Images/closeFolder.png"));
+                        icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/icons/closeFolder.png"));
                 }
             }
             return icon;

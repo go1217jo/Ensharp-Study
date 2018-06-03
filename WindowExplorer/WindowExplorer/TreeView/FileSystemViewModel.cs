@@ -48,7 +48,7 @@ namespace WindowExplorer.TreeView
             Image image = new Image();
             System.Windows.Controls.Label name = new System.Windows.Controls.Label();
 
-            image.Source = new BitmapImage(new Uri("pack://application:,,/Images/drive.png"));
+            image.Source = new BitmapImage(new Uri("pack://application:,,/icons/drive.png"));
             image.Width = 18;
             image.Height = 18;
             name.Content = driveName;
@@ -110,9 +110,9 @@ namespace WindowExplorer.TreeView
 
                 // 숨김 폴더인지 아닌지에 따라 아이콘 이미지를 다르게 함
                 if (infors[idx].Attributes.HasFlag(FileAttributes.Hidden))
-                    image.Source = new BitmapImage(new Uri("pack://application:,,/Images/hiddenFolder.png"));
+                    image.Source = new BitmapImage(new Uri("pack://application:,,/icons/hiddenFolder.png"));
                 else
-                    image.Source = new BitmapImage(new Uri("pack://application:,,/Images/closeFolder.png"));
+                    image.Source = new BitmapImage(new Uri("pack://application:,,/icons/closeFolder.png"));
 
                 foldername.Content = foldernames[idx];
                 node.Orientation = System.Windows.Controls.Orientation.Horizontal;
@@ -210,6 +210,7 @@ namespace WindowExplorer.TreeView
         {
             pathManager.GoToBack();
             iconView.SetFileViewPanel(pathManager.GetCurrentPath());
+            
         }
 
         public void GoToFrontEvent(object sender, RoutedEventArgs e)
