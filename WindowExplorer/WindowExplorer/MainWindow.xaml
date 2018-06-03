@@ -72,10 +72,10 @@
       </Grid>
       <Grid Grid.Row="2" Name="MainGrid">
          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="310"/>
+            <ColumnDefinition Width="*"/>
          </Grid.ColumnDefinitions>
-         <local:ResizablePanel x:Name="ResizableTree" MinWidth="60" Width="200" MaxWidth="400" Grid.Column="0" HorizontalAlignment="Left">
+         <local:ResizablePanel x:Name="ResizableTree" MinWidth="60" Width="200" MaxWidth="310" Grid.Column="0" HorizontalAlignment="Left">
             <TreeView Name="DirectoryTreeView" />
          </local:ResizablePanel>
 

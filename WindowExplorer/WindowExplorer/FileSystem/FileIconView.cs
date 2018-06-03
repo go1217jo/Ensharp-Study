@@ -60,6 +60,11 @@ namespace WindowExplorer.FileSystem
         public void SetFileViewPanel(string path)
         {
             List<DirectoryInfo> infors = folderHandler.GetFileSystemList(path);
+            if (infors == null)
+            {
+                MessageBox.Show("접근 권한이 없습니다.");
+                return;
+            }
             List<string> nameList = folderHandler.GetDirectoryNameList(infors);
 
             filePanel.Children.Clear();

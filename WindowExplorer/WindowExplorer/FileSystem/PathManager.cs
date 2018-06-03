@@ -46,8 +46,8 @@ namespace WindowExplorer.FileSystem
         /// </summary>
         /// <param name="movePath"> 이동하고자 하는 경로 </param>
         /// <param name="currentPath"> 현재 있는 경로 </param>
-        /// <returns> 변환된 절대 경로 </returns>
-        public void ChangeDirectory(string movePath)
+        /// <returns> 경로가 변경되었는지 반환, 변경=true </returns>
+        public bool ChangeDirectory(string movePath)
         {
             // 이동된 결과 경로
             string movedPath = currentPath;
@@ -55,15 +55,24 @@ namespace WindowExplorer.FileSystem
             // 앞의 공백 제거
             movePath = movePath.TrimStart(' ');
 
-            if (movePath.Length == 0)
-            {
-                Console.WriteLine(currentPath);
+            if (movePath.Length == 0) {
                 window.txt_path.Text = currentPath;
+                return false;
             }
 
             // UNC 경로 예외처리
-            if (Exception.UNCPathException(movePath))
+            if (Exception.UNCPathException(movePath)) {
                 window.txt_path.Text = currentPath;
+                return false;
+            }
+
+            // 지원하지 않는 경로
+            string path = Exception.NotSupportedPathException(movePath);
+            if (path == null) {
+                window.txt_path.Text = currentPath;
+                return false;
+            }
+            movePath = path;
 
             // 존재하는 절대 경로이면 그대로 반환
             DirectoryInfo directory = new DirectoryInfo(movePath);
@@ -71,6 +80,7 @@ namespace WindowExplorer.FileSystem
             {
                 currentPath = directory.FullName;
                 window.txt_path.Text = directory.FullName;
+                return true;
             }
 
             // 상대경로이거나 존재하지 않는 절대경로인 경우
@@ -90,6 +100,7 @@ namespace WindowExplorer.FileSystem
                     if (!IsRootDirectory(movedPath))
                         movedPath = Directory.GetParent(movedPath).FullName;
                 }
+
                 // 하위 경로의 폴더로 이동
                 else if (!unitPath[idx].Equals("."))
                 {
@@ -118,13 +129,15 @@ namespace WindowExplorer.FileSystem
                             break;
                         }
                     }
-                    if (!exist)
+                    if (!exist) {
                         window.txt_path.Text = currentPath;
+                        return false;
+                    }
                 }
             }
             currentPath = movedPath;
             window.txt_path.Text = movedPath;
+            return true;
         }
-
     }
 }

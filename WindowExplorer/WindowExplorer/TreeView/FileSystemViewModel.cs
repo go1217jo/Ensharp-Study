@@ -191,7 +191,8 @@ namespace WindowExplorer.TreeView
             // 엔터가 입력되었을 때 텍스트박스에 입력된 경로로 이동           
             if(e.Key == Key.Enter)
             {
-                pathManger.ChangeDirectory(window.txt_path.Text);
+                if( pathManger.ChangeDirectory(window.txt_path.Text))
+                    iconView.SetFileViewPanel(window.txt_path.Text);
             }
         }
     }
