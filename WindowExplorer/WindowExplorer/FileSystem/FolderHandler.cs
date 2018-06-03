@@ -33,6 +33,8 @@ namespace WindowExplorer.FileSystem
         {
             List<DirectoryInfo> fileSystemList = GetFileSystemList(parentPath);
             List<DirectoryInfo> directoriesList = new List<DirectoryInfo>();
+            if (fileSystemList == null)
+                return null;
 
             for (int idx = 0; idx < fileSystemList.Count; idx++)
             {
@@ -67,7 +69,10 @@ namespace WindowExplorer.FileSystem
             string[] entries = null;
 
             // try-catch를 사용했던 부분
-            entries = Directory.GetFileSystemEntries(parentPath);
+            try
+            {
+                entries = Directory.GetFileSystemEntries(parentPath);
+            } catch (UnauthorizedAccessException e) { }
 
             if (entries == null)
                 return null;

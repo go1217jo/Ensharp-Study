@@ -158,5 +158,11 @@
     <Resource Include="icons\openFolder.png" />
     <Resource Include="icons\right_arrow.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\renew.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\MainIcon.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

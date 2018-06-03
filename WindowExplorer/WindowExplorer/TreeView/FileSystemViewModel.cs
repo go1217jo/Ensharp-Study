@@ -35,6 +35,7 @@ namespace WindowExplorer.TreeView
             iconView = new FileSystem.FileIconView(window, pathManager);
             window.Btn_Back.MouseUp += GoToBackEvent;
             window.Btn_Front.MouseUp += GoToFrontEvent;
+            window.Btn_renew.MouseUp += RenewEvent;
         }
 
         /// <summary>
@@ -196,9 +197,16 @@ namespace WindowExplorer.TreeView
             // 엔터가 입력되었을 때 텍스트박스에 입력된 경로로 이동           
             if(e.Key == Key.Enter)
             {
-                if( pathManager.ChangeDirectory(window.txt_path.Text))
+                if (pathManager.ChangeDirectory(window.txt_path.Text))
                     iconView.SetFileViewPanel(window.txt_path.Text);
+                else
+                    MessageBox.Show("지정한 경로가 존재하지 않습니다.");
             }
+        }
+
+        public void RenewEvent(object sender, RoutedEventArgs e)
+        {
+            iconView.SetFileViewPanel(pathManager.GetCurrentPath());
         }
 
         public void TextPathLostFocusEvent(object sender, RoutedEventArgs e)
