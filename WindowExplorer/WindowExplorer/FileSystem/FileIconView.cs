@@ -76,7 +76,7 @@ namespace WindowExplorer.FileSystem
                     image.Width = 64;
                     image.Height = 64;
                     Label filename = new Label();
-                    filename.Content = nameList[pos];
+                    filename.Content = AdjustTextLength(nameList[pos]);
 
                     file.Children.Add(image);
                     file.Children.Add(filename);
@@ -86,6 +86,16 @@ namespace WindowExplorer.FileSystem
                 filePanel.Children.Add(panel);
             }
         }
-
+        private string AdjustTextLength(string filename)
+        {
+            int pos = 0;
+            while (filename.Length > pos)
+            {
+                if (filename.Length - pos >= 11)
+                    filename = filename.Substring(0, pos + 10) + "\n" + filename.Substring(pos + 10);
+                pos += 10;
+            }
+            return filename;
+        }
     }
 }
