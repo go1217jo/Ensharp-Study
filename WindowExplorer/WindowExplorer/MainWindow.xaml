@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WindowExplorer"
         
         mc:Ignorable="d"
-        Icon="icons/MainIcon.jpg"
+        Icon="icons/MainIcon.png"
         Title="Window Explorer" Height="600" Width="900">
 
    <Window.Resources>
@@ -39,10 +39,10 @@
    <Grid>
       <Grid.RowDefinitions>
          <RowDefinition Height="25"/>
-         <RowDefinition Height="40"/>
+         <RowDefinition Height="37"/>
          <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
-      <Grid Grid.Row="0" Name="MenuGrid">
+      <Grid Name="MenuGrid">
          <Grid.ColumnDefinitions>
             <ColumnDefinition Width="56"/>
             <ColumnDefinition Width="56"/>
@@ -59,12 +59,12 @@
       </Grid>
       <Grid Grid.Row="1" Name="PathGrid" Margin="0,0,0,10">
          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*"/>
-            <ColumnDefinition Width="0.5*"/>
-            <ColumnDefinition Width="4.7*"/>
-            <ColumnDefinition Width="0.3*"/>
-            <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="37"/>
+            <ColumnDefinition Width="37"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="25"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="36" />
          </Grid.ColumnDefinitions>
          <Image Grid.Column="0" Name="Btn_Back" Source="icons/block_left_arrow.png"/>
          <Image Grid.Column="1" Name="Btn_Front" Source="icons/block_right_arrow.png"/>

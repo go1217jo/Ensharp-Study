@@ -37,6 +37,7 @@ namespace WindowExplorer.FileSystem
         public ImageSource getIcon(string filename)
         {
             ImageSource icon = null;
+            
             // 파일이 존재하면
             FileInfo fileInfo = new FileInfo(filename);
             if (fileInfo.Exists && !fileInfo.Attributes.HasFlag(FileAttributes.Hidden))
@@ -61,6 +62,7 @@ namespace WindowExplorer.FileSystem
                         icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/icons/closeFolder.png"));
                 }
             }
+            
             return icon;
         }
 
@@ -75,10 +77,12 @@ namespace WindowExplorer.FileSystem
             List<string> nameList = folderHandler.GetDirectoryNameList(infors);
 
             filePanel.Children.Clear();
-            int columnCount = (int)filePanel.ActualWidth / 80;
+
+            int columnCount = (int)filePanel.ActualWidth / 85;
 
             for (int idx = 0; idx < infors.Count; idx += columnCount)
             {
+
                 StackPanel panel = new StackPanel();
                 panel.Orientation = Orientation.Horizontal;
 
@@ -109,6 +113,23 @@ namespace WindowExplorer.FileSystem
                 filePanel.Children.Add(panel);
             }
         }
+        /*
+        private void FindFileByName(string name)
+        {
+            StackPanel rootPanel = window.filePanel;
+            List<StackPanel> searchResult = new List<StackPanel>();
+
+            for (int i = 0; i < rootPanel.Children.Count; i++)
+            {
+                StackPanel rowPanel = (StackPanel)(filePanel.Children[i]);
+                for (int j = 0; j < rowPanel.Children.Count; j++)
+                {
+                    StackPanel icon = (StackPanel)rowPanel.Children[j];
+                    if()
+                    searchResult.Add();
+                }
+            }
+        }*/
 
         private string AdjustTextLength(string filename)
         {

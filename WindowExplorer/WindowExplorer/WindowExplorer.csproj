@@ -162,7 +162,7 @@
     <Resource Include="icons\renew.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icons\MainIcon.jpg" />
+    <Resource Include="icons\MainIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
