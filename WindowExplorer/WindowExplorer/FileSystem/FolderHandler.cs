@@ -68,7 +68,6 @@ namespace WindowExplorer.FileSystem
             List<DirectoryInfo> filesList = new List<DirectoryInfo>();
             string[] entries = null;
 
-            // try-catch를 사용했던 부분
             try
             {
                 entries = Directory.GetFileSystemEntries(parentPath);
