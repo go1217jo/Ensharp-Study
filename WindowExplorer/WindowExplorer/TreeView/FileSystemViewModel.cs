@@ -138,7 +138,7 @@ namespace WindowExplorer.TreeView
             TreeViewItem nodeItem = (TreeViewItem)sender;
             
             string path = GetFullPath(nodeItem).TrimEnd('\\');
-
+            
             List<TreeViewItem> childNodes = (List<TreeViewItem>)nodeItem.ItemsSource;
             if (childNodes == null)
                 return;
@@ -206,6 +206,7 @@ namespace WindowExplorer.TreeView
 
         public void RenewEvent(object sender, RoutedEventArgs e)
         {
+            window.txt_search.Text = "";
             iconView.SetFileViewPanel(pathManager.GetCurrentPath());
         }
 

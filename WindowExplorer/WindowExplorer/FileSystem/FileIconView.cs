@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows;
+using System.Runtime;
 
 namespace WindowExplorer.FileSystem
 {
@@ -31,6 +32,11 @@ namespace WindowExplorer.FileSystem
             filePanel = window.filePanel;
             programHandler = new ProgramHandler();
             this.pathManager = pathManager;
+            window.SizeChanged += WindowResizeEvent;
+            window.Btn_search.Click += FindFileByName;
+
+            // 가비지 콜렉터
+            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
         }
 
         /// System.Drawing.Icon을 이용하여 아이콘을 추출하는 함수
@@ -77,6 +83,8 @@ namespace WindowExplorer.FileSystem
             List<string> nameList = folderHandler.GetDirectoryNameList(infors);
 
             filePanel.Children.Clear();
+            
+            GC.Collect();
 
             int columnCount = (int)filePanel.ActualWidth / 85;
 
@@ -113,9 +121,12 @@ namespace WindowExplorer.FileSystem
                 filePanel.Children.Add(panel);
             }
         }
-        /*
-        private void FindFileByName(string name)
+        
+        private void FindFileByName(object sender, RoutedEventArgs e)
         {
+            string name = window.txt_search.Text;
+            window.txt_search.Text = "";
+
             StackPanel rootPanel = window.filePanel;
             List<StackPanel> searchResult = new List<StackPanel>();
 
@@ -125,11 +136,36 @@ namespace WindowExplorer.FileSystem
                 for (int j = 0; j < rowPanel.Children.Count; j++)
                 {
                     StackPanel icon = (StackPanel)rowPanel.Children[j];
-                    if()
-                    searchResult.Add();
+                    string compared = ((string)(((Label)icon.Children[1]).Content)).ToLower();
+                    if (compared.Contains(name.ToLower()))
+                        searchResult.Add(icon);
+                }
+                rowPanel.Children.Clear();
+                GC.Collect();
+            }
+            window.filePanel.Children.Clear();
+            GC.Collect();
+
+            if (searchResult.Count == 0)
+                MessageBox.Show("검색결과가 없습니다.");
+            else
+            {
+                int columnCount = (int)filePanel.ActualWidth / 85;
+                for (int idx = 0; idx < searchResult.Count; idx += columnCount)
+                {
+                    StackPanel panel = new StackPanel();
+                    panel.Orientation = Orientation.Horizontal;
+
+                    for (int pos = idx; pos < idx + columnCount; pos++)
+                    {
+                        if (pos == searchResult.Count)
+                            break;
+                        panel.Children.Add(searchResult[pos]);
+                    }
+                    window.filePanel.Children.Add(panel);
                 }
             }
-        }*/
+        }
 
         private string AdjustTextLength(string filename)
         {
@@ -201,12 +237,17 @@ namespace WindowExplorer.FileSystem
                     // 폴더가 아니면 실행
                     programHandler.ExecuteProgram(path);
                 
-
                 mouseLastClick = DateTime.Now.AddSeconds(-1);
                 clickCount = 2;
             }
             else
                 mouseLastClick = DateTime.Now;
+        }
+
+        // 윈도우 크기가 변경되면 발생하는 이벤트
+        private void WindowResizeEvent(object sender, RoutedEventArgs e)
+        {
+            SetFileViewPanel(pathManager.GetCurrentPath());
         }
     }
 }

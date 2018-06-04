@@ -69,7 +69,9 @@
          <Image Grid.Column="0" Name="Btn_Back" Source="icons/block_left_arrow.png"/>
          <Image Grid.Column="1" Name="Btn_Front" Source="icons/block_right_arrow.png"/>
          <TextBox Grid.Column="2" Name="txt_path" Margin="10,0,0,0" Padding="5" />
-         <Image Grid.Column="3" Name="Btn_renew" Source="icons/renew.png"/>
+         <Border BorderBrush="LightGray" BorderThickness="2" Grid.Column="3">
+            <Image Name="Btn_renew" Source="icons/renew.png"/>
+         </Border>
          <TextBox Grid.Column="4" Name="txt_search" Margin="0,0,5,0" Padding="5" />
          <Button Grid.Column="5" Name="Btn_search" Content="검색" Background="Blue" Foreground="White"/>
       </Grid>
