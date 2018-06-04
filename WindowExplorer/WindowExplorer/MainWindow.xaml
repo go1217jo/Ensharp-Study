@@ -85,6 +85,12 @@
          </local:ResizablePanel>
 
          <ScrollViewer Grid.Column="1">
+            <ScrollViewer.ContextMenu>
+               <ContextMenu>
+                  <MenuItem Header="새 폴더" Name="Menu_newFolder"/>
+                  <MenuItem Header="새로 고침" Name="Menu_renew" />
+               </ContextMenu>
+            </ScrollViewer.ContextMenu>
             <StackPanel Name="filePanel" >
             </StackPanel>
          </ScrollViewer>

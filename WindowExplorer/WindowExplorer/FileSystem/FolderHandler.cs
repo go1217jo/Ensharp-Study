@@ -67,7 +67,8 @@ namespace WindowExplorer.FileSystem
         {
             List<DirectoryInfo> filesList = new List<DirectoryInfo>();
             string[] entries = null;
-
+            if (!new DirectoryInfo(parentPath).Exists)
+                return null;
             try
             {
                 entries = Directory.GetFileSystemEntries(parentPath);

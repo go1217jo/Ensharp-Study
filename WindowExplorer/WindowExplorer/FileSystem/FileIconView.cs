@@ -48,6 +48,7 @@ namespace WindowExplorer.FileSystem
             FileInfo fileInfo = new FileInfo(filename);
             if (fileInfo.Exists && !fileInfo.Attributes.HasFlag(FileAttributes.Hidden))
             {
+                // 파일 아이콘 불러오기
                 using (System.Drawing.Icon sysicon = System.Drawing.Icon.ExtractAssociatedIcon(filename))
                 {
                     icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
@@ -58,6 +59,7 @@ namespace WindowExplorer.FileSystem
             }
             else
             {
+                // 디렉터리이면
                 DirectoryInfo directoryInfo = new DirectoryInfo(filename);
                 if (directoryInfo.Attributes.HasFlag(FileAttributes.Directory))
                 {
@@ -68,29 +70,37 @@ namespace WindowExplorer.FileSystem
                         icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/icons/closeFolder.png"));
                 }
             }
-            
             return icon;
         }
 
+        /// <summary>
+        ///  경로에 따라 filePanel에 파일 및 폴더 아이콘을 렌더링한다.
+        /// </summary>
+        /// <param name="path"> 렌더링하려는 절대경로 </param>
         public void SetFileViewPanel(string path)
         {
+            
             List<DirectoryInfo> infors = folderHandler.GetFileSystemList(path);
+            // 권한예외가 발생한 경우
             if (infors == null)
             {
                 MessageBox.Show("접근 권한이 없습니다.");
                 return;
             }
+            // 파일 및 이름 목록을 얻어옴
             List<string> nameList = folderHandler.GetDirectoryNameList(infors);
 
+            // 패널을 초기화하고 가비지 콜렉터를 실행
             filePanel.Children.Clear();
-            
             GC.Collect();
 
+            // 현재 넓이에 따라 열에 둘 아이콘 수를 결정함
             int columnCount = (int)filePanel.ActualWidth / 85;
 
+            // filePanel에 넣을 2차원 아이콘 스택 패널을 생성한다.
             for (int idx = 0; idx < infors.Count; idx += columnCount)
             {
-
+                // 행 StackPanel 생성
                 StackPanel panel = new StackPanel();
                 panel.Orientation = Orientation.Horizontal;
 
@@ -98,6 +108,8 @@ namespace WindowExplorer.FileSystem
                 {
                     if (pos == infors.Count)
                         break;
+                    
+                    // 개별 아이콘 생성
                     StackPanel file = new StackPanel();
                     file.Orientation = Orientation.Vertical;
                     file.MouseDown += IconClickEvent;
@@ -121,7 +133,10 @@ namespace WindowExplorer.FileSystem
                 filePanel.Children.Add(panel);
             }
         }
-        
+
+        /// <summary>
+        /// 현재 폴더에서 파일 이름을 검색하는 이벤트 발생
+        /// </summary>
         private void FindFileByName(object sender, RoutedEventArgs e)
         {
             string name = window.txt_search.Text;
@@ -130,6 +145,7 @@ namespace WindowExplorer.FileSystem
             StackPanel rootPanel = window.filePanel;
             List<StackPanel> searchResult = new List<StackPanel>();
 
+            // 현재 렌더링된 파일 및 폴더명을 검사함
             for (int i = 0; i < rootPanel.Children.Count; i++)
             {
                 StackPanel rowPanel = (StackPanel)(filePanel.Children[i]);
@@ -150,6 +166,7 @@ namespace WindowExplorer.FileSystem
                 MessageBox.Show("검색결과가 없습니다.");
             else
             {
+                // 검색된 아이콘들을 가지고 2차원 스택패널을 만듬
                 int columnCount = (int)filePanel.ActualWidth / 85;
                 for (int idx = 0; idx < searchResult.Count; idx += columnCount)
                 {
@@ -167,9 +184,15 @@ namespace WindowExplorer.FileSystem
             }
         }
 
+        /// <summary>
+        ///  아이콘의 파일명의 줄내림 조절
+        /// </summary>
+        /// <param name="filename">파일명</param>
+        /// <returns>변환된 파일명</returns>
         private string AdjustTextLength(string filename)
         {
             int pos = 0;
+            // 10글자마다 엔터를 삽입
             while (filename.Length > pos)
             {
                 if (filename.Length - pos >= 11)
@@ -179,6 +202,9 @@ namespace WindowExplorer.FileSystem
             return filename;
         }
 
+        /// <summary>
+        /// 아이콘 클릭 시 발생하는 이벤트, 배경색 변경
+        /// </summary>
         private void IconClickEvent(object sender, RoutedEventArgs e)
         {
             if (clickCount > 1)
@@ -193,6 +219,7 @@ namespace WindowExplorer.FileSystem
             if (filePanel == null)
                 return;
 
+            // 한 번에 클릭된 아이콘은 하나기 때문에 나머지 아이콘들의 배경을 하얀색으로 변경
             for (int i = 0; i < filePanel.Children.Count; i++)
             {
                 StackPanel rowPanel = (StackPanel)(filePanel.Children[i]);
@@ -203,6 +230,7 @@ namespace WindowExplorer.FileSystem
             panel.Background = Brushes.LightSkyBlue;
         }
 
+        // 아이콘 위에 마우스가 올려지면 발생하는 이벤트
         private void IconMouseOverEvent(object sender, RoutedEventArgs e)
         {
             StackPanel panel = (StackPanel)sender;

@@ -29,13 +29,17 @@ namespace WindowExplorer.TreeView
             this.window = window;
             this.window.txt_path.KeyDown += ChangeDirectoryEvent;
             this.window.txt_path.LostFocus += TextPathLostFocusEvent;
+
             rootTrees = new List<TreeViewItem>();
             InitTree();
             pathManager = new FileSystem.PathManager(window);
             iconView = new FileSystem.FileIconView(window, pathManager);
+
             window.Btn_Back.MouseUp += GoToBackEvent;
             window.Btn_Front.MouseUp += GoToFrontEvent;
             window.Btn_renew.MouseUp += RenewEvent;
+            window.Menu_renew.Click += RenewEvent;
+            window.Menu_newFolder.Click += CreateFolderEvent;
         }
 
         /// <summary>
@@ -156,6 +160,7 @@ namespace WindowExplorer.TreeView
             window.DirectoryTreeView.ItemsSource = rootTrees;
         }
 
+        // 현재 노드의 절대경로를 얻는다
         public string GetFullPath(TreeViewItem nodeItem)
         {
             string fullPath = "";
@@ -172,6 +177,7 @@ namespace WindowExplorer.TreeView
             return fullPath.TrimStart(new char[] { '\\', ' ' });
         }
 
+        // 부모 트리아이템을 얻는다
         public ItemsControl GetSelectedTreeViewItemParent(TreeViewItem item)
         {
             DependencyObject parent = VisualTreeHelper.GetParent(item);
@@ -191,7 +197,8 @@ namespace WindowExplorer.TreeView
             pathManager.ChangeDirectory(path);
             iconView.SetFileViewPanel(path);
         }
-                        
+         
+        // 폴더 이동 이벤트
         public void ChangeDirectoryEvent(object sender, KeyEventArgs e)
         {
             // 엔터가 입력되었을 때 텍스트박스에 입력된 경로로 이동           
@@ -204,17 +211,40 @@ namespace WindowExplorer.TreeView
             }
         }
 
+        /// <summary>
+        /// 폴더를 생성하는 이벤트
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void CreateFolderEvent(object sender, RoutedEventArgs e)
+        {
+            int idx = 1;
+            string foldername = pathManager.GetCurrentPath() + "\\" + "새 폴더";
+            string temp = foldername;
+
+            while(new DirectoryInfo(temp).Exists)
+            {
+                temp = foldername + '(' + idx + ')';
+                idx++;
+            }
+            Directory.CreateDirectory(temp);
+            iconView.SetFileViewPanel(pathManager.GetCurrentPath());
+        }
+
+        // 갱신 이벤트
         public void RenewEvent(object sender, RoutedEventArgs e)
         {
             window.txt_search.Text = "";
             iconView.SetFileViewPanel(pathManager.GetCurrentPath());
         }
 
+        // txt_path가 focus를 잃었을 때 발생하는 이벤트
         public void TextPathLostFocusEvent(object sender, RoutedEventArgs e)
         {
             window.txt_path.Text = pathManager.GetCurrentPath();
         }
 
+        // 뒤로가기 이벤트
         public void GoToBackEvent(object sender, RoutedEventArgs e)
         {
             pathManager.GoToBack();
@@ -222,6 +252,7 @@ namespace WindowExplorer.TreeView
             
         }
 
+        // 앞으로 가기 이벤트
         public void GoToFrontEvent(object sender, RoutedEventArgs e)
         {
             pathManager.GoToFront();
