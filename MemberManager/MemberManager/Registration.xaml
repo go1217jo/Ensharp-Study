@@ -77,8 +77,8 @@
             <ColumnDefinition Width="2*"/>
          </Grid.ColumnDefinitions>
          <Label Grid.Column="0" Content="전화번호" BorderThickness="2" BorderBrush="LightGray" FontSize="18" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="WhiteSmoke" />
-         <ComboBox Name="Cbx_phoneNumber" Grid.Column="1"/>
-         <TextBox Name="txt_phoneNumber" Grid.Column="2" />
+         <ComboBox Name="Cbx_phoneNumber" Grid.Column="1" FontSize="18" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+         <TextBox Name="txt_phoneNumber" Grid.Column="2" FontSize="18" VerticalContentAlignment="Center" Padding="10" MaxLength="9"/>
       </Grid>
       <Grid Grid.Row="5" Margin="40,5,40,10">
          <Grid.RowDefinitions>
@@ -90,10 +90,10 @@
                <ColumnDefinition Width="3*"/>
                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-               <TextBox Name="txt_baseAddress" Grid.Column="0"/>
-               <Button Name="Btn_searchAddress" Grid.Column="1"/>
+               <TextBox Name="txt_baseAddress" Grid.Column="0" FontSize="18" Padding="10"/>
+               <Button Name="Btn_searchAddress" Content="주소 검색" Grid.Column="1" FontSize="15"/>
             </Grid>
-         <TextBox Name="txt_detailAddress" Grid.Row="1" />
+         <TextBox Name="txt_detailAddress" Grid.Row="1" FontSize="18" Padding="10" Text="상세 주소"/>
       </Grid>
       <Grid Grid.Row="6">
          <Grid.RowDefinitions>
@@ -101,14 +101,13 @@
             <RowDefinition Height="1.1*"/>
          </Grid.RowDefinitions>
          <ComboBox Grid.Column="1" x:Name="Cbx_question"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="40,0,40,0" Padding="10,0,10,0" FontSize="20" />
-         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="0.45*"/>
-               <ColumnDefinition Width="5*"/>
+         <Grid Grid.Row="1" Margin="40,10,40,10">
+               <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="5*"/>
                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="txt_answer" Grid.Column="1" Text="질문에 대한 답변" Foreground="Gray" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="10,0,0,0" Height="45" FontSize="20" />
-            <Button Grid.Column="2" Content="입력" VerticalAlignment="Stretch" HorizontalAlignment = "Stretch" FontSize="15" Margin="15" />
+            <TextBox x:Name="txt_answer" Grid.Column="0" Text="질문에 대한 답변" Foreground="Gray" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="10,0,0,0" Height="45" FontSize="20" />
+            <Button Grid.Column="1" Content="입력" VerticalAlignment="Stretch" HorizontalAlignment = "Stretch" FontSize="18"/>
          </Grid>
       </Grid>
       <Grid Grid.Row="7">
@@ -124,7 +123,7 @@
                <ColumnDefinition Width="0.8*" />
                <ColumnDefinition Width="4.5*" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" Content="이메일 주소" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="WhiteSmoke" />
+            <Label Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" Content="이메일 주소" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="WhiteSmoke" />
             <TextBox x:Name="txt_email" Text="이메일" Foreground="Gray" Grid.Column="1" VerticalContentAlignment="Center" Padding="5" FontSize="18" />
             <Label Grid.Column="2" Content="@" VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Center" />
             <ComboBox x:Name="Cbx_email" Grid.Column="3" VerticalContentAlignment="Center" FontSize="18" Padding="5"/>

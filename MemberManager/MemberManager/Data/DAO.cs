@@ -82,9 +82,9 @@ namespace MemberManager.Data
                 return false;
         }
 
-        public bool InsertMember(string id, string password, string name, int sex, string birth, string mail, int question, string answer)
+        public bool InsertMember(string id, string password, string name, int sex, string birth, string mail, int question, string answer, string phonenumber, string address)
         {
-            string query = "INSERT INTO member values('" + id + "', '" + password + "', '" + name + "', " + sex + ", '" + birth + "', '" + mail + "', " + question + ", '" + answer + "');";
+            string query = "INSERT INTO member values('" + id + "', '" + password + "', '" + name + "', " + sex + ", '" + birth + "', '" + mail + "', " + question + ", '" + answer + "', '" + phonenumber+"', '" + address + "');";
             return ExecuteQuery(query);
         }
 
@@ -117,6 +117,8 @@ namespace MemberManager.Data
                 member.Sex = int.Parse(reader["sex"].ToString());
                 member.Birth = reader["birth"].ToString();
                 member.Mail = reader["mail"].ToString();
+                member.PhoneNumber = reader["phonenumber"].ToString();
+                member.Address = reader["address"].ToString();
             }
             reader.Close();
 

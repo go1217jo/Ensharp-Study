@@ -34,6 +34,7 @@ namespace MemberManager
             txtID.AddHandler(GotFocusEvent, new RoutedEventHandler(SetBlank));
 
             txtPW.AddHandler(LostFocusEvent, new RoutedEventHandler(PasswordHintEnable));
+            txtPW.AddHandler(GotFocusEvent, new RoutedEventHandler(IfFocusPasswordHintEnable));
             label_PW.AddHandler(MouseDownEvent, new RoutedEventHandler(PasswordHintUnable));
         }
                 
@@ -74,6 +75,12 @@ namespace MemberManager
         {
             Label label = (Label)sender;
             label.Visibility = Visibility.Hidden;
+            txtPW.Focus();
+        }
+
+        public void IfFocusPasswordHintEnable(object sender, RoutedEventArgs e)
+        {
+            label_PW.Visibility = Visibility.Hidden;
             txtPW.Focus();
         }
 

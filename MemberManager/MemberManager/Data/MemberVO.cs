@@ -14,6 +14,8 @@ namespace MemberManager.Data
         int sex;
         string birth;
         string mail;
+        string phonenumber;
+        string address;
 
         public string ID
         {
@@ -49,6 +51,18 @@ namespace MemberManager.Data
         {
             get { return mail; }
             set { mail = value; }
+        }
+
+        public string PhoneNumber
+        {
+            get { return phonenumber; }
+            set { phonenumber = value; }
+        }
+
+        public string Address
+        {
+            get { return address; }
+            set { address = value; }
         }
     }
 }

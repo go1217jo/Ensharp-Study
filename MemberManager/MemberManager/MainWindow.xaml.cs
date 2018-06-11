@@ -88,7 +88,6 @@ namespace MemberManager
                 MainGrid.Children.Add(main);
             }
         }
-
         
         private void Btn_back_info_Click(object sender, RoutedEventArgs e)
         {

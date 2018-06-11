@@ -60,12 +60,20 @@ namespace MemberManager
             Cbx_question.SelectedIndex = 0;
         }
 
+        public void InitCbxPhoneNumber()
+        {
+            List<string> identificationNumber = new List<string>(new string[] { "010", "011", "016", "017", "018", "019" });
+            Cbx_phoneNumber.ItemsSource = identificationNumber;
+            Cbx_phoneNumber.SelectedIndex = 0;
+        }
+
         public void Init()
         {
             // 콤보박스 아이템 초기화
             InitCbxEmail();
             InitCbxMonth();
             InitCbxQuestion();
+            InitCbxPhoneNumber();
 
             // 일반 텍스트박스 힌트 이벤트
             txt_email.AddHandler(LostFocusEvent, new RoutedEventHandler(SetDefaultText));
@@ -92,6 +100,9 @@ namespace MemberManager
 
             // 비밀번호 일치 확인 이벤트
             txt_PW_check.AddHandler(KeyUpEvent, new RoutedEventHandler(IsEqualPassword));
+
+            // 전화번호 형식 확인 이벤트
+            txt_phoneNumber.AddHandler(KeyUpEvent, new RoutedEventHandler(IsCorrectPhoneNumberType));
             
             // 알림 이벤트
             txt_ID.AddHandler(GotFocusEvent, new RoutedEventHandler(IsThereAlarm));
@@ -308,7 +319,6 @@ namespace MemberManager
                 else
                     txt_PW_check.Background = Brushes.OrangeRed;
             }
-            
 
             if( Regex.IsMatch(txt_PW.Password, "(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,18}"))
                 txt_PW.Background = Brushes.GreenYellow;
@@ -316,6 +326,7 @@ namespace MemberManager
                 txt_PW.Background = Brushes.OrangeRed;
         }
 
+        // 비밀번호와 비밀번호 확인이 일치하는지 확인
         public void IsEqualPassword(object sender, RoutedEventArgs e)
         {
             if (txt_PW_check.Password.Length == 0 && txt_PW.Password.Length == 0)
@@ -330,6 +341,16 @@ namespace MemberManager
                 txt_PW_check.Background = Brushes.OrangeRed;
         }
 
+        // 올바른 전화번호 형식인지 확인한다
+        public void IsCorrectPhoneNumberType(object sender, RoutedEventArgs e)
+        {
+            if (Regex.IsMatch(txt_phoneNumber.Text, "\\d{3,4}-\\d{4}$"))
+                txt_phoneNumber.Background = Brushes.GreenYellow;
+            else
+                txt_phoneNumber.Background = Brushes.OrangeRed;
+        }
+
+        // 올바른 생년월일 형식인지 확인한다
         public bool IsCorrectBirth()
         {
             // 텍스트 박스가 비어있을 경우
@@ -385,6 +406,7 @@ namespace MemberManager
                 MessageBox.Show("성별을 선택해주세요.");
                 return;
             }
+
             // 생년월일이 제대로 입력되었는지 확인
             if(!IsCorrectBirth())
             {
@@ -392,17 +414,24 @@ namespace MemberManager
                 return;
             }
 
-
             // 인증되었는지 확인
-            if(!certification)
+            if (!certification)
             {
                 MessageBox.Show("본인 확인을 해주세요.");
                 return;
             }
 
+            // 전화번호가 제대로 입력되었는지 확인
+            if(txt_phoneNumber.Background == Brushes.OrangeRed)
+            {
+                MessageBox.Show("전화번호를 제대로 입력해주세요.");
+                return;
+            }
+
             string birthDate = txt_year.Text + Cbx_month.SelectedItem.ToString() + txt_day.Text;
             string email = txt_email.Text + "@" + Cbx_email.SelectedItem.ToString();
-            if (DB.InsertMember(txt_ID.Text, txt_PW.Password, txt_name.Text, sex, birthDate, email, Cbx_question.SelectedIndex, txt_answer.Text)) ;
+            string address = txt_baseAddress.Text + ' ' + txt_detailAddress.Text;
+            if (DB.InsertMember(txt_ID.Text, txt_PW.Password, txt_name.Text, sex, birthDate, email, Cbx_question.SelectedIndex, txt_answer.Text, txt_phoneNumber.Text, address)) ;
             {
                 MessageBox.Show("회원가입 되었습니다.");
                 Close();
