@@ -77,11 +77,14 @@ namespace MemberManager
             txt_answer.AddHandler(LostFocusEvent, new RoutedEventHandler(SetDefaultText));
             txt_answer.AddHandler(GotFocusEvent, new RoutedEventHandler(SetBlank));
 
-            // 비밀번호 텍스트박스 힌트 이벤트 
+            // 비밀번호 텍스트박스 힌트 이벤트
             txt_PW.AddHandler(LostFocusEvent, new RoutedEventHandler(PasswordHintEnable));
-            label_PW.AddHandler(MouseDownEvent, new RoutedEventHandler(PasswordHintUnable));
+            txt_PW.AddHandler(GotFocusEvent, new RoutedEventHandler(IfFocusPasswordHintUnable));
+            txt_PW.AddHandler(KeyUpEvent, new RoutedEventHandler(CheckPasswordEffective));
+            label_PW.AddHandler(MouseUpEvent, new RoutedEventHandler(PasswordHintUnable));
             txt_PW_check.AddHandler(LostFocusEvent, new RoutedEventHandler(PasswordHintEnable));
-            label_PW_check.AddHandler(MouseDownEvent, new RoutedEventHandler(PasswordHintUnable));
+            txt_PW_check.AddHandler(GotFocusEvent, new RoutedEventHandler(IfFocusPasswordHintUnable));
+            label_PW_check.AddHandler(MouseUpEvent, new RoutedEventHandler(PasswordHintUnable));
 
             // 성별 선택 이벤트
             man_choice.AddHandler(MouseDownEvent, new RoutedEventHandler(ChoiceSex));
@@ -89,7 +92,7 @@ namespace MemberManager
 
             // 비밀번호 일치 확인 이벤트
             txt_PW_check.AddHandler(KeyUpEvent, new RoutedEventHandler(IsEqualPassword));
-
+            
             // 알림 이벤트
             txt_ID.AddHandler(GotFocusEvent, new RoutedEventHandler(IsThereAlarm));
             txt_name.AddHandler(GotFocusEvent, new RoutedEventHandler(IsThereAlarm));
@@ -190,6 +193,7 @@ namespace MemberManager
                 MessageBox.Show("인증 번호를 확인해주세요!");
         }
 
+        // input 문자열 중 랜덤하게 조합하여 인증번호를 만듦
         public string ReturnRandomString()
         {
             Random rand = new Random();
@@ -207,6 +211,19 @@ namespace MemberManager
                 txt_PW.Focus();
             else
                 txt_PW_check.Focus();
+        }
+
+        public void IfFocusPasswordHintUnable(object sender, RoutedEventArgs e)
+        {
+            PasswordBox passwordBox = (PasswordBox)(sender);
+            if(passwordBox.Equals(txt_PW)) {
+                label_PW.Visibility = Visibility.Hidden;
+                passwordBox.Focus();
+            }
+            else {
+                label_PW_check.Visibility = Visibility.Hidden;
+                passwordBox.Focus();
+            }
         }
 
         public void PasswordHintEnable(object sender, RoutedEventArgs e)
@@ -282,8 +299,31 @@ namespace MemberManager
             }
         }
 
+        // 비밀번호 유효성 검사, 조건 : 6~18자리, 영문, 숫자, 특수문자 조합
+        public void CheckPasswordEffective(object sender, RoutedEventArgs e)
+        {
+            if (txt_PW_check.Password.Length != 0) {
+                if(txt_PW_check.Password.Equals(txt_PW.Password))
+                    txt_PW_check.Background = Brushes.GreenYellow;
+                else
+                    txt_PW_check.Background = Brushes.OrangeRed;
+            }
+            
+
+            if( Regex.IsMatch(txt_PW.Password, "(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,18}"))
+                txt_PW.Background = Brushes.GreenYellow;
+            else
+                txt_PW.Background = Brushes.OrangeRed;
+        }
+
         public void IsEqualPassword(object sender, RoutedEventArgs e)
         {
+            if (txt_PW_check.Password.Length == 0 && txt_PW.Password.Length == 0)
+            {
+                txt_PW_check.Background = Brushes.White;
+                return;
+            }
+
             if (txt_PW_check.Password.Equals(txt_PW.Password))
                 txt_PW_check.Background = Brushes.GreenYellow;
             else

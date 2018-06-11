@@ -12,7 +12,7 @@ namespace MemberManager
     {
         private MailAddress sendAddress;
         private MailAddress toAddress;
-        private string sendPassword = "1q2w3e4r!@";
+        private string sendPassword = "223182bc319@";
 
         SmtpClient smtp;
         MailMessage message;
